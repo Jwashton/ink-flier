@@ -1,0 +1,8 @@
+{
+  "name": "Elixir with Phoenix, PostgreSQL, and NodeJS",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+
+  "forwardPorts": [4000, 5432]
+}

@@ -1,0 +1,28 @@
+FROM docker.io/elixir:1.17-alpine
+
+# Install system dependencies & common dev tools
+RUN apk update \
+  && apk upgrade \
+  && apk add \
+  postgresql-client \
+  nodejs \
+  npm \
+  git \
+  inotify-tools \
+  bash \
+  curl \
+  gnupg \
+  tzdata
+
+ENV GIT_EDITOR="code --wait"
+
+# Set up non-root user
+RUN adduser -D -g '' -s bash vscode
+USER vscode
+WORKDIR /workspaces
+
+COPY .devcontainer/scripts/bash_theme_snippet.sh /home/vscode/.bashrc
+
+# Install Phoenix
+RUN mix local.hex --force \
+  && mix archive.install hex phx_new --force
