@@ -24,7 +24,9 @@ config :ink_flier, InkFlierWeb.Endpoint,
   code_reloader: true,
   debug_errors: true,
   secret_key_base: "m1W9f2ZUQc2RaPrOq5sYMDq1HPzsaHKRydIZHQozgmqV1JpHLvoLiGGW4pauJ+gB",
-  watchers: []
+  watchers: [
+    node: ["build.mjs", "--watch", cd: Path.expand("../assets", __DIR__)]
+  ]
 
 # ## SSL Support
 #
