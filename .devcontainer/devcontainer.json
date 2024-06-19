@@ -4,5 +4,16 @@
   "service": "app",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 
-  "forwardPorts": [4000, 5432]
+  "forwardPorts": [
+    4000,
+    5432
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "phoenixframework.phoenix",
+        "JakeBecker.elixir-ls"
+      ]
+    }
+  }
 }
