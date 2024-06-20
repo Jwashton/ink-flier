@@ -14,10 +14,19 @@ defmodule InkFlierWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :game do
+    plug :put_root_layout, html: {InkFlierWeb.GameLayouts, :root}
+  end
+
   scope "/", InkFlierWeb do
     pipe_through :browser
 
     get "/", PageController, :home
+  end
+
+  scope "/game", InkFlierWeb do
+    pipe_through [:browser, :game]
+
     get "/sandbox", GameController, :sandbox
   end
 
