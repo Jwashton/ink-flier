@@ -11,3 +11,7 @@ form li {
 
   width: 15em;
 }
+
+#debug {
+  display: flex;
+}

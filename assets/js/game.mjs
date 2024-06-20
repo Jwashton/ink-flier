@@ -1,12 +1,16 @@
 import { withState } from "./canvas.mjs";
 import Stencils from "./stencils.mjs";
 import View from './view.mjs';
+import TouchList from "./touch.mjs";
+import Mouse from "./mouse.mjs";
 
 /************************************
  * Scene state                      *
  ************************************/
 
 const camera = View();
+const touchList = TouchList();
+const mouse = Mouse();
 
 const objects = [
   { type: 'square', x: 20, y: 20, size: 20, fill: '#30a0aa' },
@@ -43,12 +47,27 @@ const enqueueRerender = function enqueueRerender(context) {
   });
 };
 
+const debugValue = function debugValue(value, name) {
+  const section = document.createElement('section');
+  const header = document.createElement('h2');
+  const code = document.createElement('pre');
+
+  header.textContent = name;
+  code.textContent = JSON.stringify(value, null, 2);
+
+  section.appendChild(header);
+  section.appendChild(code);
+
+  return section;
+};
+
 const updateDebugView = function updateDebugView(element) {
-  element.textContent = JSON.stringify(camera, null, 2);
-}
+  element.innerHTML = '';
+  element.appendChild(debugValue(camera, 'camera'));
+  element.appendChild(debugValue(touchList, 'touchList'));
+};
 
-const registerEventCallbacks = function registerEventCallbacks(canvas, context) {
-
+const registerEventCallbacks = function registerEventCallbacks(canvas, debugView) {
 };
 
 const init = function init() {
@@ -59,6 +78,46 @@ const init = function init() {
   const scaleInput = document.getElementById('scale');
   const debugView = document.getElementById('debug');
   updateDebugView(debugView);
+
+  Mouse.bind(mouse, canvas);
+  Mouse.on(mouse, 'dragStart', () => {
+    View.startDrag(camera, mouse.position);
+
+    updateDebugView(debugView);
+  });
+
+  Mouse.on(mouse, 'dragMove', () => {
+    View.moveDrag(camera, mouse.position);
+
+    updateDebugView(debugView);
+    enqueueRerender(context);
+  });
+
+  TouchList.bind(touchList, canvas);
+  TouchList.on(touchList, 'pinchStart', list => {
+    View.startPinch(camera, ...TouchList.firstTwo(list));
+
+    updateDebugView(debugView);
+  });
+
+  TouchList.on(touchList, 'pinchMove', list => {
+    View.movePinch(camera, ...TouchList.firstTwo(list));
+
+    updateDebugView(debugView);
+    enqueueRerender(context);
+  });
+
+  TouchList.on(touchList, 'touchStart', list => {
+    updateDebugView(debugView);
+  });
+
+  TouchList.on(touchList, 'touchMove', list => {
+    updateDebugView(debugView);
+  });
+
+  TouchList.on(touchList, 'touchEnd', list => {
+    updateDebugView(debugView);
+  });
 
   camera.rotation = Number(rotationInput.value);
   camera.scale = Number(scaleInput.value);
@@ -80,7 +139,7 @@ const init = function init() {
     enqueueRerender(context);
   });
 
-  registerEventCallbacks(canvas, context);
+  registerEventCallbacks(canvas, debugView);
   enqueueRerender(context);
 };
 
