@@ -76,13 +76,20 @@ const debugValue = function debugValue(value, name) {
 };
 
 const updateDebugView = function updateDebugView(element) {
-  element.innerHTML = '';
-  element.appendChild(debugValue(camera, 'camera'));
-  element.appendChild(debugValue(touchList, 'touchList'));
+  // element.innerHTML = '';
+  // element.appendChild(debugValue(camera, 'camera'));
+  // element.appendChild(debugValue(touchList, 'touchList'));
 };
 
 const registerEventCallbacks = function registerEventCallbacks(canvas, debugView) {
 };
+
+// Todos:
+// - Update rotation/scale inputs when view changes
+// - Be able to lerp from one camera place to another (automated transitions)
+// - Be able to select objects in the scene
+// - Set up race grid
+// - Define track
 
 const init = function init() {
   const canvas = document.getElementById('mainView');
