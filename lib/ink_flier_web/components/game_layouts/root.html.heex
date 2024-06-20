@@ -7,13 +7,13 @@
     <.live_title suffix=" · Phoenix Framework">
       <%= assigns[:page_title] || "InkFlier" %>
     </.live_title>
-    <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
-    <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
+    <link phx-track-static rel="stylesheet" href={~p"/assets/css/app.css"} />
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/js/app.js"}>
     </script>
-    <script defer phx-track-static type="text/javascript" src={~p"/assets/game.js"}>
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/js/game.js"}>
     </script>
   </head>
   <body>
-    From root layout <%= @inner_content %>
+    <%= @inner_content %>
   </body>
 </html>
