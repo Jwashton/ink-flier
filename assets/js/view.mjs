@@ -26,7 +26,7 @@ View.screenToWorld = function screenToWorld(view, { x, y }) {
 
   return {
     x: xx * view.inverseMatrix[0] + yy * view.inverseMatrix[2],
-    y: xx * view.inverseMatrix[2] + yy * view.inverseMatrix[3]
+    y: xx * view.inverseMatrix[1] + yy * view.inverseMatrix[3]
   };
 };
 
@@ -43,11 +43,12 @@ View.startPinch = function startPinch(view, p1, p2) {
   const x = p2.x - p1.x;
   const y = p2.y - p1.y;
 
-  view.moveStart = View.screenToWorld(view, p1);
   view.pinchStartDistance = Math.sqrt(x * x + y * y);
   view.pinchStartAngle = Math.atan2(y, x);
   view.pinchScale = view.scale;
   view.pinchAngle = view.rotation;
+
+  view.moveStart = View.screenToWorld(view, p1);
 };
 
 View.startDrag = function startDrag(view, point) {

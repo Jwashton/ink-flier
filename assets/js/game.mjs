@@ -12,11 +12,25 @@ const camera = View();
 const touchList = TouchList();
 const mouse = Mouse();
 
-const objects = [
+const objects = [];
+
+[...Array(80).keys()].forEach(n => {
+  objects.push({
+    type: 'square',
+    x: (n % 10) * 50,
+    y: Math.trunc(n / 10) * 50,
+    size: 50,
+    fill: `hsl(${n * 20} 90% 80%)`
+  });
+});
+
+[
   { type: 'square', x: 20, y: 20, size: 20, fill: '#30a0aa' },
   { type: 'circle', x: 60, y: 40, radius: 25, fill: '#ffbb50' },
   { type: 'square', x: 80, y: 50, size: 30, fill: '#15ddaa' }
-];
+].forEach(object => {
+  objects.push(object);
+});
 
 [...Array(20).keys()].forEach(n => {
   objects.push({
@@ -72,6 +86,10 @@ const registerEventCallbacks = function registerEventCallbacks(canvas, debugView
 
 const init = function init() {
   const canvas = document.getElementById('mainView');
+
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
   const context = canvas.getContext('2d');
 
   const rotationInput = document.getElementById('rotation');

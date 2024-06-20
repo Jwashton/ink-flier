@@ -32,10 +32,12 @@ export const findInverse = function findInverse(matrix) {
   const [a, d, b, e, _c, _f] = matrix;
   const cross = rotationalCrossProduct(matrix);
 
+  console.log(cross);
+
   return [
     e / cross,
-    -b / cross,
     -d / cross,
+    -b / cross,
     a / cross,
     0,
     0
