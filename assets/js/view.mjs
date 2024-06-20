@@ -38,8 +38,6 @@ View.worldToScreen = function worldToScreen(view, { x, y }) {
 };
 
 View.startPinch = function startPinch(view, p1, p2) {
-  console.log(p1);
-  console.log(p2);
   const x = p2.x - p1.x;
   const y = p2.y - p1.y;
 
@@ -56,8 +54,6 @@ View.startDrag = function startDrag(view, point) {
 };
 
 View.movePinch = function movePinch(view, p1, p2) {
-  console.log(p1);
-  console.log(p2);
   const x = p2.x - p1.x;
   const y = p2.y - p1.y;
 
