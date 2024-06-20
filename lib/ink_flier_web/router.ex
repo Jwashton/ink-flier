@@ -18,6 +18,7 @@ defmodule InkFlierWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    get "/sandbox", GameController, :sandbox
   end
 
   # Other scopes may use custom stacks.

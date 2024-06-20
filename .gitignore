@@ -27,3 +27,6 @@ ink_flier-*.tar
 
 # Front-end dependencies
 node_modules
+
+# Ignore compiled assets
+/priv/static/
