@@ -85,7 +85,6 @@ const registerEventCallbacks = function registerEventCallbacks(canvas, debugView
 };
 
 // Todos:
-// - Update rotation/scale inputs when view changes
 // - Be able to lerp from one camera place to another (automated transitions)
 // - Be able to select objects in the scene
 // - Set up race grid
@@ -98,6 +97,12 @@ const init = function init() {
   canvas.height = window.innerHeight;
 
   const context = canvas.getContext('2d');
+
+  const controlForm = document.getElementById('viewControls');
+
+  if (navigator.maxTouchPoints > 1) {
+    controlForm.classList.add('touch');
+  }
 
   const rotationInput = document.getElementById('rotation');
   const scaleInput = document.getElementById('scale');
@@ -129,6 +134,8 @@ const init = function init() {
     View.movePinch(camera, ...TouchList.firstTwo(list));
 
     updateDebugView(debugView);
+    rotationInput.value = camera.rotation;
+    scaleInput.value = camera.scale;
     enqueueRerender(context);
   });
 
