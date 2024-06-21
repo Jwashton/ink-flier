@@ -16,11 +16,17 @@ const objects = [];
 
 const graphColor = window.currentTheme() === 'dark' ? 'hsl(60deg 22% 86%)' : 'hsl(26deg 47% 6%)';
 
-[...Array(80).keys()].forEach(n => {
+DOT_ROW_COUNT = 40;
+DOT_SPACING = 50;
+DOT_HALF_ROW_COUNT = Math.trunc(DOT_ROW_COUNT / 2);
+DOT_ROW_HALF_LENGTH = DOT_HALF_ROW_COUNT * DOT_SPACING;
+console.log(DOT_ROW_HALF_LENGTH);
+
+[...Array(DOT_ROW_COUNT ** 2).keys()].forEach(n => {
   objects.push({
     type: 'square',
-    x: (n % 10) * 50,
-    y: Math.trunc(n / 10) * 50,
+    x: (n % DOT_ROW_COUNT) * DOT_SPACING - DOT_ROW_HALF_LENGTH,
+    y: Math.trunc(n / DOT_ROW_COUNT) * DOT_SPACING - DOT_ROW_HALF_LENGTH,
     size: 5,
     fill: graphColor
   });
@@ -77,6 +83,7 @@ const registerEventCallbacks = function registerEventCallbacks(canvas, debugView
 };
 
 // Todos:
+// - Scroll to zoom
 // - Be able to lerp from one camera place to another (automated transitions)
 // - Be able to select objects in the scene
 // - Set up race grid
