@@ -9,7 +9,7 @@
     </.live_title>
 
     <script type="text/javascript">
-      const currentTheme = function currentTheme() {
+      window.currentTheme = function currentTheme() {
         const localStorageTheme = localStorage.getItem('theme')
 
         if (localStorageTheme) {

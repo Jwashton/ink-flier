@@ -15,11 +15,14 @@ export const View = function View() {
   };
 };
 
+//   Update the matrix and inverseMatrix to match the current position,
+// rotation, and scale.
 View.update = function toMatrix(view) {
   view.matrix = encodeMatrix(view.position, view.rotation, view.scale);
   view.inverseMatrix = findInverse(view.matrix);
 };
 
+//   Convert a screen point to a world point.
 View.screenToWorld = function screenToWorld(view, { x, y }) {
   const xx = x - view.matrix[4];
   const yy = y - view.matrix[5];
@@ -30,6 +33,7 @@ View.screenToWorld = function screenToWorld(view, { x, y }) {
   };
 };
 
+//   Convert a world point to a screen point.
 View.worldToScreen = function worldToScreen(view, { x, y }) {
   return {
     x: x * view.matrix[0] + y * view.matrix[2] + view.matrix[4],
@@ -37,6 +41,7 @@ View.worldToScreen = function worldToScreen(view, { x, y }) {
   };
 };
 
+//   Start a pinch touch gesture.
 View.startPinch = function startPinch(view, p1, p2) {
   const x = p2.x - p1.x;
   const y = p2.y - p1.y;
@@ -49,10 +54,12 @@ View.startPinch = function startPinch(view, p1, p2) {
   view.moveStart = View.screenToWorld(view, p1);
 };
 
+//   Start a drag mouse gesture.
 View.startDrag = function startDrag(view, point) {
   view.moveStart = View.screenToWorld(view, point);
 };
 
+//   Move a pinch touch gesture.
 View.movePinch = function movePinch(view, p1, p2) {
   const x = p2.x - p1.x;
   const y = p2.y - p1.y;
@@ -69,11 +76,32 @@ View.movePinch = function movePinch(view, p1, p2) {
   return View.update(view);
 };
 
+//   Move a drag mouse gesture.
 View.moveDrag = function moveDrag(view, point) {
   view.position.x = point.x - view.moveStart.x * view.matrix[0] - view.moveStart.y * view.matrix[2];
   view.position.y = point.y - view.moveStart.x * view.matrix[1] - view.moveStart.y * view.matrix[3];
 
   return View.update(view);
+};
+
+//   Change just the scale. Consider adding a new function if you need to
+// change more than one attribute, to save time updating the matrix.
+View.setScale = function setScale(view, scale) {
+  view.scale = scale;
+
+  return View.update(view);
+};
+
+//   Change just the rotation. Consider adding a new function if you need to
+// change more than one attribute, to save time updating the matrix.
+View.setRotation = function setRotation(view, rotation) {
+  view.rotation = rotation;
+
+  return View.update(view);
+};
+
+View.matrix = function matrix(view) {
+  return view.matrix;
 };
 
 export default View;

@@ -14,13 +14,15 @@ const mouse = Mouse();
 
 const objects = [];
 
+const graphColor = window.currentTheme() === 'dark' ? 'hsl(60deg 22% 86%)' : 'hsl(26deg 47% 6%)';
+
 [...Array(80).keys()].forEach(n => {
   objects.push({
     type: 'square',
     x: (n % 10) * 50,
     y: Math.trunc(n / 10) * 50,
-    size: 50,
-    fill: `hsl(${n * 20} 90% 80%)`
+    size: 5,
+    fill: graphColor
   });
 });
 
@@ -38,7 +40,7 @@ const objects = [];
 const draw = function draw(context) {
   context.clearRect(0, 0, context.canvas.width, context.canvas.height);
   withState(context, ctx => {
-    context.transform(...camera.matrix);
+    context.transform(...View.matrix(camera));
     for (const object of objects) {
       Stencils[object.type](context, object);
     }
@@ -124,8 +126,6 @@ const init = function init() {
     View.movePinch(camera, ...TouchList.firstTwo(list));
 
     updateDebugView(debugView);
-    rotationInput.value = camera.rotation;
-    scaleInput.value = camera.scale;
     enqueueRerender(context);
   });
 
@@ -141,22 +141,20 @@ const init = function init() {
     updateDebugView(debugView);
   });
 
-  camera.rotation = Number(rotationInput.value);
-  camera.scale = Number(scaleInput.value);
-  View.update(camera);
+  View.setRotation(camera, Number(rotationInput.value));
+  View.setScale(camera, Number(scaleInput.value));
+
   updateDebugView(debugView);
   enqueueRerender(context);
 
   rotationInput.addEventListener('input', event => {
-    camera.rotation = Number(event.target.value);
-    View.update(camera);
+    View.setRotation(camera, Number(event.target.value));
     updateDebugView(debugView);
     enqueueRerender(context);
   });
 
   scaleInput.addEventListener('input', event => {
-    camera.scale = Number(event.target.value);
-    View.update(camera);
+    View.setScale(camera, Number(event.target.value));
     updateDebugView(debugView);
     enqueueRerender(context);
   });
