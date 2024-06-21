@@ -32,16 +32,6 @@ const objects = [];
   objects.push(object);
 });
 
-[...Array(20).keys()].forEach(n => {
-  objects.push({
-    type: 'square',
-    x: n * 4 + 20,
-    y: 50 - Math.sqrt(n * 20),
-    size: 3,
-    fill: `hsl(${n * 20} 90% 80%)`
-  });
-});
-
 /************************************
  * Canvas management                *
  ************************************/

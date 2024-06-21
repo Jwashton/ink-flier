@@ -1,3 +1,11 @@
+[data-theme="light"] {
+  --paper-color: hsl(60, 22%, 86%);
+}
+
+[data-theme="dark"] {
+  --paper-color: hsl(26, 47%, 6%);
+}
+
 html,
 body {
   margin: 0;
@@ -9,7 +17,7 @@ body {
   width: 100vw;
   height: 100dvh;
 
-  background-color: rgba(45, 20, 95, 1);
+  background-color: var(--paper-color);
 }
 
 #viewControls.touch {
