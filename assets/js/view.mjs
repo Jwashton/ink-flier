@@ -100,6 +100,15 @@ View.setRotation = function setRotation(view, rotation) {
   return View.update(view);
 };
 
+//   Set the position of the view. Consider adding a new function if you need
+// to change more than one attribute, to save time updating the matrix.
+View.setPosition = function setPosition(view, position) {
+  view.position = position;
+
+  return View.update(view);
+};
+
+//   Get the current transformation matrix.
 View.matrix = function matrix(view) {
   return view.matrix;
 };

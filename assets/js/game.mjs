@@ -88,6 +88,8 @@ const init = function init() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
+  View.setPosition(camera, { x: canvas.width / 2, y: canvas.height / 2 });
+
   const context = canvas.getContext('2d');
 
   const controlForm = document.getElementById('viewControls');
