@@ -1,18 +1,14 @@
-// Private functions
-const dispatch = function dispatch(mouse, event) {
-  for (const callback of mouse.callbacks[event]) {
-    callback(mouse);
-  }
-};
+import Subscribable from "./subscribable.mjs";
 
+// Private functions
 const handleStart = function handleStart(mouse, event) {
   event.preventDefault();
 
   mouse.position = { x: event.pageX, y: event.pageY };
   mouse.dragging = true;
 
-  dispatch(mouse, 'mouseDown');
-  dispatch(mouse, 'dragStart');
+  Subscribable.dispatch(mouse, 'mouseDown', {});
+  Subscribable.dispatch(mouse, 'dragStart', {});
 };
 
 const handleMove = function handleMove(mouse, event) {
@@ -20,10 +16,10 @@ const handleMove = function handleMove(mouse, event) {
 
   mouse.position = { x: event.pageX, y: event.pageY };
 
-  dispatch(mouse, 'mouseMove');
+  Subscribable.dispatch(mouse, 'mouseMove', {});
 
   if (mouse.dragging) {
-    dispatch(mouse, 'dragMove');
+    Subscribable.dispatch(mouse, 'dragMove', {});
   }
 };
 
@@ -32,34 +28,17 @@ const handleEnd = function handleEnd(mouse, event) {
 
   mouse.dragging = false;
 
-  dispatch(mouse, 'mouseUp');
+  Subscribable.dispatch(mouse, 'mouseUp', {});
 };
 
 // Public functions
 export const Mouse = function Mouse() {
   const mouse = {
-    callbacks: {
-      'dragStart': [],
-      'dragMove': [],
-      'mouseDown': [],
-      'mouseMove': [],
-      'mouseUp': []
-    },
     position: { x: 0, y: 0 },
     dragging: false
   };
 
-  return mouse;
-};
-
-Mouse.on = function on(mouse, event, callback) {
-  if (!mouse.callbacks[event]) {
-    return false;
-  }
-
-  mouse.callbacks[event].push(callback);
-
-  return true;
+  return Subscribable(mouse, ['dragStart', 'dragMove', 'mouseDown', 'mouseMove', 'mouseUp']);
 };
 
 Mouse.bind = function bind(mouse, element) {

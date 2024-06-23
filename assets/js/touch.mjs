@@ -1,12 +1,8 @@
+import Subscribable from "./subscribable.mjs";
+
 // Private functions
 const copyTouch = function copyTouch({ identifier, pageX, pageY }) {
   return { identifier, x: pageX, y: pageY };
-};
-
-const dispatch = function dispatch(touchList, event) {
-  for (const callback of touchList.callbacks[event]) {
-    callback(touchList);
-  }
 };
 
 const handleStart = function handleStart(touchList, event) {
@@ -17,10 +13,10 @@ const handleStart = function handleStart(touchList, event) {
     touchList.ids.push(touch.identifier);
   }
 
-  dispatch(touchList, 'touchStart');
+  Subribable.dispatch(touchList, 'touchStart', {});
 
   if (Object.keys(touchList.points).length === 2) {
-    dispatch(touchList, 'pinchStart');
+    Subribable.dispatch(touchList, 'pinchStart', {});
   }
 };
 
@@ -31,10 +27,10 @@ const handleMove = function handleMove(touchList, event) {
     touchList.points[touch.identifier] = copyTouch(touch);
   }
 
-  dispatch(touchList, 'touchMove');
+  Subribable.dispatch(touchList, 'touchMove', {});
 
   if (Object.keys(touchList.points).length >= 2) {
-    dispatch(touchList, 'pinchMove');
+    Subribable.dispatch(touchList, 'pinchMove', {});
   }
 };
 
@@ -46,7 +42,7 @@ const handleEnd = function handleEnd(touchList, event) {
     touchList.ids = touchList.ids.filter(id => id !== touch.identifier);
   }
 
-  dispatch(touchList, 'touchEnd');
+  Subribable.dispatch(touchList, 'touchEnd', {});
 };
 
 const handleCancel = function handleCancel(touchList, event) {
@@ -57,7 +53,7 @@ const handleCancel = function handleCancel(touchList, event) {
     touchList.ids = touchList.ids.filter(id => id !== touch.identifier);
   }
 
-  dispatch(touchList, 'touchCancel');
+  Subribable.dispatch(touchList, 'touchCancel', {});
 };
 
 // Public functions
@@ -75,17 +71,7 @@ export const TouchList = function TouchList() {
     ids: []
   };
 
-  return touchList;
-};
-
-TouchList.on = function on(touchList, event, callback) {
-  if (!touchList.callbacks[event]) {
-    return false;
-  }
-
-  touchList.callbacks[event].push(callback);
-
-  return true;
+  return Subscribable(touchList, ['pinchStart', 'pinchMove', 'touchStart', 'touchMove', 'touchEnd', 'touchCancel']);
 };
 
 TouchList.firstTwo = function firstTwo(touchList) {

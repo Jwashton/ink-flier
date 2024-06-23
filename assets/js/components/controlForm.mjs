@@ -1,31 +1,27 @@
+import Subscribable from '../subscribable.mjs';
 import View from '../view.mjs';
-
-const dispatch = function dispatch(controlForm, event) {
-  for (const callback of controlForm.callbacks[event]) {
-    callback(controlForm);
-  }
-};
 
 const handleRotationInput = function handleRotationInput(controlForm, event) {
   View.setRotation(controlForm.camera, Number(event.target.value));
   
-  dispatch(controlForm, 'update');
+  Subscribable.dispatch(controlForm, 'update', { rotation: Number(event.target.value) });
 };
 
 const handleScaleInput = function handleScaleInput(controlForm, event) {
   View.setScale(controlForm.camera, Number(event.target.value));
   
-  dispatch(controlForm, 'update');
+  Subscribable.dispatch(controlForm, 'update', { scale: Number(event.target.value) });
 };
 
 export const ControlForm = function ControlForm(camera, touchEnabled) {
-  return {
+  const state = {
     camera,
     touchEnabled,
     form: undefined,
-    inputs: { rotation: undefined, scale: undefined },
-    callbacks: { update: [] }
+    inputs: { rotation: undefined, scale: undefined }
   };
+
+  return Subscribable(state, ['update']);
 };
 
 ControlForm.bind = function bind(controlForm) {
@@ -46,16 +42,6 @@ ControlForm.currentValues = function currentValues(controlForm) {
     rotation: Number(controlForm.inputs.rotation.value),
     scale: Number(controlForm.inputs.scale.value)
   };
-};
-
-ControlForm.on = function on(controlForm, event, callback) {
-  if (!controlForm.callbacks[event]) {
-    return false;
-  }
-
-  controlForm.callbacks[event].push(callback);
-
-  return true;
 };
 
 export default ControlForm;

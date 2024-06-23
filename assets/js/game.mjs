@@ -94,12 +94,12 @@ const registerEventCallbacks = function registerEventCallbacks(canvas, debugView
 // - Set up race grid
 // - Define track
 
-Mouse.on(mouse, 'dragStart', () => {
+mouse.on('dragStart', () => {
   View.startDrag(camera, mouse.position);
 });
 
-TouchList.on(touchList, 'pinchStart', list => {
-  View.startPinch(camera, ...TouchList.firstTwo(list));
+touchList.on('pinchStart', () => {
+  View.startPinch(camera, ...TouchList.firstTwo(touchList));
 });
 
 const init = function init() {
@@ -116,7 +116,7 @@ const init = function init() {
   View.setRotation(camera, Number(currentValues.rotation));
   View.setScale(camera, Number(currentValues.scale));
 
-  ControlForm.on(controlForm, 'update', () => {
+  controlForm.on('update', () => {
     enqueueRerender(context);
   });
 
@@ -127,7 +127,7 @@ const init = function init() {
 
   Mouse.bind(mouse, canvas);
 
-  Mouse.on(mouse, 'dragMove', () => {
+  mouse.on('dragMove', () => {
     View.moveDrag(camera, mouse.position);
 
     updateDebugView(debugView);
@@ -136,8 +136,8 @@ const init = function init() {
 
   TouchList.bind(touchList, canvas);
 
-  TouchList.on(touchList, 'pinchMove', list => {
-    View.movePinch(camera, ...TouchList.firstTwo(list));
+  touchList.on('pinchMove', () => {
+    View.movePinch(camera, ...TouchList.firstTwo(touchList));
 
     updateDebugView(debugView);
     enqueueRerender(context);
