@@ -92,6 +92,10 @@ View.setScale = function setScale(view, scale) {
   return View.update(view);
 };
 
+View.scale = function scale(view) {
+  return view.scale;
+};
+
 //   Change just the rotation. Consider adding a new function if you need to
 // change more than one attribute, to save time updating the matrix.
 View.setRotation = function setRotation(view, rotation) {

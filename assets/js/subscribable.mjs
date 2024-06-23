@@ -18,9 +18,9 @@ export const Subscribable = function (object, events) {
   return object;
 };
 
-Subscribable.dispatch = function (object, event) {
+Subscribable.dispatch = function (object, event, data) {
   for (const callback of object.subscribers[event]) {
-    callback(object);
+    callback(data);
   }
 };
 

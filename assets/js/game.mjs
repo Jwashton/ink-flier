@@ -1,9 +1,11 @@
 import { withState } from "./canvas.mjs";
+import Animation from "./animation.mjs";
 import Stencils from "./stencils.mjs";
 import View from './view.mjs';
 import TouchList from "./touch.mjs";
 import Mouse from "./mouse.mjs";
 import ControlForm from "./components/controlForm.mjs";
+import LookAtForm from "./components/lookAtForm.mjs";
 
 /************************************
  * Scene state                      *
@@ -13,6 +15,9 @@ const camera = View();
 const touchList = TouchList();
 const mouse = Mouse();
 const controlForm = ControlForm(camera, navigator.maxTouchPoints > 1);
+const lookAtForm = LookAtForm();
+let animating = false;
+let animation;
 
 const objects = [];
 
@@ -45,17 +50,40 @@ console.log(DOT_ROW_HALF_LENGTH);
   objects.push(object);
 });
 
+lookAtForm.on('submit', ({ view }) => {
+  animating = true;
+  console.log('submitted', view)
+  animation = Animation(1000, View.scale(camera), View.scale(view));
+  // View.setPosition(camera, View.position(view));
+  // View.setRotation(camera, View.rotation(view));
+});
+
 /************************************
  * Canvas management                *
  ************************************/
 const draw = function draw(context) {
   context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-  withState(context, ctx => {
+
+  if (animating) {
+    console.log(animating);
+    View.setScale(camera, animation.current());
+    console.log(animation.current());
+
+    if (animation.finished()) {
+      animating = false;
+    }
+  }
+
+  withState(context, () => {
     context.transform(...View.matrix(camera));
     for (const object of objects) {
       Stencils[object.type](context, object);
     }
   });
+
+  if (animating) {
+    enqueueRerender(context);
+  }
 };
 
 const enqueueRerender = function enqueueRerender(context) {
@@ -110,6 +138,11 @@ const init = function init() {
 
   View.setPosition(camera, { x: canvas.width / 2, y: canvas.height / 2 });
   ControlForm.bind(controlForm);
+  LookAtForm.bind(lookAtForm);
+
+  lookAtForm.on('submit', (_form) => {
+    enqueueRerender(context);
+  });
 
   const currentValues = ControlForm.currentValues(controlForm);
 

@@ -49,6 +49,32 @@ body {
   width: 15em;
 }
 
+#lookAtControls {
+  position: fixed;
+  right: 0;
+  top: 10px;
+
+  display: flex;
+
+  height: fit-content;
+  padding: 0.5em 1em;
+
+  background-color: rgba(255, 255, 255, 0.5);
+
+  font-size: 16px;
+}
+
+#lookAtControls ul {
+  padding: 0;
+}
+
+#lookAtControls li {
+  display: flex;
+  justify-content: space-between;
+
+  width: 15em;
+}
+
 #debug {
   position: fixed;
   right: 0;
