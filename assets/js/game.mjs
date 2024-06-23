@@ -18,6 +18,8 @@ const graphColor = window.currentTheme() === 'dark' ? 'hsl(60deg 22% 86%)' : 'hs
 
 DOT_ROW_COUNT = 40;
 DOT_SPACING = 50;
+DOT_SIZE = 4;
+DOT_HALF_SIZE = DOT_SIZE / 2;
 DOT_HALF_ROW_COUNT = Math.trunc(DOT_ROW_COUNT / 2);
 DOT_ROW_HALF_LENGTH = DOT_HALF_ROW_COUNT * DOT_SPACING;
 console.log(DOT_ROW_HALF_LENGTH);
@@ -25,17 +27,18 @@ console.log(DOT_ROW_HALF_LENGTH);
 [...Array(DOT_ROW_COUNT ** 2).keys()].forEach(n => {
   objects.push({
     type: 'square',
-    x: (n % DOT_ROW_COUNT) * DOT_SPACING - DOT_ROW_HALF_LENGTH,
-    y: Math.trunc(n / DOT_ROW_COUNT) * DOT_SPACING - DOT_ROW_HALF_LENGTH,
-    size: 5,
+    x: (n % DOT_ROW_COUNT) * DOT_SPACING - DOT_ROW_HALF_LENGTH - DOT_HALF_SIZE,
+    y: Math.trunc(n / DOT_ROW_COUNT) * DOT_SPACING - DOT_ROW_HALF_LENGTH - DOT_HALF_SIZE,
+    size: DOT_SIZE,
     fill: graphColor
   });
 });
 
 [
-  { type: 'square', x: 20, y: 20, size: 20, fill: '#30a0aa' },
-  { type: 'circle', x: 60, y: 40, radius: 25, fill: '#ffbb50' },
-  { type: 'square', x: 80, y: 50, size: 30, fill: '#15ddaa' }
+  { type: 'car', x: 50, y: 150, size: 25, fill: 'hsl(185deg, 56%, 43%)' },
+  { type: 'car', x: 100, y: 100, size: 25, fill: 'hsl(37deg, 100%, 66%)' },
+  { type: 'car', x: 150, y: 150, size: 25, fill: 'hsl(165deg, 83%, 47%)' },
+  { type: 'car', x: 50, y: 100, size: 25, fill: 'hsl(20deg, 80%, 50%)' }
 ].forEach(object => {
   objects.push(object);
 });

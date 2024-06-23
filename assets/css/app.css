@@ -4,6 +4,9 @@
 
 [data-theme="dark"] {
   --paper-color: hsl(26, 47%, 6%);
+  --car-color: hsl(165, 83%, 47%);
+  --yellow: hsl(37, 100%, 66%);
+  --darker-blue: hsl(185, 56%, 43%);
 }
 
 html,
