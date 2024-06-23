@@ -92,6 +92,14 @@ const registerEventCallbacks = function registerEventCallbacks(canvas, debugView
 // - Set up race grid
 // - Define track
 
+Mouse.on(mouse, 'dragStart', () => {
+  View.startDrag(camera, mouse.position);
+});
+
+TouchList.on(touchList, 'pinchStart', list => {
+  View.startPinch(camera, ...TouchList.firstTwo(list));
+});
+
 const init = function init() {
   const canvas = document.getElementById('mainView');
 
@@ -114,11 +122,6 @@ const init = function init() {
   updateDebugView(debugView);
 
   Mouse.bind(mouse, canvas);
-  Mouse.on(mouse, 'dragStart', () => {
-    View.startDrag(camera, mouse.position);
-
-    updateDebugView(debugView);
-  });
 
   Mouse.on(mouse, 'dragMove', () => {
     View.moveDrag(camera, mouse.position);
@@ -128,29 +131,12 @@ const init = function init() {
   });
 
   TouchList.bind(touchList, canvas);
-  TouchList.on(touchList, 'pinchStart', list => {
-    View.startPinch(camera, ...TouchList.firstTwo(list));
-
-    updateDebugView(debugView);
-  });
 
   TouchList.on(touchList, 'pinchMove', list => {
     View.movePinch(camera, ...TouchList.firstTwo(list));
 
     updateDebugView(debugView);
     enqueueRerender(context);
-  });
-
-  TouchList.on(touchList, 'touchStart', list => {
-    updateDebugView(debugView);
-  });
-
-  TouchList.on(touchList, 'touchMove', list => {
-    updateDebugView(debugView);
-  });
-
-  TouchList.on(touchList, 'touchEnd', list => {
-    updateDebugView(debugView);
   });
 
   View.setRotation(camera, Number(rotationInput.value));
