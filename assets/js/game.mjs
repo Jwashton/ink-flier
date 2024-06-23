@@ -3,6 +3,7 @@ import Stencils from "./stencils.mjs";
 import View from './view.mjs';
 import TouchList from "./touch.mjs";
 import Mouse from "./mouse.mjs";
+import ControlForm from "./components/controlForm.mjs";
 
 /************************************
  * Scene state                      *
@@ -11,6 +12,7 @@ import Mouse from "./mouse.mjs";
 const camera = View();
 const touchList = TouchList();
 const mouse = Mouse();
+const controlForm = ControlForm(camera, navigator.maxTouchPoints > 1);
 
 const objects = [];
 
@@ -107,17 +109,19 @@ const init = function init() {
   canvas.height = window.innerHeight;
 
   View.setPosition(camera, { x: canvas.width / 2, y: canvas.height / 2 });
+  ControlForm.bind(controlForm);
+
+  const currentValues = ControlForm.currentValues(controlForm);
+
+  View.setRotation(camera, Number(currentValues.rotation));
+  View.setScale(camera, Number(currentValues.scale));
+
+  ControlForm.on(controlForm, 'update', () => {
+    enqueueRerender(context);
+  });
 
   const context = canvas.getContext('2d');
 
-  const controlForm = document.getElementById('viewControls');
-
-  if (navigator.maxTouchPoints > 1) {
-    controlForm.classList.add('touch');
-  }
-
-  const rotationInput = document.getElementById('rotation');
-  const scaleInput = document.getElementById('scale');
   const debugView = document.getElementById('debug');
   updateDebugView(debugView);
 
@@ -139,23 +143,8 @@ const init = function init() {
     enqueueRerender(context);
   });
 
-  View.setRotation(camera, Number(rotationInput.value));
-  View.setScale(camera, Number(scaleInput.value));
-
   updateDebugView(debugView);
   enqueueRerender(context);
-
-  rotationInput.addEventListener('input', event => {
-    View.setRotation(camera, Number(event.target.value));
-    updateDebugView(debugView);
-    enqueueRerender(context);
-  });
-
-  scaleInput.addEventListener('input', event => {
-    View.setScale(camera, Number(event.target.value));
-    updateDebugView(debugView);
-    enqueueRerender(context);
-  });
 
   registerEventCallbacks(canvas, debugView);
   enqueueRerender(context);
