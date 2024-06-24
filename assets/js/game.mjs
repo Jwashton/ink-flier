@@ -29,7 +29,6 @@ DOT_SIZE = 4;
 DOT_HALF_SIZE = DOT_SIZE / 2;
 DOT_HALF_ROW_COUNT = Math.trunc(DOT_ROW_COUNT / 2);
 DOT_ROW_HALF_LENGTH = DOT_HALF_ROW_COUNT * DOT_SPACING;
-console.log(DOT_ROW_HALF_LENGTH);
 
 [...Array(DOT_ROW_COUNT ** 2).keys()].forEach(n => {
   objects.push({
@@ -53,7 +52,7 @@ console.log(DOT_ROW_HALF_LENGTH);
 lookAtForm.on('submit', ({ view }) => {
   animating = true;
   console.log('submitted', view)
-  animation = Animation(1000, View.scale(camera), View.scale(view));
+  animation = Animation(1000, camera, view);
   // View.setPosition(camera, View.position(view));
   // View.setRotation(camera, View.rotation(view));
 });
@@ -66,7 +65,7 @@ const draw = function draw(context) {
 
   if (animating) {
     console.log(animating);
-    View.setScale(camera, animation.current());
+    View.setAll(camera, animation.current());
     console.log(animation.current());
 
     if (animation.finished()) {

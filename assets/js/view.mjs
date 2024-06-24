@@ -96,18 +96,34 @@ View.scale = function scale(view) {
   return view.scale;
 };
 
-//   Change just the rotation. Consider adding a new function if you need to
-// change more than one attribute, to save time updating the matrix.
 View.setRotation = function setRotation(view, rotation) {
   view.rotation = rotation;
 
   return View.update(view);
 };
 
-//   Set the position of the view. Consider adding a new function if you need
-// to change more than one attribute, to save time updating the matrix.
 View.setPosition = function setPosition(view, position) {
   view.position = position;
+
+  return View.update(view);
+};
+
+View.setX = function setX(view, x) {
+  view.position.x = x;
+
+  return View.update(view);
+};
+
+View.setY = function setY(view, y) {
+  view.position.y = y;
+
+  return View.update(view);
+};
+
+View.setAll = function setAll(view, { position, rotation, scale }) {
+  view.position = position;
+  view.rotation = rotation;
+  view.scale = scale;
 
   return View.update(view);
 };
