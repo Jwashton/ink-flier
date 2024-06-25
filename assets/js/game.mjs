@@ -1,6 +1,6 @@
 import { withState } from "./util/canvas.mjs";
 import Animation from "./util/animation.mjs";
-import Stencils from "./stencils.mjs";
+import Stencils from "./util/stencils.mjs";
 import View from './view.mjs';
 import TouchList from "./util/touch.mjs";
 import Mouse from "./mouse.mjs";

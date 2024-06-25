@@ -7,7 +7,7 @@ const handleStart = function handleStart(mouse, event) {
   mouse.position = { x: event.pageX, y: event.pageY };
   mouse.dragging = true;
 
-  Subscribable.dispatch(mouse, 'mouseDown', {});
+  Subscribable.dispatch(mouse, 'mouseDown', { x: event.pageX, y: event.pageY });
   Subscribable.dispatch(mouse, 'dragStart', {});
 };
 
@@ -16,7 +16,7 @@ const handleMove = function handleMove(mouse, event) {
 
   mouse.position = { x: event.pageX, y: event.pageY };
 
-  Subscribable.dispatch(mouse, 'mouseMove', {});
+  Subscribable.dispatch(mouse, 'mouseMove', { x: event.pageX, y: event.pageY });
 
   if (mouse.dragging) {
     Subscribable.dispatch(mouse, 'dragMove', {});

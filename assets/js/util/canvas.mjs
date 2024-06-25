@@ -16,4 +16,13 @@ export const fillPath = function fillPath(context, fillStyle, callback) {
   });
 };
 
+export const strokePath = function strokePath(context, strokeStyle, callback) {
+  withState(context, ctx => {
+    ctx.strokeStyle = strokeStyle;
+    ctx.beginPath();
+    callback(ctx);
+    ctx.stroke();
+  });
+};
+
 export default { withState, fillPath };
