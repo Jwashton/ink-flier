@@ -1,8 +1,8 @@
-import { withState } from "./canvas.mjs";
-import Animation from "./animation.mjs";
+import { withState } from "./util/canvas.mjs";
+import Animation from "./util/animation.mjs";
 import Stencils from "./stencils.mjs";
 import View from './view.mjs';
-import TouchList from "./touch.mjs";
+import TouchList from "./util/touch.mjs";
 import Mouse from "./mouse.mjs";
 import ControlForm from "./components/controlForm.mjs";
 import LookAtForm from "./components/lookAtForm.mjs";
@@ -41,6 +41,8 @@ DOT_ROW_HALF_LENGTH = DOT_HALF_ROW_COUNT * DOT_SPACING;
 });
 
 [
+  { type: 'circle', x: 20, y: 0, radius: 5, fill: 'hsl(0deg, 100%, 50%)' },
+  { type: 'circle', x: 0, y: 20, radius: 5, fill: 'hsl(90deg, 100%, 50%)' },
   { type: 'car', x: 50, y: 150, size: 25, fill: 'hsl(185deg, 56%, 43%)' },
   { type: 'car', x: 100, y: 100, size: 25, fill: 'hsl(37deg, 100%, 66%)' },
   { type: 'car', x: 150, y: 150, size: 25, fill: 'hsl(165deg, 83%, 47%)' },
@@ -49,24 +51,21 @@ DOT_ROW_HALF_LENGTH = DOT_HALF_ROW_COUNT * DOT_SPACING;
   objects.push(object);
 });
 
-lookAtForm.on('submit', ({ view }) => {
-  animating = true;
-  console.log('submitted', view)
-  animation = Animation(1000, camera, view);
-  // View.setPosition(camera, View.position(view));
-  // View.setRotation(camera, View.rotation(view));
-});
-
 /************************************
  * Canvas management                *
  ************************************/
 const draw = function draw(context) {
   context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 
+  withState(context, () => {
+    const CENTER_DOT_SIZE = 10;
+
+    context.fillStyle = 'hsl(180deg, 100%, 50%)';
+    context.fillRect(context.canvas.width / 2 - CENTER_DOT_SIZE / 2, context.canvas.height / 2 - CENTER_DOT_SIZE / 2, CENTER_DOT_SIZE, CENTER_DOT_SIZE);
+  });
+
   if (animating) {
-    console.log(animating);
     View.setAll(camera, animation.current());
-    console.log(animation.current());
 
     if (animation.finished()) {
       animating = false;
@@ -139,7 +138,23 @@ const init = function init() {
   ControlForm.bind(controlForm);
   LookAtForm.bind(lookAtForm);
 
-  lookAtForm.on('submit', (_form) => {
+  lookAtForm.on('submit', ({ view }) => {
+    const newX = canvas.width / 2 - view.position.x;
+    const newY = canvas.height / 2 + view.position.y;
+
+    // How do we correctly apply the rotation to the position?
+    // This currently applies rotation to the position, but it's not correct.
+    const rotatedX = newX * Math.cos(view.rotation) - newY * Math.sin(view.rotation);
+    const rotatedY = newX * Math.sin(view.rotation) + newY * Math.cos(view.rotation);
+
+    animating = true;
+    View.setPosition(view, {
+      x: rotatedX,
+      y: rotatedY
+    });
+
+    console.log(view.position);
+    animation = Animation(1000, camera, view);
     enqueueRerender(context);
   });
 

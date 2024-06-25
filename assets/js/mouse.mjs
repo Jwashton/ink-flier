@@ -1,4 +1,4 @@
-import Subscribable from "./subscribable.mjs";
+import Subscribable from "./util/subscribable.mjs";
 
 // Private functions
 const handleStart = function handleStart(mouse, event) {

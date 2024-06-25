@@ -30,25 +30,35 @@ export const Animation = function Animation(duration, start, stop) {
       return lerp(start, stop, (performance.now() - startTime) / duration);
     }
   } else if (isPoint(start) && isPoint(stop)) {
+    // Copy the important information in case `start` changes during the animation
+    const startX = start.x;
+    const startY = start.y;
+
     animation.current = () => {
       const t = (performance.now() - startTime) / duration;
 
       return {
-        x: lerp(start.x, stop.x, t),
-        y: lerp(start.y, stop.y, t)
+        x: lerp(startX, stop.x, t),
+        y: lerp(startY, stop.y, t)
       };
     };
   } else if (isView(start) && isView(stop)) {
+    // Copy the important information in case `start` changes during the animation
+    const startX = start.position.x;
+    const startY = start.position.y;
+    const startRotation = start.rotation;
+    const startScale = start.scale;
+
     animation.current = () => {
       const t = (performance.now() - startTime) / duration;
 
       return {
         position: {
-          x: lerp(start.position.x, stop.position.x, t),
-          y: lerp(start.position.y, stop.position.y, t)
+          x: lerp(startX, stop.position.x, t),
+          y: lerp(startY, stop.position.y, t)
         },
-        rotation: lerp(start.rotation, stop.rotation, t),
-        scale: lerp(start.scale, stop.scale, t)
+        rotation: lerp(startRotation, stop.rotation, t),
+        scale: lerp(startScale, stop.scale, t)
       };
     };
   } else {

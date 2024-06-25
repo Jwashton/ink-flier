@@ -1,15 +1,15 @@
-import Subscribable from '../subscribable.mjs';
+import Subscribable from '../util/subscribable.mjs';
 import View from '../view.mjs';
 
 const handleRotationInput = function handleRotationInput(controlForm, event) {
   View.setRotation(controlForm.camera, Number(event.target.value));
-  
+
   Subscribable.dispatch(controlForm, 'update', { rotation: Number(event.target.value) });
 };
 
 const handleScaleInput = function handleScaleInput(controlForm, event) {
   View.setScale(controlForm.camera, Number(event.target.value));
-  
+
   Subscribable.dispatch(controlForm, 'update', { scale: Number(event.target.value) });
 };
 

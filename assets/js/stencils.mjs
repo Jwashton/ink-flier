@@ -1,4 +1,4 @@
-import { withState, fillPath } from "./canvas.mjs";
+import { withState, fillPath } from "./util/canvas.mjs";
 
 const TWO_PI = 2 * Math.PI;
 

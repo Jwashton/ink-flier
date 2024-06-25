@@ -1,4 +1,4 @@
-import { IDENTITY, encodeMatrix, findInverse } from "./canvasMatrix.mjs";
+import { IDENTITY, encodeMatrix, findInverse } from "./util/canvasMatrix.mjs";
 
 export const View = function View() {
   return {

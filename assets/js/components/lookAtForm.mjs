@@ -1,27 +1,27 @@
-import Subscribable from '../subscribable.mjs';
+import Subscribable from '../util/subscribable.mjs';
 import View from '../view.mjs';
 
 const handleXInput = function handleXInput(lookAtForm, event) {
   View.setX(lookAtForm.camera, Number(event.target.value));
-  
+
   Subscribable.dispatch(lookAtForm, 'update', { x: Number(event.target.value) });
 };
 
 const handleYInput = function handleYInput(lookAtForm, event) {
   View.setY(lookAtForm.camera, Number(event.target.value));
-  
+
   Subscribable.dispatch(lookAtForm, 'update', { y: Number(event.target.value) });
 };
 
 const handleRotationInput = function handleRotationInput(lookAtForm, event) {
   View.setRotation(lookAtForm.camera, Number(event.target.value));
-  
+
   Subscribable.dispatch(lookAtForm, 'update', { rotation: Number(event.target.value) });
 };
 
 const handleScaleInput = function handleScaleInput(lookAtForm, event) {
   View.setScale(lookAtForm.camera, Number(event.target.value));
-  
+
   Subscribable.dispatch(lookAtForm, 'update', { scale: Number(event.target.value) });
 };
 
@@ -31,6 +31,13 @@ const handleSubmit = function handleSubmit(lookAtForm, event) {
   console.log('submitting...', lookAtForm);
 
   Subscribable.dispatch(lookAtForm, 'submit', { view: lookAtForm.camera });
+
+  lookAtForm.camera = View();
+  View.setAll(lookAtForm.camera, {
+    position: { x: Number(lookAtForm.inputs.x.value), y: Number(lookAtForm.inputs.y.value) },
+    rotation: Number(lookAtForm.inputs.rotation.value),
+    scale: Number(lookAtForm.inputs.scale.value)
+  });
 };
 
 export const LookAtForm = function LookAtForm(touchEnabled) {
