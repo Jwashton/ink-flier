@@ -10,4 +10,6 @@ defmodule InkFlier.Car do
     |> Coord.all_adjacent
     |> MapSet.put(t.position)
   end
+
+  def target(t) when t.position == t.previous_position, do: t.position
 end
