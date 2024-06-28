@@ -21,4 +21,13 @@ defmodule InkFlierTest.Coord do
       {3,3},
     ])
   end
+
+  test "Offset between 2 coords" do
+    assert Coord.get_offset({1,1}, {3,1}) == {2,0}
+    assert Coord.get_offset({3,3}, {1,1}) == {-2,-2}
+  end
+
+  test "Apply offset to a coord" do
+    assert Coord.apply_offset({1,1}, {2,-1}) == {3,0}
+  end
 end
