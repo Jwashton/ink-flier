@@ -13,7 +13,8 @@ defmodule InkFlier.Car do
 
   def move(t, new_coord), do: %{t | position: new_coord, previous_position: t.position}
 
-  def target(t) when t.position == t.previous_position, do: t.position
+  def speed(t), do: Coord.m_distance(t.previous_position, t.position)
+
   def target(t) do
     momentum = Coord.get_offset(t.previous_position, t.position)
     Coord.apply_offset(t.position, momentum)

@@ -48,4 +48,11 @@ defmodule InkFlierTest.Car do
       assert car |> Car.target == {0,0}
     end
   end
+
+  test "Speed is just the Manhattan distance" do
+    car =
+      Car.new({10,10})
+      |> Car.move({5,5})
+    assert car |> Car.speed == 10
+  end
 end
