@@ -30,4 +30,9 @@ defmodule InkFlierTest.Coord do
   test "Apply offset to a coord" do
     assert Coord.apply_offset({1,1}, {2,-1}) == {3,0}
   end
+
+  test "Manhattan distance between two coords" do
+    assert Coord.m_distance({2,2}, {2,1}) == 1
+    assert Coord.m_distance({1,1}, {4,2}) == 4
+  end
 end

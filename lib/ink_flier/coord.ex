@@ -27,6 +27,8 @@ defmodule InkFlier.Coord do
   def get_offset({x1,y1}, {x2,y2}), do: {x2-x1, y2-y1}
   def apply_offset({x1,y1}, {x2,y2}), do: {x2+x1, y2+y1}
 
+  def m_distance({x1,y1}, {x2,y2}), do: abs(x1-x2) + abs(y1-y2)
+
   def cardinal_funcs, do: [&up/1, &down/1, &left/1, &right/1]
   def diagonal_funcs, do: [&right_up/1, &right_down/1, &left_down/1, &left_up/1]
   def all_adjacent_funcs, do: cardinal_funcs() ++ diagonal_funcs()
