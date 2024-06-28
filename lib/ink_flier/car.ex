@@ -6,9 +6,9 @@ defmodule InkFlier.Car do
   def new(start_coord), do: struct!(__MODULE__, position: start_coord, previous_position: start_coord)
 
   def legal_moves(t) do
-    t.position
-    |> Coord.all_adjacent
-    |> MapSet.put(t.position)
+    t
+    |> target
+    |> Coord.all_adjacent_and_original
   end
 
   def move(t, new_coord), do: %{t | position: new_coord, previous_position: t.position}

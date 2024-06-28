@@ -18,6 +18,12 @@ defmodule InkFlier.Coord do
     end)
   end
 
+  def all_adjacent_and_original(t) do
+    t
+    |> all_adjacent
+    |> MapSet.put(t)
+  end
+
   def get_offset({x1,y1}, {x2,y2}), do: {x2-x1, y2-y1}
   def apply_offset({x1,y1}, {x2,y2}), do: {x2+x1, y2+y1}
 

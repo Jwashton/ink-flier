@@ -4,21 +4,21 @@ defmodule InkFlierTest.Car do
   alias InkFlier.Car
 
   test "Car.legal_moves/1" do
-    assert Car.new({2,2}) |> Car.legal_moves == MapSet.new([
-      {1,1},
-      {1,2},
-      {1,3},
+    assert Car.new({4,4})
+      |> Car.move({3,3})
+      |> Car.legal_moves == MapSet.new([
+        {1,1},
+        {1,2},
+        {1,3},
 
-      {2,1},
-      {2,2},
-      {2,3},
+        {2,1},
+        {2,2},
+        {2,3},
 
-      {3,1},
-      {3,2},
-      {3,3},
-    ])
-
-    # TODO These will be different if car has momentum (will need to use target)
+        {3,1},
+        {3,2},
+        {3,3},
+      ])
   end
 
   describe "Car.target/1" do
