@@ -11,5 +11,11 @@ defmodule InkFlier.Car do
     |> MapSet.put(t.position)
   end
 
+  def move(t, new_coord), do: %{t | position: new_coord, previous_position: t.position}
+
   def target(t) when t.position == t.previous_position, do: t.position
+  def target(t) do
+    momentum = Coord.get_offset(t.previous_position, t.position)
+    Coord.apply_offset(t.position, momentum)
+  end
 end

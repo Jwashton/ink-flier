@@ -26,19 +26,26 @@ defmodule InkFlierTest.Car do
       assert Car.new({1,1}) |> Car.target == {1,1}
     end
 
-#     test "Target after 1 move with 1 momentum" do
-#       car =
-#         Car.new({1,1})
-#         |> Car.move({2,1})
-#       assert car |> Car.target == {3,1}
-#     end
+    test "Target after 1 move with 1 momentum" do
+      car =
+        Car.new({1,1})
+        |> Car.move({2,1})
+      assert car |> Car.target == {3,1}
+    end
 
-#     test "2 moves may have even more momentum" do
-#       car =
-#         Car.new({1,1})
-#         |> Car.move({2,1})
-#         |> Car.move({4,1})
-#       assert car |> Car.target == {6,1}
-#     end
+    test "2 moves may have even more momentum" do
+      car =
+        Car.new({1,1})
+        |> Car.move({2,1})
+        |> Car.move({4,1})
+      assert car |> Car.target == {6,1}
+    end
+
+    test "Confirm other directions work" do
+      car =
+        Car.new({10,10})
+        |> Car.move({5,5})
+      assert car |> Car.target == {0,0}
+    end
   end
 end
