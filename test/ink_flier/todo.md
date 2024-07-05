@@ -1,11 +1,5 @@
 # 2024-07-04
 - Track module
-  - Struct:
-    - inner_wall & outer_wall
-    - start/finish line
-    - invisCheck line 1
-    - ^ 2
-
   - func- crash?
 
   - Valid? check
