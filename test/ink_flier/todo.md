@@ -1,9 +1,25 @@
-# 2024-06-28
+# 2024-07-04
 - Track module
-  - Struct: inner_wall & outer_wall
-  - For each wall
-    - List of coords, like svg:
-      - # <polyline points="50,150 50,200 200,200 200,100"...
+  - Struct:
+    - inner_wall & outer_wall
+    - start/finish line
+    - invisCheck line 1
+    - ^ 2
+
+  - func- crash?
+
+  - Valid? check
+    - inner & outer don't overlap eachother
+    - ^ don't overlap themselves
+    - ^ start and end coord are same
+
+  - NOTEs
+    - Each wall: points="50,150 50,200 200,200 200,100"...
+
+- (genServer step?) All players lock in moves at once, instead of turns
+  - (PhaseEngine, aka StateEngine from the Islands book)
+
+# 2024-06-28
 - Check collision between car and track
 - Game/"context" module
   - Rules checks here
