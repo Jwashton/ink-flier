@@ -17,4 +17,22 @@ defmodule InkFlierTest.Stages do
     assert result == :error
     assert stages.stage == :adding_players
   end
+
+  describe "Adding Players" do
+    test "Adding a new player doesn't change stage" do
+      stages = Stages.new
+
+      assert {:ok, stages} = Stages.check(stages, :add_player)
+      assert stages.stage == :adding_players
+    end
+
+    test "Can't add player in other states" do
+      stages = Stages.new
+      stages = %{stages | stage: :some_other_stage}
+
+      assert :error = Stages.check(stages, :add_player)
+    end
+  end
+
+  # result = Stages.check(stages, {:start_game, number_of_players})
 end
