@@ -32,7 +32,8 @@ defmodule InkFlierTest.Stages do
 
       assert :error = Stages.check(stages, :add_player)
     end
-  end
 
-  # result = Stages.check(stages, {:start_game, number_of_players})
+    # TODO next
+    # result = Stages.check(stages, {:start_game, number_of_players})
+  end
 end
