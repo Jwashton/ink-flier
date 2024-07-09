@@ -1,0 +1,12 @@
+{
+  "extends": "@tsconfig/strictest/tsconfig.json",
+  "compilerOptions": {
+    // also set in strictest config, but explicit here for esbuild
+    "isolatedModules": true,
+    "target": "es2023",
+    "module": "nodenext",
+    "noEmit": true,
+    "allowImportingTsExtensions": true
+  },
+  "include": ["js/**/*.ts"],
+}
