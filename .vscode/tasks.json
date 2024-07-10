@@ -1,0 +1,33 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "mix",
+			"task": "Run tests",
+			"problemMatcher": [
+				"$mixCompileError",
+				"$mixCompileWarning",
+				"$mixTestFailure"
+			],
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			},
+			"label": "mix: Run tests"
+		},
+		{
+			"type": "npm",
+			"script": "test",
+			"options": {
+				"cwd": "${workspaceFolder}/assets"
+			},
+			"group": {
+				"kind": "test",
+				"isDefault": false
+			},
+			"problemMatcher": [],
+			"label": "npm: test",
+			"detail": "Run frontend tests via tsx"
+		}
+	]
+}

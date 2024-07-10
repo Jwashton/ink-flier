@@ -1,6 +1,7 @@
 {
   "recommendations": [
     "phoenixframework.phoenix",
-    "jakebecker.elixir-ls"
+    "jakebecker.elixir-ls",
+    "connor4312.nodejs-testing"
   ]
 }

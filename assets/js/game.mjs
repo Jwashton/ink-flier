@@ -3,7 +3,7 @@ import Animation from "./util/animation.mjs";
 import Stencils from "./stencils.mjs";
 import View from './view.mjs';
 import TouchList from "./util/touch.mjs";
-import Mouse from "./mouse.mjs";
+import Mouse from "./util/mouse.mjs";
 import ControlForm from "./components/controlForm.mjs";
 import LookAtForm from "./components/lookAtForm.mjs";
 
