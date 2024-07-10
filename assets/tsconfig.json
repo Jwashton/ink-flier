@@ -8,5 +8,8 @@
     "noEmit": true,
     "allowImportingTsExtensions": true
   },
-  "include": ["js/**/*.ts"],
+  "include": [
+    "src/**/*.mts",
+    "test/**/*.mts"
+  ],
 }

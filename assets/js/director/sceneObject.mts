@@ -13,3 +13,10 @@ interface SceneObject {
   // material?
   // texture?
 }
+
+const sceneObject: SceneObject = {
+  id: 0,
+  name: 'SceneObject',
+};
+
+export default sceneObject;
