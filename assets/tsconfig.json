@@ -6,10 +6,16 @@
     "target": "es2023",
     "module": "nodenext",
     "noEmit": true,
-    "allowImportingTsExtensions": true
+    "allowImportingTsExtensions": true,
+    "allowArbitraryExtensions": true,
+    "typeRoots": [
+      "node_modules/@types",
+      "types"
+    ]
   },
   "include": [
-    "src/**/*.mts",
+    "js/**/*.mts",
+    "types/shader.d.glsl.ts",
     "test/**/*.mts"
   ]
 }

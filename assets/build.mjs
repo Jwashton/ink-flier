@@ -6,6 +6,7 @@ const deploy = args.includes('--deploy');
 
 const loader = {
   // Add loaders for images/fonts/etc, e.g. { '.svg': 'file' }
+  '.glsl': 'text'
 };
 
 const plugins = [
