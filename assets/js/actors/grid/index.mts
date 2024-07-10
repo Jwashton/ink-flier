@@ -3,13 +3,13 @@ import vertexShaderSource from "./vertex.glsl";
 import fragmentShaderSource from './fragment.glsl';
 
 const vertices = [
-  0, 0,
-  1, 0,
-  0, 1,
+  -1.0, -1.0,
+  1.0, -1.0,
+  -1.0, 1.0,
 
-  1, 0,
-  0, 1,
-  1, 1
+  1.0, -1.0,
+  -1.0, 1.0,
+  1.0, 1.0
 ];
 
 export const init = function init(gl: WebGL2RenderingContext) {
@@ -27,6 +27,12 @@ export const init = function init(gl: WebGL2RenderingContext) {
 
   return {
     program,
-    buffer
+    buffer,
+
+    draw() {
+      program.use();
+      gl.bindVertexArray(vao);
+      gl.drawArrays(gl.TRIANGLES, 0, vertices.length / 2);
+    }
   };
 };

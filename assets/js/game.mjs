@@ -7,6 +7,8 @@ import Mouse from "./util/mouse.mjs";
 import ControlForm from "./components/controlForm.mjs";
 import LookAtForm from "./components/lookAtForm.mjs";
 
+import { init as initGrid } from './actors/grid/index.mts'
+
 /************************************
  * Scene state                      *
  ************************************/
@@ -18,17 +20,18 @@ const controlForm = ControlForm(camera, navigator.maxTouchPoints > 1);
 const lookAtForm = LookAtForm();
 let animating = false;
 let animation;
+let grid;
 
 const objects = [];
 
 const graphColor = window.currentTheme() === 'dark' ? 'hsl(60deg 22% 86%)' : 'hsl(26deg 47% 6%)';
 
-DOT_ROW_COUNT = 40;
-DOT_SPACING = 50;
-DOT_SIZE = 4;
-DOT_HALF_SIZE = DOT_SIZE / 2;
-DOT_HALF_ROW_COUNT = Math.trunc(DOT_ROW_COUNT / 2);
-DOT_ROW_HALF_LENGTH = DOT_HALF_ROW_COUNT * DOT_SPACING;
+const DOT_ROW_COUNT = 40;
+const DOT_SPACING = 50;
+const DOT_SIZE = 4;
+const DOT_HALF_SIZE = DOT_SIZE / 2;
+const DOT_HALF_ROW_COUNT = Math.trunc(DOT_ROW_COUNT / 2);
+const DOT_ROW_HALF_LENGTH = DOT_HALF_ROW_COUNT * DOT_SPACING;
 
 [...Array(DOT_ROW_COUNT ** 2).keys()].forEach(n => {
   objects.push({
@@ -55,33 +58,36 @@ DOT_ROW_HALF_LENGTH = DOT_HALF_ROW_COUNT * DOT_SPACING;
  * Canvas management                *
  ************************************/
 const draw = function draw(context) {
-  context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+  context.clearColor(0, 0, 0, 0);
+  context.clear(context.COLOR_BUFFER_BIT);
 
-  withState(context, () => {
-    const CENTER_DOT_SIZE = 10;
+  grid.draw();
 
-    context.fillStyle = 'hsl(180deg, 100%, 50%)';
-    context.fillRect(context.canvas.width / 2 - CENTER_DOT_SIZE / 2, context.canvas.height / 2 - CENTER_DOT_SIZE / 2, CENTER_DOT_SIZE, CENTER_DOT_SIZE);
-  });
+  // withState(context, () => {
+  //   const CENTER_DOT_SIZE = 10;
 
-  if (animating) {
-    View.setAll(camera, animation.current());
+  //   context.fillStyle = 'hsl(180deg, 100%, 50%)';
+  //   context.fillRect(context.canvas.width / 2 - CENTER_DOT_SIZE / 2, context.canvas.height / 2 - CENTER_DOT_SIZE / 2, CENTER_DOT_SIZE, CENTER_DOT_SIZE);
+  // });
 
-    if (animation.finished()) {
-      animating = false;
-    }
-  }
+  // if (animating) {
+  //   View.setAll(camera, animation.current());
 
-  withState(context, () => {
-    context.transform(...View.matrix(camera));
-    for (const object of objects) {
-      Stencils[object.type](context, object);
-    }
-  });
+  //   if (animation.finished()) {
+  //     animating = false;
+  //   }
+  // }
 
-  if (animating) {
-    enqueueRerender(context);
-  }
+  // withState(context, () => {
+  //   context.transform(...View.matrix(camera));
+  //   for (const object of objects) {
+  //     Stencils[object.type](context, object);
+  //   }
+  // });
+
+  // if (animating) {
+  //   enqueueRerender(context);
+  // }
 };
 
 const enqueueRerender = function enqueueRerender(context) {
@@ -131,8 +137,14 @@ touchList.on('pinchStart', () => {
 const init = function init() {
   const canvas = document.getElementById('mainView');
 
+  const context = canvas.getContext('webgl2');
+
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
+
+  context.viewport(0, 0, canvas.width, canvas.height);
+
+  grid = initGrid(context);
 
   View.setPosition(camera, { x: canvas.width / 2, y: canvas.height / 2 });
   ControlForm.bind(controlForm);
@@ -166,8 +178,6 @@ const init = function init() {
   controlForm.on('update', () => {
     enqueueRerender(context);
   });
-
-  const context = canvas.getContext('2d');
 
   const debugView = document.getElementById('debug');
   updateDebugView(debugView);
