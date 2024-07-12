@@ -1,0 +1,26 @@
+{
+  "nodejs-testing.include": [
+    "./assets/test/**/*"
+  ],
+  "nodejs-testing.extensions": [
+    {
+      "extensions": [
+        "mjs",
+        "cjs",
+        "js"
+      ],
+      "parameters": []
+    },
+    {
+      "extensions": [
+        "mts",
+        "cts",
+        "ts"
+      ],
+      "parameters": [
+        "--import",
+        "tsx"
+      ]
+    }
+  ]
+}

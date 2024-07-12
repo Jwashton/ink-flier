@@ -5,7 +5,7 @@ RUN apk update \
   && apk upgrade \
   && apk add \
   postgresql-client \
-  nodejs \
+  nodejs-current \
   npm \
   git \
   inotify-tools \
