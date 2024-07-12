@@ -1,3 +1,9 @@
+# 2024-07-12
+- game_text.ex
+  - Game.new should have 2 or 3 options for player starting placement
+    - In given order by default
+    - Or random
+
 # 2024-07-04
 - Track module
   - func- crash?

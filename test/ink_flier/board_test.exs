@@ -1,5 +1,5 @@
 defmodule InkFlierTest.Board do
   use ExUnit.Case
 
-  alias InkFlier.Board
+  # alias InkFlier.Board
 end

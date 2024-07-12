@@ -1,5 +1,5 @@
 defmodule InkFlierTest.HouseRules do
   use ExUnit.Case
 
-  alias InkFlier.HouseRules
+  # alias InkFlier.HouseRules
 end
