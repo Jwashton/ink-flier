@@ -20,9 +20,6 @@ defmodule InkFlier.RaceTrack do
 
   alias InkFlier.Coord
 
-  @type coord_list :: [Coord.t]
-  @type line :: {Coord.t, Coord.t}
-
   @type t :: %__MODULE__{
     inner_wall: coord_list,
     outer_wall: coord_list,
@@ -32,5 +29,6 @@ defmodule InkFlier.RaceTrack do
     goal: line
   }
 
-
+  @type coord_list :: [Coord.t]
+  @type line :: {Coord.t, Coord.t}
 end
