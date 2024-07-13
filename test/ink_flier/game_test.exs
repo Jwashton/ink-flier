@@ -2,15 +2,13 @@ defmodule InkFlierTest.Game do
   use ExUnit.Case
 
   alias InkFlier.Game
-  alias InkFlier.HouseRules
   alias InkFlierTest.Helpers
 
   @players ~w(a b c)a
   @track Helpers.test_track
-  @house_rules HouseRules.new
 
   test "New game returns starting position" do
-    assert {:ok, _game, starting_positions} = Game.new(@players, @track, @house_rules)
+    assert {:ok, _game, starting_positions} = Game.new(@players, @track)
 
     assert %{
       {0,0} => :a,
@@ -20,16 +18,11 @@ defmodule InkFlierTest.Game do
   end
 
   test "New game possible errors" do
-    assert {:error, :invalid_track} = Game.new(@players, %{}, @house_rules)
+    assert {:error, :invalid_track} = Game.new(@players, %{})
     assert {:error, :invalid_house_rules} = Game.new(@players, @track, %{})
   end
 
-  # test "New game returns useable game struct" do
-  #   assert {:ok, game, _starting_positions} = Game.new(@players, @track, @house_rules)
-  # end
-
-  # test "Random player orders" do
-  #   Game.new(@players, @track, %{@house_rules | random_pole_position?: true})
-  #   |> dbg(charlists: :as_lists)
+  # test "New game stores, at the very least, current positions" do
+  #   assert {:ok, game, _starting_positions} = Game.new(@players, @track)
   # end
 end

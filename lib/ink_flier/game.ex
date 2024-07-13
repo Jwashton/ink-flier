@@ -2,7 +2,7 @@ defmodule InkFlier.Game do
   alias InkFlier.HouseRules
   alias InkFlier.RaceTrack
 
-  def new(players, track, house_rules) do
+  def new(players, track, house_rules \\ HouseRules.new) do
     with :ok <- validate_track(track),
          :ok <- validate_house_rules(house_rules) do
       players_in_order = players_in_order(players, house_rules.random_pole_position?)
