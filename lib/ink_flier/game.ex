@@ -13,5 +13,6 @@ defmodule InkFlier.Game do
   defp validate_track(%RaceTrack{}), do: :ok
   defp validate_track(_), do: {:error, :invalid_track}
 
-  defp validate_house_rules(_), do: :ok
+  defp validate_house_rules(%HouseRules{}), do: :ok
+  defp validate_house_rules(_), do: {:error, :invalid_house_rules}
 end
