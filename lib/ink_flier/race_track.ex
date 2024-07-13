@@ -32,4 +32,6 @@ defmodule InkFlier.RaceTrack do
 
   @spec new(Keyword.t) :: t
   def new(attrs \\ []), do: struct!(__MODULE__, attrs)
+
+  def start(t), do: t.start
 end

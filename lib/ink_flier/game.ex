@@ -2,10 +2,16 @@ defmodule InkFlier.Game do
   alias InkFlier.HouseRules
   alias InkFlier.RaceTrack
 
-  def new(_players, track, house_rules) do
+  def new(players, track, house_rules) do
     with :ok <- validate_track(track),
          :ok <- validate_house_rules(house_rules) do
-      {:ok, :TODO_game, :TODO_starting_positions}
+      starting_positions =
+        track
+        |> RaceTrack.start
+        |> Enum.zip(players)
+        |> Map.new
+
+      {:ok, :TODO_game, starting_positions}
     end
   end
 
