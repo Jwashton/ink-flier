@@ -8,7 +8,6 @@ defmodule InkFlier.RaceTrack do
   - outer_wall: Same requirements as inner_wall
 
   - start- List of coords for start positions, in order of desierability ([best_start_pos, second_best_start_pos, ...])
-    - TODO: `def new` may also take a line type, which should convert into a coord_list, starting with the first point of the given line
 
   - check1/check2- lines that must be crossed for valid win
 
@@ -32,12 +31,5 @@ defmodule InkFlier.RaceTrack do
   @type line :: {Coord.t, Coord.t}
 
   @spec new(Keyword.t) :: t
-  def new(attrs \\ []) do
-    # start =
-    #   case Keyword.get(:start) do
-    #     {a, b} ->
-    #     coord_list -> coord_list
-    #   end
-    struct!(__MODULE__, attrs)
-  end
+  def new(attrs \\ []), do: struct!(__MODULE__, attrs)
 end

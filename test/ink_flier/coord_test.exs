@@ -35,9 +35,4 @@ defmodule InkFlierTest.Coord do
     assert Coord.m_distance({2,2}, {2,1}) == 1
     assert Coord.m_distance({1,1}, {4,2}) == 4
   end
-
-  test "Build all coordinates on a line" do
-    assert Coord.line({1,1}, {3,3}) == [{1,1}, {2,2}, {3,3}]
-    assert Coord.line({1,1}, {-1,-1}) == [{1,1}, {0,0}, {-1,-1}]
-  end
 end
