@@ -1,9 +1,10 @@
 # 2024-07-12
-- game_text.ex
+- game_test.ex
   - Game.new should have 2 or 3 options for player starting placement
     - In given order by default
     - Or random
   - @William Any way to test *Random* in: Game.new(players, track, HouseRules.new(random_pole_position?: true)
+    - This is now in Board.start(board, random_pole_position?); same question tho
 
 # 2024-07-04
 - Track module
