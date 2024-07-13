@@ -27,4 +27,9 @@ defmodule InkFlierTest.Game do
   # test "New game returns useable game struct" do
   #   assert {:ok, game, _starting_positions} = Game.new(@players, @track, @house_rules)
   # end
+
+  # test "Random player orders" do
+  #   Game.new(@players, @track, %{@house_rules | random_pole_position?: true})
+  #   |> dbg(charlists: :as_lists)
+  # end
 end

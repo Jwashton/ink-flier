@@ -1,6 +1,14 @@
 defmodule InkFlier.HouseRules do
-  defstruct []
+  @moduledoc """
+  Customizeable house rules
 
-  # TODO This will have the default rules, by default, then can override others.
-  def new, do: struct!(__MODULE__)
+  ## Fields
+  - random_pole_position?- When true, players will be assigned to starting positions on the track in random desierability order, instead of the order they are given to Game.new
+  """
+
+  defstruct [
+    random_pole_position?: false
+  ]
+
+  def new(attrs \\ []), do: struct!(__MODULE__, attrs)
 end

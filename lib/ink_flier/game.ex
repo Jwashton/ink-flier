@@ -5,10 +5,12 @@ defmodule InkFlier.Game do
   def new(players, track, house_rules) do
     with :ok <- validate_track(track),
          :ok <- validate_house_rules(house_rules) do
+      players_in_order = players_in_order(players, house_rules.random_pole_position?)
+
       starting_positions =
         track
         |> RaceTrack.start
-        |> Enum.zip(players)
+        |> Enum.zip(players_in_order)
         |> Map.new
 
       {:ok, :TODO_game, starting_positions}
@@ -21,4 +23,7 @@ defmodule InkFlier.Game do
 
   defp validate_house_rules(%HouseRules{}), do: :ok
   defp validate_house_rules(_), do: {:error, :invalid_house_rules}
+
+  defp players_in_order(players, true), do: Enum.shuffle(players)
+  defp players_in_order(players, _), do: players
 end
