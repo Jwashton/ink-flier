@@ -49,7 +49,8 @@ defmodule InkFlier.MixProject do
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
-      {:bandit, "~> 1.5"}
+      {:bandit, "~> 1.5"},
+      {:ex_doc, "~> 0.27", only: :dev, runtime: false},
     ]
   end
 
