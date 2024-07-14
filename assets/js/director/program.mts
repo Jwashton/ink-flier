@@ -24,6 +24,7 @@ export interface Program {
 
   use(): void;
   registerAttribute(name: string): void;
+  registerUniform(name: string): void
 
   enableAttribute(name: string, size: number, type: GLenum, normalize: boolean, stride: number, offset: number): void;
 }
@@ -79,6 +80,16 @@ export const Program = function Program(gl: WebGL2RenderingContext, vertexShader
       // WARNING! This also binds the buffer to the ARRAY_BUFFER target
       // Should this really be called here?
       gl.vertexAttribPointer(location, size, type, normalize, stride, offset);
+    },
+
+    registerUniform(name: string) {
+      const location = gl.getUniformLocation(glProgram, name);
+
+      if (!location) {
+        throw new Error(`Could not find uniform ${name}`);
+      }
+
+      uniforms.set(name, location);
     }
   };
 };

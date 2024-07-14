@@ -25,12 +25,20 @@ export const init = function init(gl: WebGL2RenderingContext) {
   program.registerAttribute('a_position');
   program.enableAttribute('a_position', 2, gl.FLOAT, false, 0, 0);
 
+  program.registerUniform('u_resolution');
+
   return {
     program,
     buffer,
 
     draw() {
       program.use();
+      const resolutionLocation = program.uniforms.get('u_resolution');
+      if (!resolutionLocation) {
+        throw new Error('Could not find uniform u_resolution');
+      }
+
+      gl.uniform2f(resolutionLocation, gl.canvas.width, gl.canvas.height);
       gl.bindVertexArray(vao);
       gl.drawArrays(gl.TRIANGLES, 0, vertices.length / 2);
     }
