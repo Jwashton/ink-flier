@@ -14,24 +14,25 @@ defmodule InkFlier.RaceTrack do
   - goal- Usually the same as the line of the `start` coords, but can be anywhere as long as you have to pass through the `check`'s to reach it
   """
 
-  defstruct ~w(inner_wall outer_wall start check1 check2 goal)a
+  use TypedStruct
 
   alias InkFlier.Coord
 
-  @type t :: %__MODULE__{
-    inner_wall: coord_list,
-    outer_wall: coord_list,
-    start: coord_list,
-    check1: line,
-    check2: line,
-    goal: line
-  }
+  typedstruct enforce: true do
+    field :inner_wall, coord_list
+    field :outer_wall, coord_list
+    field :start, coord_list
+    field :check1, line
+    field :check2, line
+    field :goal, line
+  end
 
   @type coord_list :: [Coord.t]
   @type line :: {Coord.t, Coord.t}
 
+
   @spec new(Keyword.t) :: t
-  def new(attrs \\ []), do: struct!(__MODULE__, attrs)
+  def new(attrs), do: struct!(__MODULE__, attrs)
 
   def start(t), do: t.start
 end

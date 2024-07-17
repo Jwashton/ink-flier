@@ -1,5 +1,12 @@
 defmodule InkFlier.Stages do
-  defstruct stage: :adding_players
+  use TypedStruct
+
+  typedstruct enforce: true do
+    field :stage, stage, default: :adding_players
+  end
+
+  # TODO add all possible stages here to type after deciding the last few
+  @type stage :: :adding_players
 
   def new, do: struct!(__MODULE__)
 

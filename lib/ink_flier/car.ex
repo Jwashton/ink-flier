@@ -1,7 +1,12 @@
 defmodule InkFlier.Car do
+  use TypedStruct
+
   alias InkFlier.Coord
 
-  defstruct position: nil, previous_position: nil
+  typedstruct enforce: true do
+    field :position, Coord.t
+    field :previous_position, Coord.t
+  end
 
   def new(start_coord), do: struct!(__MODULE__, position: start_coord, previous_position: start_coord)
 

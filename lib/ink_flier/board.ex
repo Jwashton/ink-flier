@@ -1,13 +1,13 @@
 defmodule InkFlier.Board do
+  use TypedStruct
+
   alias InkFlier.Coord
   alias InkFlier.RaceTrack
 
-  defstruct ~w(race_track current_positions)a
-
-  @type t :: %__MODULE__{
-    race_track: RaceTrack.t,
-    current_positions: %{player_id => Coord.t},
-  }
+  typedstruct do
+    field :race_track, RaceTrack.t, enforce: true
+    field :current_positions, %{player_id => Coord.t}
+  end
 
   @type player_id :: any
 
