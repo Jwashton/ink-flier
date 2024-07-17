@@ -9,6 +9,18 @@ defmodule InkFlier.Line do
   Find the orientation of an ordered triplet of coordinates (p, q, r)
 
   See [Orientation of 3 ordered points](https://www.geeksforgeeks.org/orientation-3-ordered-points/amp) for details of formula
+
+  ## Examples
+      Clockwise
+      .a....b...
+      ........c.
+
+      Counterclockwise
+      ....c.....
+      .a....b...
+
+      Collinear
+      .a....b..c....
   """
   @spec orientation(Coord.t, Coord.t, Coord.t) :: :clockwise | :counterclockwise | :collinear
   def orientation({px, py}, {qx, qy}, {rx, ry}) do
