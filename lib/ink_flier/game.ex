@@ -1,19 +1,25 @@
 defmodule InkFlier.Game do
+  use TypedStruct
+
   alias InkFlier.HouseRules
   alias InkFlier.RaceTrack
+  alias InkFlier.Board
+
+  typedstruct enforce: true do
+    field :board, Board.t
+  end
 
   def new(players, track, house_rules \\ HouseRules.new) do
     with :ok <- validate_track(track),
          :ok <- validate_house_rules(house_rules) do
-      players_in_order = players_in_order(players, house_rules.random_pole_position?)
 
-      starting_positions =
+      board =
         track
-        |> RaceTrack.start
-        |> Enum.zip(players_in_order)
-        |> Map.new
+        |> Board.new
+        |> Board.start(players, house_rules.random_pole_position?)
 
-      {:ok, :TODO_game, starting_positions}
+      # {:ok, :TODO_game, starting_positions}
+      {:ok, :TODO_game, Board.current_positions(board)}
     end
   end
 
@@ -23,7 +29,4 @@ defmodule InkFlier.Game do
 
   defp validate_house_rules(%HouseRules{}), do: :ok
   defp validate_house_rules(_), do: {:error, :invalid_house_rules}
-
-  defp players_in_order(players, true), do: Enum.shuffle(players)
-  defp players_in_order(players, _), do: players
 end

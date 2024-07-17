@@ -7,9 +7,9 @@ defmodule InkFlierTest.Game do
   @players ~w(a b c)a
   @track Helpers.test_track
   @expected_starting_positions %{
-    {0,0} => :a,
-    {-1,-1} => :b,
-    {-2,-2} => :c,
+    a: {0,0},
+    b: {-1,-1},
+    c: {-2,-2},
   }
 
   test "New game returns starting position" do
