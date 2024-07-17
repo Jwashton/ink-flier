@@ -19,4 +19,9 @@ defmodule InkFlierTest.Line do
       assert Line.orientation(a,b,c) == :collinear
     end
   end
+
+  test "on_segment?/3" do
+    assert Line.on_segment?({0,0}, {5,0}, {10,0})
+    refute Line.on_segment?({0,0}, {15,0}, {10,0})
+  end
 end
