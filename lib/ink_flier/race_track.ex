@@ -29,10 +29,25 @@ defmodule InkFlier.RaceTrack do
 
   @type coord_list :: [Coord.t]
   @type line :: {Coord.t, Coord.t}
+  @type collision_object :: :inner_wall | :outer_wall
 
 
   @spec new(Keyword.t) :: t
   def new(attrs), do: struct!(__MODULE__, attrs)
+
+  @spec check_collision(t, Coord.t, Coord.t) :: :ok | {:collision, collision_object}
+  def check_collision(t, a, b) do
+    [t.inner_wall, t.outer_wall]
+    |> Enum.find(fn wall ->
+      wall_lines = Enum.chunk_every(wall, 2, 1, :discard)
+    end)
+
+    # TODO hc
+    {:collision, :outer_wall}
+  end
+
+  # @doc false
+  # def
 
   def start(t), do: t.start
 end
