@@ -16,12 +16,11 @@ defmodule InkFlier.Line do
   The main function which returns true if the line segments (a & b) intersect
   """
   @spec intersect?(t, t) :: boolean
-  # TODO change p1 to px, etc
-  def intersect?({p1, q1} = _a, {p2, q2} = _b) do
-    o1 = orientation(p1, q1, p2)
-    o2 = orientation(p1, q1, q2)
-    o3 = orientation(p2, q2, p1)
-    o4 = orientation(p2, q2, q1)
+  def intersect?({ap, aq} = _a, {bp, bq} = _b) do
+    o1 = orientation(ap, aq, bp)
+    o2 = orientation(ap, aq, bq)
+    o3 = orientation(bp, bq, ap)
+    o4 = orientation(bp, bq, aq)
 
     cond do
       # General case
@@ -29,17 +28,13 @@ defmodule InkFlier.Line do
 
       # Special Cases
 
-      # p1, q1 and p2 are collinear and p2 lies on segment p1q1
-      (o1 == :collinear) and on_segment?(p1, p2, q1) -> true
+      (o1 == :collinear) and on_segment?(ap, bp, aq) -> true
 
-      # p1 , q1 and q2 are collinear and q2 lies on segment p1q1
-      (o2 == 0) and on_segment?(p1, q2, q1) -> true
+      (o2 == 0) and on_segment?(ap, bq, aq) -> true
 
-      # p2 , q2 and p1 are collinear and p1 lies on segment p2q2
-      (o3 == 0) and on_segment?(p2, p1, q2) -> true
+      (o3 == 0) and on_segment?(bp, ap, bq) -> true
 
-      # p2 , q2 and q1 are collinear and q1 lies on segment p2q2
-      (o4 == 0) and on_segment?(p2, q1, q2) -> true
+      (o4 == 0) and on_segment?(bp, aq, bq) -> true
 
       true -> false
     end
