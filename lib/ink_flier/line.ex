@@ -13,11 +13,11 @@ defmodule InkFlier.Line do
   def new(p, q), do: {p, q}
 
   @doc """
-  The main function which returns true if the line segments intersect
+  The main function which returns true if the line segments (a & b) intersect
   """
   @spec intersect?(t, t) :: boolean
   # TODO change p1 to px, etc
-  def intersect?({p1, q1}, {p2, q2}) do
+  def intersect?({p1, q1} = _a, {p2, q2} = _b) do
     o1 = orientation(p1, q1, p2)
     o2 = orientation(p1, q1, q2)
     o3 = orientation(p2, q2, p1)
@@ -64,7 +64,7 @@ defmodule InkFlier.Line do
       .a....b..c....
   """
   @spec orientation(Coord.t, Coord.t, Coord.t) :: :clockwise | :counterclockwise | :collinear
-  def orientation({px, py}, {qx, qy}, {rx, ry}) do
+  def orientation({px, py} = _p, {qx, qy} = _q, {rx, ry} = _r) do
     val = (qy - py) * (rx - qx) - (qx - px) * (ry - qy)
 
     cond do
@@ -78,7 +78,7 @@ defmodule InkFlier.Line do
   Given three collinear points p, q, r, check if point q lies on line segment 'pr'
   """
   @spec on_segment?(Coord.t, Coord.t, Coord.t) :: boolean
-  def on_segment?({px, py}, {qx, qy}, {rx, ry}) do
+  def on_segment?({px, py} = _p, {qx, qy} = _q, {rx, ry} = _r) do
     if (qx <= max(px, rx)) and
        (qx >= min(px, rx)) and
        (qy <= max(py, ry)) and
