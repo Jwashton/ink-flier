@@ -27,14 +27,10 @@ defmodule InkFlier.Line do
       (o1 != o2) and (o3 != o4) -> true
 
       # Special Cases
-
-      (o1 == :collinear) and on_segment?(ap, bp, aq) -> true
-
-      (o2 == 0) and on_segment?(ap, bq, aq) -> true
-
-      (o3 == 0) and on_segment?(bp, ap, bq) -> true
-
-      (o4 == 0) and on_segment?(bp, aq, bq) -> true
+      o1 == :collinear and on_segment?(ap, bp, aq) -> true
+      o2 == :collinear and on_segment?(ap, bq, aq) -> true
+      o3 == :collinear and on_segment?(bp, ap, bq) -> true
+      o4 == :collinear and on_segment?(bp, aq, bq) -> true
 
       true -> false
     end
