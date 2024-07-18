@@ -36,10 +36,10 @@ defmodule InkFlier.RaceTrack do
   def new(attrs), do: struct!(__MODULE__, attrs)
 
   @spec check_collision(t, Coord.t, Coord.t) :: :ok | {:collision, collision_object}
-  def check_collision(t, a, b) do
+  def check_collision(t, _a, _b) do
     [t.inner_wall, t.outer_wall]
     |> Enum.find(fn wall ->
-      wall_lines = Enum.chunk_every(wall, 2, 1, :discard)
+      _wall_lines = Enum.chunk_every(wall, 2, 1, :discard)
     end)
 
     # TODO hc
