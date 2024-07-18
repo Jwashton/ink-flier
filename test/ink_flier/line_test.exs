@@ -5,18 +5,15 @@ defmodule InkFlierTest.Line do
 
   describe "Orientation" do
     test "Clockwise" do
-      [a,b,c] = [{0,0}, {10,0}, {11,-1}]
-      assert Line.orientation(a,b,c) == :clockwise
+      assert Line.orientation({0,0}, {10,0}, {11,-1}) == :clockwise
     end
 
     test "Counterclockwise" do
-      [a,b,c] = [{0,0}, {10,0}, {8,1}]
-      assert Line.orientation(a,b,c) == :counterclockwise
+      assert Line.orientation({0,0}, {10,0}, {8,1}) == :counterclockwise
     end
 
     test "Collinear" do
-      [a,b,c] = [{0,0}, {10,0}, {15,0}]
-      assert Line.orientation(a,b,c) == :collinear
+      assert Line.orientation({0,0}, {10,0}, {15,0}) == :collinear
     end
   end
 
