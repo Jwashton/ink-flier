@@ -1,3 +1,8 @@
+# 2024-07-19
+- line.ex
+  - Note in intersect?/2 code
+    - @William any test (or your math knowledge) to confirm or deny the note's suspicion about on_segment?/3
+
 # 2024-07-12
 - game_test.ex
   - Game.new should have 2 or 3 options for player starting placement
