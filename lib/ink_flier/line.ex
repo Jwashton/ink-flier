@@ -25,6 +25,9 @@ defmodule InkFlier.Line do
     cond do
       (o1 != o2) and (o3 != o4) -> true
 
+      # NOTE 2024-07-19 Eric:
+      # I suspect on_segment?/3 returns false anyways if the points aren't collinear,
+      # which would make the `o* == :collinear` part of these unnecessary
       o1 == :collinear and on_segment?(ap, bp, aq) -> true
       o2 == :collinear and on_segment?(ap, bq, aq) -> true
       o3 == :collinear and on_segment?(bp, ap, bq) -> true
@@ -67,13 +70,9 @@ defmodule InkFlier.Line do
   """
   @spec on_segment?(Coord.t, Coord.t, Coord.t) :: boolean
   def on_segment?({px, py} = _p, {qx, qy} = _q, {rx, ry} = _r) do
-    if qx <= max(px, rx) and
-       qx >= min(px, rx) and
-       qy <= max(py, ry) and
-       qy >= min(py, ry) do
-      true
-    else
-      false
-    end
+    qx <= max(px, rx) and
+    qx >= min(px, rx) and
+    qy <= max(py, ry) and
+    qy >= min(py, ry)
   end
 end
