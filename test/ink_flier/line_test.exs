@@ -41,6 +41,12 @@ defmodule InkFlierTest.Line do
         Line.new({-5,-5}, {0,0}),
         Line.new({1,1}, {10,10}))
     end
+
+    test "for lines ab & cd, when points a, c, & d are collinear but b isn't, the lines should not intersect" do
+      refute Line.intersect?(
+        Line.new({0,0}, {5,3}),
+        Line.new({2,2}, {10,10}))
+    end
   end
 
   describe "Orientation" do
@@ -57,15 +63,8 @@ defmodule InkFlierTest.Line do
     end
   end
 
-  describe "on_segment?/3" do
-    test "Returns correct answer when collinear" do
-      assert Line.on_segment?({0,0}, {5,0}, {10,0})
-      refute Line.on_segment?({0,0}, {15,0}, {10,0})
-    end
-
-    test "Returns false automatically when not collinear" do
-      refute Line.on_segment?({0,0}, {5,1}, {10,0})
-      refute Line.on_segment?({0,0}, {99,99}, {10,0})
-    end
+  test "on_segment?/3" do
+    assert Line.on_segment?({0,0}, {5,0}, {10,0})
+    refute Line.on_segment?({0,0}, {15,0}, {10,0})
   end
 end

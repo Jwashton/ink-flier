@@ -25,10 +25,10 @@ defmodule InkFlier.Line do
     cond do
       (o1 != o2) and (o3 != o4) -> true
 
-      on_segment?(ap, bp, aq) -> true
-      on_segment?(ap, bq, aq) -> true
-      on_segment?(bp, ap, bq) -> true
-      on_segment?(bp, aq, bq) -> true
+      o1 == :collinear and on_segment?(ap, bp, aq) -> true
+      o2 == :collinear and on_segment?(ap, bq, aq) -> true
+      o3 == :collinear and on_segment?(bp, ap, bq) -> true
+      o4 == :collinear and on_segment?(bp, aq, bq) -> true
 
       true -> false
     end
@@ -65,7 +65,9 @@ defmodule InkFlier.Line do
   @doc """
   Given three collinear points p, q, r, check if point q lies on line segment 'pr'
 
-  Note, I suspect this always returns false if the points AREN'T collinear, which IS the desired behaviour
+  - Will return unpredictable results if the points AREN'T collinear
+  - eg. If given `p=(1,1) q=(2,2) r=(5,3)`, this returns true even though they are NOT all on a segment. However
+  they also aren't collinear, so as stated above, are not meant to be given to this function
   """
   @spec on_segment?(Coord.t, Coord.t, Coord.t) :: boolean
   def on_segment?({px, py} = _p, {qx, qy} = _q, {rx, ry} = _r) do
