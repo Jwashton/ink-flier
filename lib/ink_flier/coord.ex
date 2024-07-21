@@ -1,4 +1,10 @@
 defmodule InkFlier.Coord do
+  @moduledoc """
+  Coordinate helpers
+
+  The point {0,0} is at the "bottom left". So `up/1` would move to {0,1}, for example
+  """
+
   @type t :: {integer(), integer()}
 
   def up({x,y}), do: {x,y+1}
@@ -11,6 +17,12 @@ defmodule InkFlier.Coord do
   def left_down(t), do: t |> left |> down
   def left_up(t), do: t |> left |> up
 
+  @doc """
+  Return the 8 surrounding coordinates
+
+  Including Cardinals (North, South...) and Diagonals (Northwest, Southeast...)
+  """
+  @type all_adjacent(t) :: [t]
   def all_adjacent(t) do
     all_adjacent_funcs()
     |> Enum.reduce(MapSet.new, fn slide_direction, coord_set ->
@@ -18,6 +30,12 @@ defmodule InkFlier.Coord do
     end)
   end
 
+  @doc """
+  Same as `all_adjacent/1`, but including the given coordinate
+
+  So 9 points total will be returned
+  """
+  @type all_adjacent_and_original(t) :: [t]
   def all_adjacent_and_original(t) do
     t
     |> all_adjacent
