@@ -3,15 +3,17 @@ defmodule InkFlier.RaceTrack do
   Struct and helpers for building a Race Track
 
   ## Keys
-  - inner_wall: List of points that, when connected, draw the line of a track wall. Similar to svg points attribute in html
-
-  - outer_wall: Same requirements as inner_wall
-
   - start- List of coords for start positions, in order of desierability ([best_start_pos, second_best_start_pos, ...])
 
   - check1/check2- lines that must be crossed for valid win
 
   - goal- Usually the same as the line of the `start` coords, but can be anywhere as long as you have to pass through the `check`'s to reach it
+
+  - obstacles
+    - Can be either/or:
+      - `{name, coord_list}` tuple, where `name` is a string describing the obstacle, eg. "Rock"
+      - Just a `coord_list`, in which case name will default to "Obstacle
+    - Recommended (but not required) obstacles are "Inner Track" and "Outer Track"
   """
 
   use TypedStruct
@@ -19,8 +21,7 @@ defmodule InkFlier.RaceTrack do
   alias InkFlier.Coord
 
   typedstruct enforce: true do
-    field :inner_wall, coord_list
-    field :outer_wall, coord_list
+    field :obstacles, obstacles
     field :start, coord_list
     field :check1, line
     field :check2, line
@@ -29,7 +30,10 @@ defmodule InkFlier.RaceTrack do
 
   @type coord_list :: [Coord.t]
   @type line :: {Coord.t, Coord.t}
-  @type collision_object :: :inner_wall | :outer_wall
+  # @type collision_object :: :inner_wall | :outer_wall
+  @type obstacles :: MapSet.t(
+    {name :: String.t, coord_list} | coord_list
+  )
 
 
   @spec new(Keyword.t) :: t
