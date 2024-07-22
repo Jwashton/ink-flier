@@ -36,7 +36,7 @@ defmodule InkFlier.RaceTrack do
   def new(attrs), do: struct!(__MODULE__, attrs)
 
   defdelegate new_obstacle(coord_list), to: Obstacle, as: :new
-  defdelegate new_obstacle(coord_list, name), to: Obstacle, as: :new
+  defdelegate new_obstacle(name, coord_list), to: Obstacle, as: :new
 
   @doc """
   Check if the line between a car's previous & new position collides with any track obstacles
