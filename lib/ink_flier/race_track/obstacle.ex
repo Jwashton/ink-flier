@@ -17,6 +17,8 @@ defmodule InkFlier.RaceTrack.Obstacle do
 
   """
 
+  alias InkFlier.Line
+
   @type t :: {name :: String.t, coord_list}
   @type coord_list :: InkFlier.RaceTrack.coord_list
 
@@ -26,5 +28,17 @@ defmodule InkFlier.RaceTrack.Obstacle do
 
   def name(t), do: elem(t, 0)
   def coord_list(t), do: elem(t, 1)
-end
 
+  @doc """
+  Turn the coordinate list that builds an Obstacle (like the inner_wall of the RaceTrack) into a list of lines
+
+  Useful for checking collisions
+  """
+  @spec wall_lines(t) :: [Line.t]
+  def wall_lines(t) do
+    t
+    |> coord_list
+    |> Stream.chunk_every(2, 1, :discard)
+    |> Enum.map(fn [p,q] -> Line.new(p,q) end)
+  end
+end
