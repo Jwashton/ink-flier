@@ -44,12 +44,6 @@ defmodule InkFlier.RaceTrack do
   """
   @spec check_collision(t, Line.t) :: collision_reply
   def check_collision(t, car_line) do
-    # NOTE Possible future optimization- This is a fair number of loops-in-loops; for each little line piece of
-    # each wall or obstacle, check for intersect
-    # Also, builds that `wall_lines` list of line pieces from scratch with Enum.chunk_every
-    # If this runs slow, I can start by pre-building that Enum.chunk_every ONE time when track is made and storing it
-    # as extra data in this Track struct
-
     t.obstacles
     |> Enum.reduce(MapSet.new, &Obstacle.add_collision_if_found(&2, &1, car_line))
     |> collision_reply
