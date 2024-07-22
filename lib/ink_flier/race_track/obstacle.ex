@@ -41,4 +41,17 @@ defmodule InkFlier.RaceTrack.Obstacle do
     |> Stream.chunk_every(2, 1, :discard)
     |> Enum.map(fn [p,q] -> Line.new(p,q) end)
   end
+
+  def build_wall_lines_and_add_collision_if_found(set, obstacle, car_line) do
+    obstacle
+    |> wall_lines
+    |> then(&add_collision_if_found(set, name(obstacle), car_line, &1))
+  end
+
+
+  defp add_collision_if_found(set, obstacle_name, car_line, wall_lines) do
+    if collision?(car_line, wall_lines), do: MapSet.put(set, obstacle_name), else: set
+  end
+
+  defp collision?(car_line, wall_lines), do: Enum.find(wall_lines, &Line.intersect?(&1, car_line))
 end

@@ -52,7 +52,7 @@ defmodule InkFlier.RaceTrack do
     # as extra data in the struct
 
     t.obstacles
-    |> Enum.reduce(MapSet.new, &build_wall_lines_and_add_any_collision(&2, &1, car_line))
+    |> Enum.reduce(MapSet.new, &Obstacle.build_wall_lines_and_add_collision_if_found(&2, &1, car_line))
     |> collision_reply
   end
 
@@ -62,18 +62,6 @@ defmodule InkFlier.RaceTrack do
 
   def start(t), do: t.start
 
-
-  defp build_wall_lines_and_add_any_collision(set, obstacle, car_line) do
-    obstacle
-    |> Obstacle.wall_lines
-    |> then(&add_collision_if_found(set, Obstacle.name(obstacle), car_line, &1))
-  end
-
-  defp add_collision_if_found(set, obstacle_name, car_line, wall_lines) do
-    if collision?(car_line, wall_lines), do: MapSet.put(set, obstacle_name), else: set
-  end
-
-  defp collision?(car_line, wall_lines), do: Enum.find(wall_lines, &Line.intersect?(&1, car_line))
 
   defp collision_reply(set), do: unless(MapSet.size(set) > 0, do: :ok, else: {:collision, set})
 end
