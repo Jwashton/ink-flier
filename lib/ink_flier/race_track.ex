@@ -25,13 +25,12 @@ defmodule InkFlier.RaceTrack do
     field :check1, line
     field :check2, line
     field :goal, line
-    field :obstacles, MapSet.t(obstacle)
+    field :obstacles, MapSet.t(Obstacle.t)
   end
 
   @type coord_list :: [Coord.t]
   @type line :: {Coord.t, Coord.t}
-  @type obstacle :: Obstacle.t
-  @type collision_check :: :ok | {:collision, obstacle}
+  @type collision_reply :: :ok | {:collision, Obstacle.name_set}
 
 
   @spec new(Keyword.t) :: t
@@ -43,7 +42,7 @@ defmodule InkFlier.RaceTrack do
   @doc """
   Check if the line between a car's previous & new position collides with any track obstacles
   """
-  @spec check_collision(t, Line.t) :: collision_check
+  @spec check_collision(t, Line.t) :: collision_reply
   def check_collision(t, car_line) do
     # NOTE Possible future optimization- This is a fair number of loops-in-loops; for each little line piece of
     # each wall or obstacle, check for intersect
@@ -57,7 +56,7 @@ defmodule InkFlier.RaceTrack do
   end
 
   @doc "See `check_collision/2`"
-  @spec check_collision(t, Coord.t, Coord.t) :: collision_check
+  @spec check_collision(t, Coord.t, Coord.t) :: collision_reply
   def check_collision(t, p, q), do: check_collision(t, Line.new(p, q))
 
   def start(t), do: t.start

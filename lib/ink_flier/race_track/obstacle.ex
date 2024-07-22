@@ -23,7 +23,7 @@ defmodule InkFlier.RaceTrack.Obstacle do
 
   @type name :: String.t
   @type coord_list :: InkFlier.RaceTrack.coord_list
-  @type collision_name_set :: MapSet.t(name)
+  @type name_set :: MapSet.t(name)
 
   @spec new(coord_list) :: t
   @spec new(String.t, coord_list) :: t
@@ -51,7 +51,7 @@ defmodule InkFlier.RaceTrack.Obstacle do
   Given an Obstacle and the line a car just travelled along, check for a collision. If one is found, add
   this Obstacle's name to a given MapSet
   """
-  @spec add_collision_if_found(MapSet.t, t, Line.t) :: collision_name_set
+  @spec add_collision_if_found(name_set, t, Line.t) :: name_set
   def add_collision_if_found(set, t, car_line) do
     if collision?(car_line, wall_lines(t)), do: MapSet.put(set, name(t)), else: set
   end
