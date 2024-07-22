@@ -51,27 +51,21 @@ defmodule InkFlier.RaceTrack do
     # If this runs slow, I can start by pre-building that Enum.chunk_every ONE time when track is made and storing it
     # as extra data in the struct
 
-    collision_set =
-      t.obstacles
-      |> Enum.reduce(MapSet.new, fn obstacle, collision_set ->
-        wall_lines =
-          obstacle
-          |> Obstacle.coord_list
-          |> Enum.chunk_every(2, 1, :discard)
-          |> Enum.map(fn [p,q] -> Line.new(p,q) end)
+    t.obstacles
+    |> Enum.reduce(MapSet.new, fn obstacle, collision_set ->
+      wall_lines =
+        obstacle
+        |> Obstacle.coord_list
+        |> Enum.chunk_every(2, 1, :discard)
+        |> Enum.map(fn [p,q] -> Line.new(p,q) end)
 
-        if Enum.find(wall_lines, &Line.intersect?(&1, car_line)) do
-          MapSet.put(collision_set, Obstacle.name(obstacle))
-        else
-          collision_set
-        end
-      end)
-
-    if MapSet.size(collision_set) > 0 do
-      {:collision, collision_set}
-    else
-      :ok
-    end
+      if Enum.find(wall_lines, &Line.intersect?(&1, car_line)) do
+        MapSet.put(collision_set, Obstacle.name(obstacle))
+      else
+        collision_set
+      end
+    end)
+    |> collision_reply
   end
 
   @doc "See `check_collision/2`"
@@ -79,4 +73,8 @@ defmodule InkFlier.RaceTrack do
   def check_collision(t, p, q), do: check_collision(t, Line.new(p, q))
 
   def start(t), do: t.start
+
+
+  defp collision_reply(set), do:
+    unless(MapSet.size(set) > 0, do: :ok, else: {:collision, set})
 end
