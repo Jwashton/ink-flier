@@ -42,7 +42,7 @@ defmodule InkFlier.RaceTrack.Obstacle do
 
 
   @spec new(coord_list) :: t
-  @spec new(String.t, coord_list) :: t
+  @spec new(name, coord_list) :: t
   def new(name \\ "Obstacle", coord_list) do
     struct!(__MODULE__, ~M{name, coord_list, wall_lines: build_wall_lines(coord_list)})
   end
