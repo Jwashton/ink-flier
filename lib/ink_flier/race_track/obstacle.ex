@@ -29,7 +29,6 @@ defmodule InkFlier.RaceTrack.Obstacle do
 
   alias InkFlier.Line
 
-  # @type t :: {name, coord_list}
   typedstruct enforce: true do
     field :name, name
     field :coord_list, coord_list
