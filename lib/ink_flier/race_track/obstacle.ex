@@ -4,14 +4,17 @@ defmodule InkFlier.RaceTrack.Obstacle do
 
   Includes both the track walls and any smaller obstacles
 
+  Note that neither track wall is actually **required**. It's possibly to imagine a track with 1 or 0 walls, and the cars
+  were on an infinite field but still had to aim for specific check and goal -points
+
   Name is just a small quick label for what the car ran into, so repeated names are fine (Such as
   multiple "Boulder"s or generic "Obstacle"s)
 
-  Note that neither track wall is actually required. It's possibly to imagine a track with 1 or 0 walls, and the cars
-  were on an infinite field but still had to aim for specific check and goal -points
+  Examples:
+  ```
+  "Inner Track", "Outer Track", "Rock", "River", "Median", "Obstacle"
+  ```
 
-  ## Examples
-      "Inner Track", "Outer Track", "Rock", "River", "Median", "Obstacle"
   """
 
   @type t :: {name :: String.t, coord_list}
