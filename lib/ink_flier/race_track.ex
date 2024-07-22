@@ -49,7 +49,7 @@ defmodule InkFlier.RaceTrack do
     # each wall or obstacle, check for intersect
     # Also, builds that `wall_lines` list of line pieces from scratch with Enum.chunk_every
     # If this runs slow, I can start by pre-building that Enum.chunk_every ONE time when track is made and storing it
-    # as extra data in the struct
+    # as extra data in this Track struct
 
     t.obstacles
     |> Enum.reduce(MapSet.new, &Obstacle.add_collision_if_found(&2, &1, car_line))
