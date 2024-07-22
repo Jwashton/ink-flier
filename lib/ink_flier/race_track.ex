@@ -22,14 +22,13 @@ defmodule InkFlier.RaceTrack do
 
   typedstruct enforce: true do
     field :start, coord_list
-    field :check1, line
-    field :check2, line
-    field :goal, line
+    field :check1, Line.t
+    field :check2, Line.t
+    field :goal, Line.t
     field :obstacles, MapSet.t(Obstacle.t)
   end
 
   @type coord_list :: [Coord.t]
-  @type line :: {Coord.t, Coord.t}
   @type collision_reply :: :ok | {:collision, Obstacle.name_set}
 
 

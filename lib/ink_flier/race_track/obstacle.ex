@@ -32,12 +32,11 @@ defmodule InkFlier.RaceTrack.Obstacle do
   typedstruct enforce: true do
     field :name, name
     field :coord_list, coord_list
-    field :wall_lines, wall_lines
+    field :wall_lines, [Line.t]
   end
 
   @type name :: String.t
   @type coord_list :: InkFlier.RaceTrack.coord_list
-  @type wall_lines :: [Line.t]
 
   @type name_set :: MapSet.t(name)
 
