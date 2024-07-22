@@ -3,37 +3,33 @@ defmodule InkFlier.RaceTrack do
   Struct and helpers for building a Race Track
 
   ## Keys
-  - start- List of coords for start positions, in order of desierability ([best_start_pos, second_best_start_pos, ...])
+  - *start*- List of coords for start positions, in order of desierability ([best_start_pos, second_best_start_pos, ...])
 
-  - check1/check2- lines that must be crossed for valid win
+  - *check1*/*check2*- lines that must be crossed for valid win
 
-  - goal- Usually the same as the line of the `start` coords, but can be anywhere as long as you have to pass through the `check`'s to reach it
+  - *goal*- Usually the same as the line of the `start` coords, but can be anywhere as long as you have to pass through the `check`'s to reach it
 
-  - obstacles
-    - Can be either/or:
-      - `{name, coord_list}` tuple, where `name` is a string describing the obstacle, eg. "Rock"
-      - Just a `coord_list`, in which case name will default to "Obstacle
+  - *obstacles*
+    - See `InkFlier.RaceTrack.Obstacle`
     - Recommended (but not required) obstacles are "Inner Track" and "Outer Track"
   """
 
   use TypedStruct
 
+  alias InkFlier.RaceTrack.Obstacle
   alias InkFlier.Coord
 
   typedstruct enforce: true do
-    field :obstacles, obstacles
     field :start, coord_list
     field :check1, line
     field :check2, line
     field :goal, line
+    field :obstacles, MapSet.t(obstacle)
   end
 
   @type coord_list :: [Coord.t]
   @type line :: {Coord.t, Coord.t}
-  # @type collision_object :: :inner_wall | :outer_wall
-  @type obstacles :: MapSet.t(
-    {name :: String.t, coord_list} | coord_list
-  )
+  @type obstacle :: Obstacle.t
 
 
   @spec new(Keyword.t) :: t
@@ -45,6 +41,8 @@ defmodule InkFlier.RaceTrack do
     |> Enum.find(fn wall ->
       _wall_lines = Enum.chunk_every(wall, 2, 1, :discard)
     end)
+  defdelegate new_obstacle(coord_list), to: Obstacle, as: :new
+  defdelegate new_obstacle(coord_list, name), to: Obstacle, as: :new
 
     # TODO hc
     {:collision, :outer_wall}
