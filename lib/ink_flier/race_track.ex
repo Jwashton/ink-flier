@@ -52,7 +52,7 @@ defmodule InkFlier.RaceTrack do
     # as extra data in the struct
 
     t.obstacles
-    |> Enum.reduce(MapSet.new, &Obstacle.build_wall_lines_and_add_collision_if_found(&2, &1, car_line))
+    |> Enum.reduce(MapSet.new, &Obstacle.add_collision_if_found(&2, &1, car_line))
     |> collision_reply
   end
 

@@ -19,8 +19,11 @@ defmodule InkFlier.RaceTrack.Obstacle do
 
   alias InkFlier.Line
 
-  @type t :: {name :: String.t, coord_list}
+  @type t :: {name, coord_list}
+
+  @type name :: String.t
   @type coord_list :: InkFlier.RaceTrack.coord_list
+  @type collision_name_set :: MapSet.t(name)
 
   @spec new(coord_list) :: t
   @spec new(String.t, coord_list) :: t
@@ -42,16 +45,17 @@ defmodule InkFlier.RaceTrack.Obstacle do
     |> Enum.map(fn [p,q] -> Line.new(p,q) end)
   end
 
-  def build_wall_lines_and_add_collision_if_found(set, obstacle, car_line) do
-    obstacle
-    |> wall_lines
-    |> then(&add_collision_if_found(set, name(obstacle), car_line, &1))
+  @doc """
+  Add Obstacle's name to a MapSet if Obstacle was collided into
+
+  Given an Obstacle and the line a car just travelled along, check for a collision. If one is found, add
+  this Obstacle's name to a given MapSet
+  """
+  @spec add_collision_if_found(MapSet.t, t, Line.t) :: collision_name_set
+  def add_collision_if_found(set, t, car_line) do
+    if collision?(car_line, wall_lines(t)), do: MapSet.put(set, name(t)), else: set
   end
 
-
-  defp add_collision_if_found(set, obstacle_name, car_line, wall_lines) do
-    if collision?(car_line, wall_lines), do: MapSet.put(set, obstacle_name), else: set
-  end
 
   defp collision?(car_line, wall_lines), do: Enum.find(wall_lines, &Line.intersect?(&1, car_line))
 end
