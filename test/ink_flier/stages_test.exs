@@ -3,7 +3,13 @@ defmodule InkFlierTest.Stages do
 
   alias InkFlier.Stages
 
-  # adding_players
+  # - initial_setup
+  #   - add_player
+  #   - choose_track
+  # TODO I think I might need to drive this from Game.<differentActions>, including Game.initialize and/or Game.start
+  #   - One of it's rule checks will probably drive additions to Stages, and might not need seperate Stages_test module (altho lower level tests are nicer. But let's see if it works out one level up)
+
+
   # locking_in_turns
   # processing
   #   -anyWinners?
