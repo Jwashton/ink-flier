@@ -1,12 +1,12 @@
 defmodule InkFlier.Board do
   use TypedStruct
 
-  alias InkFlier.Coord
   alias InkFlier.RaceTrack
+  alias InkFlier.Car
 
   typedstruct do
     field :race_track, RaceTrack.t, enforce: true
-    field :current_positions, %{player_id => Coord.t}
+    field :players, %{player_id => Car.t}
   end
 
   @type player_id :: any
@@ -23,15 +23,24 @@ defmodule InkFlier.Board do
     players
     |> players_in_order(random_pole_position?)
     |> Enum.zip(track_start_coords)
-    |> Map.new
-    |> then(&set_current_positions(t, &1))
+    |> Enum.map(&coord_to_car_tuple/1)
+    |> then(&set_players(t, &1))
   end
 
   def race_track(t), do: t.race_track
-  def current_positions(t), do: t.current_positions
+  def players(t), do: t.players
+
+  def current_positions(t) do
+    players(t)
+    |> Enum.map(&car_to_coord_tuple/1)
+    |> Map.new
+  end
 
 
-  defp set_current_positions(t, new), do: Map.put(t, :current_positions, new)
+  defp set_players(t, new), do: Map.put(t, :players, new)
+
+  defp coord_to_car_tuple({player, coord}), do: {player, Car.new(coord)}
+  defp car_to_coord_tuple({player, car}), do: {player, Car.position(car)}
 
   defp players_in_order(players, true), do: Enum.shuffle(players)
   defp players_in_order(players, _), do: players

@@ -24,4 +24,6 @@ defmodule InkFlier.Car do
     momentum = Coord.get_offset(t.previous_position, t.position)
     Coord.apply_offset(t.position, momentum)
   end
+
+  def position(t), do: t.position
 end
