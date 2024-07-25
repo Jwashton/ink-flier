@@ -33,4 +33,11 @@ defmodule InkFlierTest.Game do
   # - leave_game
   # - win
   # - crash?
+
+
+  test "new game" do
+    game = Game.new
+    assert game |> Game.players == []
+    assert game |> Game.track == nil
+  end
 end
