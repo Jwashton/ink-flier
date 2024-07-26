@@ -1,6 +1,7 @@
 defmodule InkFlierTest.Game do
   use ExUnit.Case
 
+  alias InkFlierTest.Helpers
   alias InkFlier.Game
   # new
   #   - HouseRules
@@ -48,6 +49,15 @@ defmodule InkFlierTest.Game do
   end
 
   test "Can change tracks multiple times (to view different ones or something) but eventually 1 will be locked in" do
+    track1 = Helpers.test_track
+    track2 = Helpers.test_track |> Map.put(:start, [{99,99}])
+
+    game =
+      Game.new
+      |> Game.select_track(track1)
+      |> Game.select_track(track2)
+
+    assert game |> Game.track == track2
   end
 
   test "After lockin, (phase has changed), can't add players or change track anymore" do

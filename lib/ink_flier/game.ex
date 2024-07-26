@@ -18,6 +18,8 @@ defmodule InkFlier.Game do
   @spec add_player(t, player_id) :: t
   def add_player(t, player_id), do: t |> update_players(& &1 ++ [player_id])
 
+  def select_track(t, track), do: Map.put(t, :track, track)
+
   def players(t), do: t.players
   def track(t), do: t.track
 
