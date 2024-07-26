@@ -61,5 +61,6 @@ defmodule InkFlierTest.Game do
   end
 
   test "After lockin, (phase has changed), can't add players or change track anymore" do
+    # NOTE might need some {:ok.../{:error... tuples, we'll see
   end
 end
