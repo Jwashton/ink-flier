@@ -16,9 +16,6 @@ defmodule InkFlierTest.Game do
   #     crash return?
   #     disconected return?
   #
-  #
-  #
-  #
   #     current_positions:
   #     legal_moves: %{
   #       player_1: MapSet.new([{1,1}, {1,2}...]),
@@ -28,6 +25,7 @@ defmodule InkFlierTest.Game do
   # move
 
   # try things in wrong phase and confirm error
+
   # move events:
   # - lock_in_move
   # - leave_game
@@ -39,5 +37,14 @@ defmodule InkFlierTest.Game do
     game = Game.new
     assert game |> Game.players == []
     assert game |> Game.track == nil
+  end
+
+  test "Can add multiple players" do
+  end
+
+  test "Can change tracks multiple times (to view different ones or something) but eventually 1 will be locked in" do
+  end
+
+  test "After lockin, (phase has changed), can't add players or change track anymore" do
   end
 end
