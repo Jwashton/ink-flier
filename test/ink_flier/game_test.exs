@@ -40,6 +40,11 @@ defmodule InkFlierTest.Game do
   end
 
   test "Can add multiple players" do
+    game =
+      Game.new
+      |> Game.add_player("Chris")
+      |> Game.add_player([:player_1, :bob])
+    assert game |> Game.players == ["Chris", :player_1, :bob]
   end
 
   test "Can change tracks multiple times (to view different ones or something) but eventually 1 will be locked in" do
