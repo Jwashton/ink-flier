@@ -18,6 +18,8 @@ defmodule InkFlierTest.GameServer do
 
     :ok = GameServer.select_track(a, Helpers.test_track)
     :ok = GameServer.begin_race(a)
+    # TODO move some of this to shared TODO file
+    # next, error test can't add players or select track anymore now that phase changed
   end
 
   # TODO
