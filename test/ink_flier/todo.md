@@ -1,3 +1,14 @@
+# 2024-07-31
+- Don't hold entire RaceTrack struct in Game.ex state, since it's huge
+  - What's the alternative though? An id lookup or something? But that would be to a DB which would be even slower
+  - Maybe Game state is the right place to hold it then, even though it's so big and never changes?
+  - Ask @William
+
+- Also @William:
+  - Best way to deal with multiple Todo.txt's across multiple branches? I really only want one source of truth (on Engine branch, say) but it's akward having to stash all changes, checkout engine, type todo notes, commit, check feature branch back out, unstash changes
+
+- Extract start-and-place-in-pole-positions logic to Game.State and/or from there to Board
+
 # 2024-07-30
 - The full Game(or GameServer) interface
   - start
