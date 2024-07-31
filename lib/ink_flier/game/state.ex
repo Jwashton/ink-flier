@@ -11,4 +11,6 @@ defmodule InkFlier.Game.State do
   end
 
   def new(args), do: struct!(__MODULE__, args)
+
+  def notify_target(t), do: t.notify_target
 end
