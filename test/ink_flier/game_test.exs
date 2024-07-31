@@ -1,5 +1,23 @@
 defmodule InkFlierTest.Game do
   use ExUnit.Case
 
+  alias InkFlierTest.Helpers
   alias InkFlier.Game
+
+  test "start" do
+    players = [:a, :b]
+    track = Helpers.test_track
+    notify_target = self()
+
+    assert {:ok, _pid} = Game.start_link(players, track, notify_target)
+    assert_receive {:starting_positions, %{a: {0,0}, b: {-1,-1}}}
+  end
+
+  # test "move" do
+  # end
+
+  # test "resign" do
+  # end
+  # test "get_current_game_state" do
+  # end
 end
