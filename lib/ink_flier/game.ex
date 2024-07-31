@@ -3,7 +3,6 @@ defmodule InkFlier.Game do
   import TinyMaps
 
   alias __MODULE__.State
-  alias InkFlier.RaceTrack
 
   @type player_id :: any
   @type players :: [player_id]
@@ -15,25 +14,20 @@ defmodule InkFlier.Game do
 
   @impl GenServer
   def init(start_info) do
-    state = State.new(start_info)
-    track_start_coords = RaceTrack.start(state.track)
-    random_pole_position? = false
-
-    starting_positions =
-      state.players
-      |> players_in_order(random_pole_position?)
-      |> Enum.zip(track_start_coords)
-      |> Map.new
-
-    state
-    |> notify({:starting_positions, starting_positions})
+    start_info
+    |> State.new
+    |> notify_starting_positions
     |> ok
   end
 
 
-  defp players_in_order(players, random_pole_position?)
-  defp players_in_order(players, false), do: players
+  defp notify_starting_positions(state) do
+    state
+    |> State.notify_target
+    |> send({:starting_positions, State.current_positions(state)})
 
-  defp notify(state, msg), do: state |> State.notify_target |> send(msg)
+    state
+  end
+
   defp ok(state), do: {:ok, state}
 end
