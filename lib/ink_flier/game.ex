@@ -3,10 +3,13 @@ defmodule InkFlier.Game do
   import TinyMaps
 
   alias __MODULE__.State
+  alias InkFlier.RaceTrack
 
   @type player_id :: any
   @type players :: [player_id]
+  @type house_rules_placeholder :: :TODO
 
+  @spec start_link(players, RaceTrack.t, pid, house_rules_placeholder) :: {:ok, pid}
   def start_link(players, track, notify_target, _house_rules \\ nil) do
     GenServer.start_link(__MODULE__, ~M{players, track, notify_target})
   end
