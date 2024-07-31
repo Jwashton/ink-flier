@@ -5,11 +5,7 @@ defmodule InkFlierTest.Game do
   alias InkFlier.Game
 
   test "start" do
-    players = [:a, :b]
-    track = Helpers.test_track
-    notify_target = self()
-
-    assert {:ok, _pid} = Game.start_link(players, track, notify_target)
+    assert {:ok, _pid} = Game.start_link([:a, :b], Helpers.test_track, self())
     assert_receive {:starting_positions, %{a: {0,0}, b: {-1,-1}}}
   end
 
