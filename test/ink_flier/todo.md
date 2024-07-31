@@ -1,3 +1,16 @@
+# 2024-07-30
+- The full Game(or GameServer) interface
+  - start
+  - move
+  - resign
+  - give me everything
+- GameServer Test notes
+    ```
+    {:ok, game_pid_1} = GameServer.start_link(players, track etc..., self())
+
+    assert_broadcast...
+    ```
+
 # 2024-06-28
 - Track module
   - Struct: inner_wall & outer_wall
