@@ -1,3 +1,8 @@
+# 2024-07-31b
+- Add types and doc
+  - Skim through and find where missing
+  - Wait till module/abstractions for car/board/game/etc are a little more locked in tho
+
 # 2024-07-31
 - Don't hold entire RaceTrack struct in Game.ex state, since it's huge
   - What's the alternative though? An id lookup or something? But that would be to a DB which would be even slower
