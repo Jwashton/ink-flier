@@ -2,6 +2,7 @@
 - Add types and doc
   - Skim through and find where missing
   - Wait till module/abstractions for car/board/game/etc are a little more locked in tho
+- Put HouseRules back in, and use it for Game/Board playersInOrder function (with Enum.random)
 
 # 2024-07-31
 - Don't hold entire RaceTrack struct in Game.ex state, since it's huge
