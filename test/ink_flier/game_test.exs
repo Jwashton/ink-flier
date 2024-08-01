@@ -6,7 +6,7 @@ defmodule InkFlierTest.Game do
 
   test "start" do
     assert {:ok, _pid} = Game.start_link([:a, :b], Helpers.test_track, self())
-    assert_receive {:starting_positions, %{a: {0,0}, b: {-1,-1}}}
+    assert_receive {:starting_positions, %{a: {-1,-1}, b: {-2,-2}}}
   end
 
   # test "move" do

@@ -3,7 +3,7 @@ defmodule InkFlierTest.Helpers do
 
   def test_track do
     RaceTrack.new(
-      start: [{0,0}, {-1,-1}, {-2,-2}, {-3,-3}, {-4,-4}, {-5,-5}],
+      start: [{-1,-1}, {-2,-2}, {-3,-3}, {-4,-4}],
       check1: {{10,0}, {15,-5}},
       check2: {{10,10}, {15,15}},
       goal: {{0,0}, {-5,-5}},
