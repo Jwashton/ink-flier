@@ -3,6 +3,9 @@
   - Skim through and find where missing
   - Wait till module/abstractions for car/board/game/etc are a little more locked in tho
 - Put HouseRules back in, and use it for Game/Board playersInOrder function (with Enum.random)
+- Track validator
+  - Can't have a starting point already coliding with an obstacle
+- GameTest, `describe "move"` section will probably be big enough to go in it's own seperate test file
 
 # 2024-07-31
 - Don't hold entire RaceTrack struct in Game.ex state, since it's huge
