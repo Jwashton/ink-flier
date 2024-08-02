@@ -20,6 +20,9 @@ defmodule InkFlier.Game do
   def move(pid, player, coord), do:
     GenServer.call(pid, {:move, player, coord})
 
+  @spec current_positions(pid) :: %{player_id => Coord.t}
+  def current_positions(pid), do:
+    GenServer.call(pid, :current_positions)
 
   @impl GenServer
   def init(start_info) do
@@ -40,6 +43,13 @@ defmodule InkFlier.Game do
 
     state
     |> reply({:ok, {:speed, speed}})
+  end
+
+  @impl GenServer
+  def handle_call(:current_positions, _, state) do
+    state
+    |> State.current_positions
+    |> then(& reply(state, &1) )
   end
 
 

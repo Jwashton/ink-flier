@@ -9,6 +9,11 @@ defmodule InkFlierTest.Game do
     assert_receive {:starting_positions, %{a: {-1,-1}, b: {-2,-2}}}
   end
 
+  test "current_positions" do
+    {:ok, pid} = Game.start_link([:a, :b], Helpers.test_track, self())
+    assert Game.current_positions(pid) == %{a: {-1,-1}, b: {-2,-2}}
+  end
+
   describe "move" do
     test "Move once locks in" do
       {:ok, pid} = Game.start_link([:a, :b], Helpers.test_track, self())
