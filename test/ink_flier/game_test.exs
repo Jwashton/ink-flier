@@ -21,7 +21,8 @@ defmodule InkFlierTest.Game do
       assert {:ok, {:speed, 1}} = Game.move(pid, :a, {0,-1})
       assert %{a: {0,-1}} = Game.current_positions(pid)
 
-      # assert_receive {:player_locked_in, :a}
+      # TODO next
+      assert_receive {:player_locked_in, :a}
     end
 
     # illegal move
