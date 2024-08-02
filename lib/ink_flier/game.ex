@@ -5,8 +5,6 @@ defmodule InkFlier.Game do
   alias __MODULE__.State
   alias InkFlier.RaceTrack
   alias InkFlier.Coord
-  alias InkFlier.Board
-  alias InkFlier.Car
 
   @type player_id :: any
   @type players :: [player_id]
@@ -34,15 +32,10 @@ defmodule InkFlier.Game do
 
   @impl GenServer
   def handle_call({:move, player, coord}, _, state) do
-    speed =
-      state
-      |> State.board
-      |> Board.car(player)
-      |> Car.move(coord)
-      |> Car.speed
+    state = State.move(state, player, coord)
+    speed = state |> State.speed(player)
 
-    state
-    |> reply({:ok, {:speed, speed}})
+    reply(state, {:ok, {:speed, speed}})
   end
 
   @impl GenServer

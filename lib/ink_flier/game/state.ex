@@ -9,7 +9,7 @@ defmodule InkFlier.Game.State do
 
   typedstruct enforce: true do
     # field :house_rules
-    field :notify_target, Game.notify_target
+    field :notify_target, Game.notify_target, required: false
     field :track, RaceTrack.t
     field :board, Board.t
   end
@@ -22,10 +22,12 @@ defmodule InkFlier.Game.State do
 
     struct!(__MODULE__, ~M{board, track, notify_target})
   end
+  def new(players, track, notify_target \\ nil), do: new(~M{players, track, notify_target})
 
-  def move(t, player, coord) do
+  def move(t, player, coord), do:
     update_in(t.board[player], &Car.move(&1, coord))
-  end
+
+  def speed(t, player), do: t.board[player] |> Car.speed
 
   def notify_target(t), do: t.notify_target
 
