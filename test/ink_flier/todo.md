@@ -1,3 +1,8 @@
+# 2024-08-01
+- I think I want to reverse Gamestate/server
+  - InkFlier.Game = the struct module, then InkFlier.Game.Server (which I can `as: GameServer` when there's a conflict and just Server the rest of the time, which is nice I think)
+  - It'll be Game.current_positions etc, instead of State.blabla which is a little harder to mentally parse I think
+
 # 2024-07-31b
 - Add types and doc
   - Skim through and find where missing
