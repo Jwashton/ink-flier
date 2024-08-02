@@ -19,9 +19,10 @@ defmodule InkFlierTest.Game do
       {:ok, pid} = Game.start_link([:a, :b], Helpers.test_track, self())
 
       assert {:ok, {:speed, 1}} = Game.move(pid, :a, {0,-1})
-      # assert_receive {:player_locked_in, :a}
+      # TODO next, now need to actually update the moved car instead of just grabbing it's speed and throwing var away (In Game.handle_call(:move
+      assert %{a: {0,-1}} = Game.current_positions(pid)
 
-      # assert %{a: {0,-1}} = Game.current_positions(pid)
+      # assert_receive {:player_locked_in, :a}
     end
 
     # Both players moved = next round
