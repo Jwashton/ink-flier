@@ -4,6 +4,7 @@ defmodule InkFlier.Game.State do
 
   alias InkFlier.Game
   alias InkFlier.Board
+  alias InkFlier.Car
   alias InkFlier.RaceTrack
 
   typedstruct enforce: true do
@@ -20,6 +21,10 @@ defmodule InkFlier.Game.State do
     board = Board.new(players, track_start_coords, random_pole_position?)
 
     struct!(__MODULE__, ~M{board, track, notify_target})
+  end
+
+  def move(t, player, coord) do
+    update_in(t.board[player], &Car.move(&1, coord))
   end
 
   def notify_target(t), do: t.notify_target
