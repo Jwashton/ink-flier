@@ -32,10 +32,9 @@ defmodule InkFlier.Game do
 
   @impl GenServer
   def handle_call({:move, player, coord}, _, state) do
-    state = State.move(state, player, coord)
-    speed = state |> State.speed(player)
-
-    reply(state, {:ok, {:speed, speed}})
+    state
+    |> State.move(player, coord)
+    |> reply_with_speed(player)
   end
 
   @impl GenServer
@@ -55,5 +54,8 @@ defmodule InkFlier.Game do
   end
 
   defp ok(state), do: {:ok, state}
-  defp reply(state, reply), do: {:reply, reply, state}
+
+  defp reply(state, msg), do: {:reply, msg, state}
+
+  defp reply_with_speed(state, player), do: reply(state, {:ok, {:speed, State.speed(state, player)}})
 end

@@ -34,5 +34,6 @@ defmodule InkFlier.Game.State do
   def current_positions(t), do: t |> board |> Board.current_positions
 
   def players(t), do: Map.keys(t.board)
+
   def board(t), do: t.board
 end
