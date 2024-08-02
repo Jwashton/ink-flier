@@ -4,15 +4,21 @@ defmodule InkFlier.Game do
 
   alias __MODULE__.State
   alias InkFlier.RaceTrack
+  alias InkFlier.Coord
+  alias InkFlier.Board
+  alias InkFlier.Car
 
   @type player_id :: any
   @type players :: [player_id]
   @type house_rules_placeholder :: :TODO
 
   @spec start_link(players, RaceTrack.t, pid, house_rules_placeholder) :: {:ok, pid}
-  def start_link(players, track, notify_target, _house_rules \\ nil) do
+  def start_link(players, track, notify_target, _house_rules \\ nil), do:
     GenServer.start_link(__MODULE__, ~M{players, track, notify_target})
-  end
+
+  @spec move(pid, player_id, Coord.t) :: {:ok, {:speed, integer}} | :TODO
+  def move(pid, player, coord), do:
+    GenServer.call(pid, {:move, player, coord})
 
 
   @impl GenServer
@@ -21,6 +27,19 @@ defmodule InkFlier.Game do
     |> State.new
     |> notify_starting_positions
     |> ok
+  end
+
+  @impl GenServer
+  def handle_call({:move, player, coord}, _, state) do
+    speed =
+      state
+      |> State.board
+      |> Board.car(player)
+      |> Car.move(coord)
+      |> Car.speed
+
+    state
+    |> reply({:ok, {:speed, speed}})
   end
 
 
@@ -33,4 +52,5 @@ defmodule InkFlier.Game do
   end
 
   defp ok(state), do: {:ok, state}
+  defp reply(state, reply), do: {:reply, reply, state}
 end

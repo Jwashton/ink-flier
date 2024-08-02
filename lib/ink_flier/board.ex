@@ -18,6 +18,8 @@ defmodule InkFlier.Board do
     |> Map.new
   end
 
+  def car(t, player), do: Map.get(t, player)
+
 
   defp coord_to_car_tuple({player, coord}), do: {player, Car.new(coord)}
   defp car_to_coord_tuple({player, car}), do: {player, Car.position(car)}
