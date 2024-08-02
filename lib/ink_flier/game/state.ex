@@ -1,6 +1,7 @@
 defmodule InkFlier.Game.State do
   use TypedStruct
   import TinyMaps
+  import Access, only: [key: 1]
 
   alias InkFlier.Game
   alias InkFlier.Board
@@ -25,9 +26,9 @@ defmodule InkFlier.Game.State do
   def new(players, track, notify_target \\ nil), do: new(~M{players, track, notify_target})
 
   def move(t, player, coord), do:
-    update_in(t.board[player], &Car.move(&1, coord))
+    update_in(t, car_key(player), &Car.move(&1, coord))
 
-  def speed(t, player), do: t.board[player] |> Car.speed
+  def speed(t, player), do: get_in(t, car_key(player)) |> Car.speed
 
   def notify_target(t), do: t.notify_target
 
@@ -35,4 +36,7 @@ defmodule InkFlier.Game.State do
 
   def players(t), do: Map.keys(t.board)
   def board(t), do: t.board
+
+
+  defp car_key(player), do: [key(:board), key(player)]
 end
