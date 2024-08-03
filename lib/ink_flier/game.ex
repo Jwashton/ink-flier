@@ -36,7 +36,7 @@ defmodule InkFlier.Game do
          :ok <- State.check_already_locked_in(state, player) do
       state
       |> State.move(player, coord)
-      |> notify_player_locked_in(player)
+      |> notify({:player_locked_in, player})
       |> reply_with_speed(player)
     else
       error -> reply(state, error)
@@ -47,31 +47,25 @@ defmodule InkFlier.Game do
   def handle_call(:current_positions, _, state) do
     state
     |> State.current_positions
-    |> reply_msg(state)
+    |> reply_message(state)
   end
 
 
-  defp notify_player_locked_in(state, player) do
-    state
-    |> State.notify_target
-    |> send({:player_locked_in, player})
-
-    state
-  end
-
-  defp notify_starting_positions(state) do
-    state
-    |> State.notify_target
-    |> send({:starting_positions, State.current_positions(state)})
-
-    state
-  end
+  defp notify_starting_positions(state), do: notify(state, {:starting_positions, State.current_positions(state)})
 
   defp ok(state), do: {:ok, state}
 
-  defp reply(state, msg), do: {:reply, msg, state}
+  defp reply(state, message), do: {:reply, message, state}
 
-  defp reply_msg(msg, state), do: reply(state, msg)
+  defp reply_message(message, state), do: reply(state, message)
 
   defp reply_with_speed(state, player), do: reply(state, {:ok, {:speed, State.speed(state, player)}})
+
+  defp notify(state, message) do
+    state
+    |> State.notify_target
+    |> send(message)
+
+    state
+  end
 end
