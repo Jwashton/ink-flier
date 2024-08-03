@@ -47,7 +47,7 @@ defmodule InkFlier.Game do
   def handle_call(:current_positions, _, state) do
     state
     |> State.current_positions
-    |> then(& reply(state, &1) )
+    |> reply_msg(state)
   end
 
 
@@ -70,6 +70,8 @@ defmodule InkFlier.Game do
   defp ok(state), do: {:ok, state}
 
   defp reply(state, msg), do: {:reply, msg, state}
+
+  defp reply_msg(msg, state), do: reply(state, msg)
 
   defp reply_with_speed(state, player), do: reply(state, {:ok, {:speed, State.speed(state, player)}})
 end
