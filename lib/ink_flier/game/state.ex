@@ -33,45 +33,30 @@ defmodule InkFlier.Game.State do
   end
 
   def check_legal_move(t, player, coord) do
-    if legal_move?(t, player, coord) do
-      :ok
-    else
-      {:error, :illegal_destination}
-    end
+    if legal_move?(t, player, coord), do: :ok, else: {:error, :illegal_destination}
   end
 
   def check_already_locked_in(t, player) do
-    unless player in locked_in(t) do
-      :ok
-    else
-      {:error, :already_locked_in}
-    end
+    unless locked_in?(t, player), do: :ok, else: {:error, :already_locked_in}
   end
-
-  def speed(t, player), do: t |> car(player) |> Car.speed
-
-  def notify_target(t), do: t.notify_target
-
-  def current_positions(t), do: t |> board |> Board.current_positions
-
-  def players(t), do: Map.keys(t.board)
 
   def board(t), do: t.board
+  def notify_target(t), do: t.notify_target
+  def locked_in(t), do: t.locked_in
 
+  def players(t), do: t |> board |> Map.keys
+  def current_positions(t), do: t |> board |> Board.current_positions
 
-  defp locked_in(t), do: t.locked_in
+  def speed(t, player), do: t |> car(player) |> Car.speed
+  def legal_move?(t, player, coord), do: t |> car(player) |> Car.legal_move?(coord)
 
-  defp legal_move?(t, player, coord) do
-    t
-    |> car(player)
-    |> Car.legal_move?(coord)
-  end
-
-  defp do_move(t, player, coord), do: update_in(t, car_key(player), &Car.move(&1, coord))
-
-  defp lock_in(t, player), do: update_in(t.locked_in, &MapSet.put(&1, player))
 
   defp car(t, player), do: get_in(t, car_key(player))
+
+  defp lock_in(t, player), do: update_in(t.locked_in, &MapSet.put(&1, player))
+  defp do_move(t, player, coord), do: update_in(t, car_key(player), &Car.move(&1, coord))
+
+  defp locked_in?(t, player), do: player in locked_in(t)
 
   defp car_key(player), do: [key(:board), key(player)]
 end
