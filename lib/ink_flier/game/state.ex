@@ -28,8 +28,8 @@ defmodule InkFlier.Game.State do
 
   def move(t, player, coord) do
     t
-    |> update_in(car_key(player), &Car.move(&1, coord))
-    |> Map.update!(:locked_in, &MapSet.put(&1, player))
+    |> do_move(player, coord)
+    |> lock_in(player)
   end
 
   def check_legal_move(t, player, coord) do
@@ -62,6 +62,10 @@ defmodule InkFlier.Game.State do
 
   defp legal_move_reply(true), do: :ok
   defp legal_move_reply(false), do: {:error, :illegal_destination}
+
+  defp do_move(t, player, coord), do: update_in(t, car_key(player), &Car.move(&1, coord))
+
+  defp lock_in(t, player), do: update_in(t.locked_in, &MapSet.put(&1, player))
 
   defp car(t, player), do: get_in(t, car_key(player))
 
