@@ -16,12 +16,12 @@ defmodule InkFlierTest.Game do
 
   describe "move" do
     test "Move once locks in" do
+      destination = {0,-1}
+
       {:ok, pid} = Game.start_link([:a, :b], Helpers.test_track, self())
 
-      assert {:ok, {:speed, 1}} = Game.move(pid, :a, {0,-1})
-      assert %{a: {0,-1}} = Game.current_positions(pid)
-
-      # TODO next
+      assert {:ok, {:speed, 1}} = Game.move(pid, :a, destination)
+      assert %{a: ^destination} = Game.current_positions(pid)
       assert_receive {:player_locked_in, :a}
     end
 

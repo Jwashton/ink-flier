@@ -34,6 +34,7 @@ defmodule InkFlier.Game do
   def handle_call({:move, player, coord}, _, state) do
     state
     |> State.move(player, coord)
+    |> notify_player_locked_in(player)
     |> reply_with_speed(player)
   end
 
@@ -44,6 +45,14 @@ defmodule InkFlier.Game do
     |> then(& reply(state, &1) )
   end
 
+
+  defp notify_player_locked_in(state, player) do
+    state
+    |> State.notify_target
+    |> send({:player_locked_in, player})
+
+    state
+  end
 
   defp notify_starting_positions(state) do
     state
