@@ -5,20 +5,20 @@ defmodule InkFlierTest.Game do
   alias InkFlier.Game
 
   test "start" do
-    assert {:ok, _pid} = Game.start_link([:a, :b], Helpers.test_track, self())
+    _pid = start_test_game()
     assert_receive {:starting_positions, %{a: {-1,-1}, b: {-2,-2}}}
   end
 
   test "current_positions" do
-    {:ok, pid} = Game.start_link([:a, :b], Helpers.test_track, self())
+    pid = start_test_game()
     assert Game.current_positions(pid) == %{a: {-1,-1}, b: {-2,-2}}
   end
 
   describe "move" do
     test "Move once locks in" do
-      destination = {0,-1}
+      pid = start_test_game()
 
-      {:ok, pid} = Game.start_link([:a, :b], Helpers.test_track, self())
+      destination = {0,-1}
 
       assert {:ok, {:speed, 1}} = Game.move(pid, :a, destination)
       assert %{a: ^destination} = Game.current_positions(pid)
@@ -45,4 +45,11 @@ defmodule InkFlierTest.Game do
   # end
   # test "get_current_game_state" do
   # end
+
+
+  defp start_test_game do
+    {:ok, pid} = Game.start_link([:a, :b], Helpers.test_track, self())
+
+    pid
+  end
 end
