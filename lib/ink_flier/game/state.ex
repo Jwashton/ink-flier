@@ -28,11 +28,9 @@ defmodule InkFlier.Game.State do
     update_in(t.board[player], &Car.move(&1, coord))
 
   def check_legal_move(t, player, coord) do
-    if t.board[player] |> Car.legal_move?(coord) do
-      :ok
-    else
-      {:error, :illegal_destination}
-    end
+    t.board[player]
+    |> Car.legal_move?(coord)
+    |> legal_move_reply
   end
 
   def speed(t, player), do: t.board[player] |> Car.speed
@@ -44,4 +42,8 @@ defmodule InkFlier.Game.State do
   def players(t), do: Map.keys(t.board)
 
   def board(t), do: t.board
+
+
+  defp legal_move_reply(true), do: :ok
+  defp legal_move_reply(false), do: {:error, :illegal_destination}
 end
