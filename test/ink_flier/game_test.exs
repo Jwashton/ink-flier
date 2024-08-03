@@ -35,7 +35,9 @@ defmodule InkFlierTest.Game do
       assert %{a: ^unchanged_position} = Game.current_positions(pid)
     end
 
-    # Can't move again until all locked in
+    test "Can't move again until all locked in" do
+      raise "todo next"
+    end
 
     # Both players moved = next round
     #   - Send all current_positions
