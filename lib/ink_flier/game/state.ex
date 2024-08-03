@@ -11,6 +11,7 @@ defmodule InkFlier.Game.State do
   typedstruct enforce: true do
     field :board, Board.t
     field :track, RaceTrack.t
+    field :locked_in, MapSet.t(Game.player_id), default: MapSet.new
     field :notify_target, Game.notify_target, required: false
     # field :house_rules
   end
@@ -25,14 +26,25 @@ defmodule InkFlier.Game.State do
   end
   def new(players, track, notify_target \\ nil), do: new(~M{players, track, notify_target})
 
-  def move(t, player, coord), do:
-    update_in(t, car_key(player), &Car.move(&1, coord))
+  def move(t, player, coord) do
+    t
+    |> update_in(car_key(player), &Car.move(&1, coord))
+    |> Map.update!(:locked_in, &MapSet.put(&1, player))
+  end
 
   def check_legal_move(t, player, coord) do
     t
     |> car(player)
     |> Car.legal_move?(coord)
     |> legal_move_reply
+  end
+
+  def check_already_locked_in(t, player) do
+    if player in locked_in(t) do
+      {:error, :already_locked_in}
+    else
+      :ok
+    end
   end
 
   def speed(t, player), do: t |> car(player) |> Car.speed
@@ -45,6 +57,8 @@ defmodule InkFlier.Game.State do
 
   def board(t), do: t.board
 
+
+  defp locked_in(t), do: t.locked_in
 
   defp legal_move_reply(true), do: :ok
   defp legal_move_reply(false), do: {:error, :illegal_destination}

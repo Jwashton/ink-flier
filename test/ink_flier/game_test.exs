@@ -36,7 +36,11 @@ defmodule InkFlierTest.Game do
     end
 
     test "Can't move again until all locked in" do
-      raise "todo next"
+      pid = start_test_game()
+
+      {:ok, _speed} = Game.move(pid, :a, {0,-1})
+
+      assert {:error, :already_locked_in} = Game.move(pid, :a, {0,-1})
     end
 
     # Both players moved = next round
