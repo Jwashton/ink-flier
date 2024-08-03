@@ -9,10 +9,10 @@ defmodule InkFlier.Game.State do
   alias InkFlier.RaceTrack
 
   typedstruct enforce: true do
-    # field :house_rules
-    field :notify_target, Game.notify_target, required: false
-    field :track, RaceTrack.t
     field :board, Board.t
+    field :track, RaceTrack.t
+    field :notify_target, Game.notify_target, required: false
+    # field :house_rules
   end
 
   def new(~M{players, track, notify_target}) do

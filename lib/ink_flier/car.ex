@@ -4,8 +4,8 @@ defmodule InkFlier.Car do
   alias InkFlier.Coord
 
   typedstruct enforce: true do
-    field :previous_position, Coord.t
     field :position, Coord.t
+    field :previous_position, Coord.t
   end
 
   def new(start_coord), do: struct!(__MODULE__, position: start_coord, previous_position: start_coord)
