@@ -1,3 +1,8 @@
+# 2024-08-02
+- Game.current_positions- Don't need this extra interface func afterall.
+  - Just go back to original "get_current_game_state" get-everything function plan
+  - And that'll return a map, which I'll pattern match on `%{current_positions: ...}` instead
+
 # 2024-08-01
 - I think I want to reverse Gamestate/server
   - InkFlier.Game = the struct module, then InkFlier.Game.Server (which I can `as: GameServer` when there's a conflict and just Server the rest of the time, which is nice I think)
