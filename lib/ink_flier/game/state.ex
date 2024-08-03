@@ -27,6 +27,14 @@ defmodule InkFlier.Game.State do
   def move(t, player, coord), do:
     update_in(t.board[player], &Car.move(&1, coord))
 
+  def check_legal_move(t, player, coord) do
+    if t.board[player] |> Car.legal_move?(coord) do
+      :ok
+    else
+      {:error, :illegal_destination}
+    end
+  end
+
   def speed(t, player), do: t.board[player] |> Car.speed
 
   def notify_target(t), do: t.notify_target

@@ -32,10 +32,14 @@ defmodule InkFlier.Game do
 
   @impl GenServer
   def handle_call({:move, player, coord}, _, state) do
-    state
-    |> State.move(player, coord)
-    |> notify_player_locked_in(player)
-    |> reply_with_speed(player)
+    with :ok <- State.check_legal_move(state, player, coord) do
+      state
+      |> State.move(player, coord)
+      |> notify_player_locked_in(player)
+      |> reply_with_speed(player)
+    else
+      error -> reply(state, error)
+    end
   end
 
   @impl GenServer

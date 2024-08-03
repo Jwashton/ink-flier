@@ -25,7 +25,17 @@ defmodule InkFlierTest.Game do
       assert_receive {:player_locked_in, :a}
     end
 
-    # illegal move
+    test "Illegal move detected" do
+      pid = start_test_game()
+
+      unchanged_position = {-1,-1}
+      illegal_destination = {99,99}
+
+      assert {:error, :illegal_destination} = Game.move(pid, :a, illegal_destination)
+      assert %{a: ^unchanged_position} = Game.current_positions(pid)
+    end
+
+    # Can't move again until all locked in
 
     # Both players moved = next round
     #   - Send all current_positions
@@ -37,8 +47,6 @@ defmodule InkFlierTest.Game do
     # move results in crash
     # move results in win (after everyone locked in)
     #   - multiple winners possible
-
-    # Can't move again until all locked in
   end
 
   # test "resign" do
