@@ -1,46 +1,45 @@
 defmodule InkFlierTest.Game do
   use ExUnit.Case
+  import TinyMaps
 
   alias InkFlierTest.Helpers
   alias InkFlier.Game
 
+  setup do
+    {:ok, pid} = Game.start_link([:a, :b], Helpers.test_track, self())
+    ~M{pid}
+  end
+
+
   test "start" do
-    _pid = start_test_game()
     assert_receive {:starting_positions, %{a: {-1,-1}, b: {-2,-2}}}
   end
 
-  test "current_positions" do
-    pid = start_test_game()
-    assert Game.current_positions(pid) == %{a: {-1,-1}, b: {-2,-2}}
+  test "current_positions", c do
+    assert Game.current_positions(c.pid) == %{a: {-1,-1}, b: {-2,-2}}
   end
 
   describe "move" do
-    test "Move once locks in" do
-      pid = start_test_game()
-
+    test "Move once locks in", c do
       destination = {0,-1}
 
-      assert {:ok, {:speed, 1}} = Game.move(pid, :a, destination)
-      assert %{a: ^destination} = Game.current_positions(pid)
+      assert {:ok, {:speed, 1}} = Game.move(c.pid, :a, destination)
+      assert %{a: ^destination} = Game.current_positions(c.pid)
       assert_receive {:player_locked_in, :a}
     end
 
-    test "Illegal move detected" do
-      pid = start_test_game()
-
+    test "Illegal move detected", c do
       unchanged_position = {-1,-1}
       illegal_destination = {99,99}
 
-      assert {:error, :illegal_destination} = Game.move(pid, :a, illegal_destination)
-      assert %{a: ^unchanged_position} = Game.current_positions(pid)
+      assert {:error, :illegal_destination} = Game.move(c.pid, :a, illegal_destination)
+      assert %{a: ^unchanged_position} = Game.current_positions(c.pid)
     end
 
-    test "Can't move again until all locked in" do
-      pid = start_test_game()
+    test "Can't move again until all locked in", c do
+      {:ok, _speed} = Game.move(c.pid, :a, {0,-1})
 
-      {:ok, _speed} = Game.move(pid, :a, {0,-1})
-
-      assert {:error, :already_locked_in} = Game.move(pid, :a, {0,-1})
+      assert {:error, :already_locked_in} = Game.move(c.pid, :a, {0,-1})
     end
 
     # Both players moved = next round
@@ -59,11 +58,4 @@ defmodule InkFlierTest.Game do
   # end
   # test "get_current_game_state" do
   # end
-
-
-  defp start_test_game do
-    {:ok, pid} = Game.start_link([:a, :b], Helpers.test_track, self())
-
-    pid
-  end
 end
