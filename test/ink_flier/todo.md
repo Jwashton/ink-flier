@@ -1,3 +1,9 @@
+# 2024-08-03
+- Maybe extract another abstraction/module from Game: Round (aka a baby version of Stage/Phase engine)
+  - Might be able to pull ROund and LockedIn fields into there
+  - It would also need a copy of Players (or maybe just give it Players to be in charge of)
+  - Might not work, but could be cool if it split off some of the helper functions (advanceRound etc) cleanly
+
 # 2024-08-02
 - Game.current_positions- Don't need this extra interface func afterall.
   - Just go back to original "get_current_game_state" get-everything function plan
