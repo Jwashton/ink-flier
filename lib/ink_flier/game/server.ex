@@ -47,13 +47,6 @@ defmodule InkFlier.Game.Server do
   end
 
   @impl GenServer
-  def handle_call(:current_positions, _, t) do
-    t
-    |> Game.current_positions
-    |> reply_message(t)
-  end
-
-  @impl GenServer
   def handle_call(:summary, _, t) do
     round = Game.round(t)
     positions = Game.current_positions(t)
