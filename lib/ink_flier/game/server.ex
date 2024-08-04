@@ -48,10 +48,11 @@ defmodule InkFlier.Game.Server do
 
   @impl GenServer
   def handle_call(:summary, _, t) do
-    round = Game.round(t)
-    positions = Game.current_positions(t)
-
-    reply(t, ~M{round, positions})
+    %{
+      round: Game.round(t),
+      positions: Game.current_positions(t),
+    }
+    |> reply_message(t)
   end
 
   defp notify_starting_positions(t), do: notify(t, {:starting_positions, Game.current_positions(t)})
