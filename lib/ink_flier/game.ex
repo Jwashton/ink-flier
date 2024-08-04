@@ -1,71 +1,65 @@
 defmodule InkFlier.Game do
-  use GenServer
+  use TypedStruct
   import TinyMaps
+  import Access, only: [key: 1]
 
-  alias __MODULE__.State
+  alias InkFlier.Game.Server
+  alias InkFlier.Board
+  alias InkFlier.Car
   alias InkFlier.RaceTrack
-  alias InkFlier.Coord
 
   @type player_id :: any
-  @type players :: [player_id]
-  @type house_rules_placeholder :: :TODO
+  @type players :: [Game.player_id]
 
-  @spec start_link(players, RaceTrack.t, pid, house_rules_placeholder) :: {:ok, pid}
-  def start_link(players, track, notify_target, _house_rules \\ nil), do:
-    GenServer.start_link(__MODULE__, ~M{players, track, notify_target})
-
-  @spec move(pid, player_id, Coord.t) :: {:ok, {:speed, integer}} | :TODO
-  def move(pid, player, coord), do:
-    GenServer.call(pid, {:move, player, coord})
-
-  @spec current_positions(pid) :: %{player_id => Coord.t}
-  def current_positions(pid), do:
-    GenServer.call(pid, :current_positions)
-
-  @impl GenServer
-  def init(start_info) do
-    start_info
-    |> State.new
-    |> notify_starting_positions
-    |> ok
+  typedstruct enforce: true do
+    field :board, Board.t
+    field :track, RaceTrack.t
+    field :locked_in, MapSet.t(player_id), default: MapSet.new
+    field :notify_target, Server.notify_target, required: false
+    # field :house_rules
   end
 
-  @impl GenServer
-  def handle_call({:move, player, coord}, _, state) do
-    with :ok <- State.check_legal_move(state, player, coord),
-         :ok <- State.check_already_locked_in(state, player) do
-      state
-      |> State.move(player, coord)
-      |> notify({:player_locked_in, player})
-      |> reply_with_speed(player)
-    else
-      error -> reply(state, error)
-    end
+  def new(~M{players, track, notify_target}) do
+    track_start_coords = RaceTrack.start(track)
+    random_pole_position? = false
+
+    board = Board.new(players, track_start_coords, random_pole_position?)
+
+    struct!(__MODULE__, ~M{board, track, notify_target})
+  end
+  def new(players, track, notify_target \\ nil), do: new(~M{players, track, notify_target})
+
+  def move(t, player, coord) do
+    t
+    |> do_move(player, coord)
+    |> lock_in(player)
   end
 
-  @impl GenServer
-  def handle_call(:current_positions, _, state) do
-    state
-    |> State.current_positions
-    |> reply_message(state)
+  def check_legal_move(t, player, coord) do
+    if legal_move?(t, player, coord), do: :ok, else: {:error, :illegal_destination}
   end
 
-
-  defp notify_starting_positions(state), do: notify(state, {:starting_positions, State.current_positions(state)})
-
-  defp ok(state), do: {:ok, state}
-
-  defp reply(state, message), do: {:reply, message, state}
-
-  defp reply_message(message, state), do: reply(state, message)
-
-  defp reply_with_speed(state, player), do: reply(state, {:ok, {:speed, State.speed(state, player)}})
-
-  defp notify(state, message) do
-    state
-    |> State.notify_target
-    |> send(message)
-
-    state
+  def check_already_locked_in(t, player) do
+    unless locked_in?(t, player), do: :ok, else: {:error, :already_locked_in}
   end
+
+  def board(t), do: t.board
+  def notify_target(t), do: t.notify_target
+  def locked_in(t), do: t.locked_in
+
+  def players(t), do: t |> board |> Map.keys
+  def current_positions(t), do: t |> board |> Board.current_positions
+
+  def speed(t, player), do: t |> car(player) |> Car.speed
+  def legal_move?(t, player, coord), do: t |> car(player) |> Car.legal_move?(coord)
+
+
+  defp car(t, player), do: get_in(t, car_key(player))
+
+  defp lock_in(t, player), do: update_in(t.locked_in, &MapSet.put(&1, player))
+  defp do_move(t, player, coord), do: update_in(t, car_key(player), &Car.move(&1, coord))
+
+  defp locked_in?(t, player), do: player in locked_in(t)
+
+  defp car_key(player), do: [key(:board), key(player)]
 end
