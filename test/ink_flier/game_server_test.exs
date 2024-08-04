@@ -42,7 +42,18 @@ defmodule InkFlierTest.GameServer do
       assert {:error, :already_locked_in} = Server.move(c.pid, :a, {0,-1})
     end
 
-    # Both players moved = next round
+    test "Both players moved = next round", c do
+      assert %{round: 1} = Server.current_game_state(c.pid)
+
+      # {:ok, _speed} = Server.move(c.pid, :a, {0,-1})
+      # {:ok, _speed} = Server.move(c.pid, :b, {-1,-2})
+
+      # assert %{round: 2} = Server.current_game_state(c.pid)
+    end
+
+    # test "Both players moved = Unlocked and able to move again" do
+    # end
+
     #   - Send all current_positions
 
     # test "legal_move?" do
