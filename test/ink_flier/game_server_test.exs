@@ -16,7 +16,7 @@ defmodule InkFlierTest.GameServer do
   end
 
   test "current_positions", c do
-    assert Server.current_positions(c.pid) == %{a: {-1,-1}, b: {-2,-2}}
+    assert %{a: {-1,-1}, b: {-2,-2}} = Server.current_game_state(c.pid).positions
   end
 
   describe "move" do
@@ -24,7 +24,7 @@ defmodule InkFlierTest.GameServer do
       destination = {0,-1}
 
       assert {:ok, {:speed, 1}} = Server.move(c.pid, :a, destination)
-      assert %{a: ^destination} = Server.current_positions(c.pid)
+      assert %{a: ^destination} = Server.current_game_state(c.pid).positions
       assert_receive {:player_locked_in, :a}
     end
 
@@ -33,7 +33,7 @@ defmodule InkFlierTest.GameServer do
       illegal_destination = {99,99}
 
       assert {:error, :illegal_destination} = Server.move(c.pid, :a, illegal_destination)
-      assert %{a: ^unchanged_position} = Server.current_positions(c.pid)
+      assert %{a: ^unchanged_position} = Server.current_game_state(c.pid).positions
     end
 
     test "Can't move again until all locked in", c do

@@ -9,6 +9,7 @@ defmodule InkFlier.Game.Server do
   @type house_rules_placeholder :: :TODO
   @type current_game_state :: %{
     round: Game.round,
+    positions: %{Game.player_id => Coord.t},
   }
 
   @spec start_link(Game.players, RaceTrack.t, pid, house_rules_placeholder) :: {:ok, pid}
@@ -19,9 +20,6 @@ defmodule InkFlier.Game.Server do
       {:ok, {:speed, integer}}
       | {:error, error_description :: atom}
   def move(pid, player, coord), do: GenServer.call(pid, {:move, player, coord})
-
-  @spec current_positions(pid) :: %{Game.player_id => Coord.t}
-  def current_positions(pid), do: GenServer.call(pid, :current_positions)
 
   @spec current_game_state(pid) :: current_game_state
   def current_game_state(pid), do: GenServer.call(pid, :current_game_state)
@@ -58,8 +56,9 @@ defmodule InkFlier.Game.Server do
   @impl GenServer
   def handle_call(:current_game_state, _, t) do
     round = Game.round(t)
+    positions = Game.current_positions(t)
 
-    reply(t, ~M{round})
+    reply(t, ~M{round, positions})
   end
 
   defp notify_starting_positions(t), do: notify(t, {:starting_positions, Game.current_positions(t)})
