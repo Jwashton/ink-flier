@@ -57,8 +57,9 @@ defmodule InkFlierTest.GameServer do
 
       assert {:ok, _speed} = Server.move(c.pid, :a, {1,-1})
     end
+    raise "todo next, check todo list (try extracting Round if possible)"
 
-    #   - Send all current_positions
+    # Round change:  - Send all current_positions
 
     # test "legal_move?" do
     # # NOTE extra interface function, yes. For drawing the x,y places you're allowed to hover over. Like the chess board
