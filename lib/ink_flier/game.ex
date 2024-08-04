@@ -27,7 +27,6 @@ defmodule InkFlier.Game do
   def new(~M{players, track, notify_target}) do
     track_start_coords = RaceTrack.start(track)
     random_pole_position? = false
-
     board = Board.new(players, track_start_coords, random_pole_position?)
 
     struct!(__MODULE__, ~M{board, track, notify_target, players})
@@ -69,8 +68,15 @@ defmodule InkFlier.Game do
 
   defp car(t, player), do: get_in(t, car_key(player))
 
+  defp advance_round(t) do
+    t
+    |> Map.update!(:round, & &1 + 1)
+    |> reset_locked_in
+  end
+
+  defp reset_locked_in(t), do: put_in(t.locked_in, MapSet.new)
   defp lock_in(t, player), do: update_in(t.locked_in, &MapSet.put(&1, player))
-  defp advance_round(t), do: update_in(t.round, & &1 + 1)
+
   defp do_move(t, player, coord), do: update_in(t, car_key(player), &Car.move(&1, coord))
 
   defp locked_in?(t, player), do: player in locked_in(t)
