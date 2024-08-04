@@ -8,10 +8,13 @@ defmodule InkFlier.Game do
   alias InkFlier.Car
   alias InkFlier.RaceTrack
 
+  @type player_id :: any
+  @type players :: [Game.player_id]
+
   typedstruct enforce: true do
     field :board, Board.t
     field :track, RaceTrack.t
-    field :locked_in, MapSet.t(Server.player_id), default: MapSet.new
+    field :locked_in, MapSet.t(player_id), default: MapSet.new
     field :notify_target, Server.notify_target, required: false
     # field :house_rules
   end

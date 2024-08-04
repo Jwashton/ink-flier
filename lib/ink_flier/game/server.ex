@@ -6,19 +6,17 @@ defmodule InkFlier.Game.Server do
   alias InkFlier.RaceTrack
   alias InkFlier.Coord
 
-  @type player_id :: any
-  @type players :: [player_id]
   @type house_rules_placeholder :: :TODO
 
-  @spec start_link(players, RaceTrack.t, pid, house_rules_placeholder) :: {:ok, pid}
+  @spec start_link(Game.players, RaceTrack.t, pid, house_rules_placeholder) :: {:ok, pid}
   def start_link(players, track, notify_target, _house_rules \\ nil), do:
     GenServer.start_link(__MODULE__, ~M{players, track, notify_target})
 
-  @spec move(pid, player_id, Coord.t) :: {:ok, {:speed, integer}} | :TODO
+  @spec move(pid, Game.player_id, Coord.t) :: {:ok, {:speed, integer}} | :TODO
   def move(pid, player, coord), do:
     GenServer.call(pid, {:move, player, coord})
 
-  @spec current_positions(pid) :: %{player_id => Coord.t}
+  @spec current_positions(pid) :: %{Game.player_id => Coord.t}
   def current_positions(pid), do:
     GenServer.call(pid, :current_positions)
 
