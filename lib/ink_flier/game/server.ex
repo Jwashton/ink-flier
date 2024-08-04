@@ -7,7 +7,7 @@ defmodule InkFlier.Game.Server do
   alias InkFlier.Coord
 
   @type house_rules_placeholder :: :TODO
-  @type current_game_state :: %{
+  @type summary :: %{
     round: Game.round,
     positions: %{Game.player_id => Coord.t},
   }
@@ -21,8 +21,8 @@ defmodule InkFlier.Game.Server do
       | {:error, error_description :: atom}
   def move(pid, player, coord), do: GenServer.call(pid, {:move, player, coord})
 
-  @spec current_game_state(pid) :: current_game_state
-  def current_game_state(pid), do: GenServer.call(pid, :current_game_state)
+  @spec summary(pid) :: summary
+  def summary(pid), do: GenServer.call(pid, :summary)
 
 
   @impl GenServer
@@ -54,7 +54,7 @@ defmodule InkFlier.Game.Server do
   end
 
   @impl GenServer
-  def handle_call(:current_game_state, _, t) do
+  def handle_call(:summary, _, t) do
     round = Game.round(t)
     positions = Game.current_positions(t)
 
