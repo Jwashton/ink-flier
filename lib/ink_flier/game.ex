@@ -7,6 +7,7 @@ defmodule InkFlier.Game do
   alias InkFlier.Board
   alias InkFlier.Car
   alias InkFlier.RaceTrack
+  alias InkFlier.RoundTracker
 
   @typedoc "Given order is maintained, although currently only used for prioritizing starting positions"
   @type players :: [Game.player_id]
@@ -16,6 +17,7 @@ defmodule InkFlier.Game do
   typedstruct enforce: true do
     field :board, Board.t
     field :players, players
+    field :round_tracker, RoundTracker.t
     field :locked_in, MapSet.t(player_id), default: MapSet.new
     field :notify_target, Server.notify_target, required: false
     field :track, RaceTrack.t
@@ -26,8 +28,9 @@ defmodule InkFlier.Game do
     track_start_coords = RaceTrack.start(track)
     random_pole_position? = false
     board = Board.new(players, track_start_coords, random_pole_position?)
+    round_tracker = RoundTracker.new
 
-    struct!(__MODULE__, ~M{board, track, notify_target, players})
+    struct!(__MODULE__, ~M{board, track, notify_target, players, round_tracker})
   end
   def new(players, track, notify_target \\ nil), do: new(~M{players, track, notify_target})
 
@@ -49,9 +52,10 @@ defmodule InkFlier.Game do
   def board(t), do: t.board
   def notify_target(t), do: t.notify_target
   def locked_in(t), do: t.locked_in
-  def round(t), do: t.round
   def players(t), do: t.players
+  def round_tracker(t), do: t.round_tracker
 
+  def current_round(t), do: t |> round_tracker |> RoundTracker.current
   def current_positions(t), do: t |> board |> Board.current_positions
 
   def speed(t, player), do: t |> car(player) |> Car.speed
@@ -68,7 +72,7 @@ defmodule InkFlier.Game do
 
   defp advance_round(t) do
     t
-    |> Map.update!(:round, & &1 + 1)
+    |> Map.update!(:round_tracker, &RoundTracker.advance/1)
     |> reset_locked_in
   end
 
