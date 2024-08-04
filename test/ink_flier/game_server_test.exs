@@ -57,7 +57,6 @@ defmodule InkFlierTest.GameServer do
 
       assert {:ok, _speed} = Server.move(c.pid, :a, {1,-1})
     end
-    raise "todo next, check todo list (try extracting Round if possible)"
 
     # Round change:  - Send all current_positions
 

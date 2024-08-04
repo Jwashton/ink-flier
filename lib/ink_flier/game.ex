@@ -12,12 +12,10 @@ defmodule InkFlier.Game do
   @type players :: [Game.player_id]
 
   @type player_id :: any
-  @type round :: integer
 
   typedstruct enforce: true do
     field :board, Board.t
     field :players, players
-    field :round, round, default: 1
     field :locked_in, MapSet.t(player_id), default: MapSet.new
     field :notify_target, Server.notify_target, required: false
     field :track, RaceTrack.t
