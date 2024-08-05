@@ -29,8 +29,8 @@ defmodule InkFlier.Game do
 
   def move(t, player, coord) do
     t
-    |> do_move(player, coord)
-    |> lock_in_player_for_round(player)
+    |> update_car(player, &Car.move(&1, coord))
+    |> update_round_tracker(&RoundTracker.lock_in(&1, player))
   end
 
   def check_legal_move(t, player, coord) do
@@ -56,7 +56,6 @@ defmodule InkFlier.Game do
   def speed(t, player), do: t |> car(player) |> Car.speed
   def legal_move?(t, player, coord), do: t |> car(player) |> Car.legal_move?(coord)
 
-  defp do_move(t, player, coord), do: update_in(t, car_key(player), &Car.move(&1, coord))
-  defp lock_in_player_for_round(t, player), do:
-    update_in(t.round_tracker, &RoundTracker.player_moved(&1, player))
+  defp update_car(t, player, func), do: update_in(t, car_key(player), func)
+  defp update_round_tracker(t, func), do: update_in(t.round_tracker, func)
 end

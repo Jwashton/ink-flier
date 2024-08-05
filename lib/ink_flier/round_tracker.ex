@@ -16,9 +16,9 @@ defmodule InkFlier.RoundTracker do
 
   def new(players), do: struct!(__MODULE__, ~M{players})
 
-  def player_moved(t, player) do
+  def lock_in(t, player) do
     t
-    |> lock_in(player)
+    |> do_lock_in(player)
     |> maybe_advance_round
   end
 
@@ -45,5 +45,5 @@ defmodule InkFlier.RoundTracker do
   defp reset_locked_in(t), do: put_in(t.locked_in, MapSet.new)
 
   defp advance_current(t), do: update_in(t.current, & &1 + 1)
-  defp lock_in(t, player), do: update_in(t.locked_in, &MapSet.put(&1, player))
+  defp do_lock_in(t, player), do: update_in(t.locked_in, &MapSet.put(&1, player))
 end
