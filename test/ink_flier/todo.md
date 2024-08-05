@@ -1,3 +1,8 @@
+# 2024-08-04
+- RaceTrack.Obstacle.wall_lines type, try @opaque. See if that hides it when inspecting the struct
+- Standardize {:ok, {:speed...}} and {:ok, :won} returns from GameServer
+  - Decide on list, or keyword list, or maps for the 2nd element
+
 # 2024-08-03
 - Maybe extract another abstraction/module from Game: Round (aka a baby version of Stage/Phase engine)
   - Might be able to pull ROund and LockedIn fields into there
