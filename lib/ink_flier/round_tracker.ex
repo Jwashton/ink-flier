@@ -22,11 +22,11 @@ defmodule InkFlier.RoundTracker do
     |> maybe_advance_round
   end
 
-  def locked_in?(t, player), do: player in locked_in(t)
+  def locked_in?(t, player), do: player in t.locked_in
 
 
   defp maybe_advance_round(t) do
-    if MapSet.equal?(players_set(t), locked_in(t)), do: advance_round(t), else: t
+    if MapSet.equal?(players_set(t), t.locked_in), do: advance_round(t), else: t
   end
 
   defp advance_round(t) do
@@ -37,10 +37,8 @@ defmodule InkFlier.RoundTracker do
 
 
   def current(t), do: t.current
-  defp locked_in(t), do: t.locked_in
-  defp players(t), do: t.players
 
-  defp players_set(t), do: t |> players |> MapSet.new
+  defp players_set(t), do: t.players |> MapSet.new
 
   defp reset_locked_in(t), do: put_in(t.locked_in, MapSet.new)
 
