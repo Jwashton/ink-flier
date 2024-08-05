@@ -7,10 +7,6 @@ defmodule InkFlier.Game.Server do
   alias InkFlier.Coord
 
   @type house_rules_placeholder :: :TODO
-  @type summary :: %{
-    round: Game.round,
-    positions: %{Game.player_id => Coord.t},
-  }
 
   @spec start_link(Game.players, RaceTrack.t, pid, house_rules_placeholder) :: {:ok, pid}
   def start_link(players, track, notify_target, _house_rules \\ nil), do:
@@ -21,7 +17,7 @@ defmodule InkFlier.Game.Server do
       | {:error, error_description :: atom}
   def move(pid, player, coord), do: GenServer.call(pid, {:move, player, coord})
 
-  @spec summary(pid) :: summary
+  @spec summary(pid) :: Game.summary
   def summary(pid), do: GenServer.call(pid, :summary)
 
 
@@ -50,27 +46,17 @@ defmodule InkFlier.Game.Server do
   @impl GenServer
   def handle_call(:summary, _, t) do
     t
-    |> build_summary
+    |> Game.summary
     |> reply_message(t)
   end
 
 
   defp maybe_notify_round_change(t, previous_state: previous_state) do
-    if Game.current_round(t) > Game.current_round(previous_state) do
-      notify(t, {:new_round, build_summary(t)})
-    else
-      t
-    end
-  end
-
-  defp build_summary(t) do
-    %{
-      round: Game.current_round(t),
-      positions: Game.current_positions(t),
-    }
+    if Game.round_changed?(t, previous_state), do: notify_round_change(t), else: t
   end
 
   defp notify_starting_positions(t), do: notify(t, {:starting_positions, Game.current_positions(t)})
+  defp notify_round_change(t), do: notify(t, {:new_round, Game.summary(t)})
 
   defp ok(t), do: {:ok, t}
 

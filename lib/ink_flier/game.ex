@@ -8,6 +8,11 @@ defmodule InkFlier.Game do
   alias InkFlier.RaceTrack
   alias InkFlier.RoundTracker
 
+  @type summary :: %{
+    round: RoundTracker.current_round,
+    positions: %{RoundTracker.player_id => Coord.t},
+  }
+
   typedstruct enforce: true do
     field :board, Board.t
     field :round_tracker, RoundTracker.t
@@ -32,6 +37,16 @@ defmodule InkFlier.Game do
     |> update_round_tracker(&RoundTracker.lock_in(&1, player))
   end
 
+  @spec summary(t) :: summary
+  def summary(t) do
+    %{
+      round: current_round(t),
+      positions: current_positions(t),
+    }
+  end
+
+  def round_changed?(t, previous_t), do: current_round(t) > current_round(previous_t)
+
   def check_legal_move(t, player, coord) do
     if legal_move?(t, player, coord), do: :ok, else: {:error, :illegal_destination}
   end
@@ -44,8 +59,8 @@ defmodule InkFlier.Game do
   def notify_target(t), do: t.notify_target
 
   def current_positions(t), do: t.board |> Board.current_positions
-  def current_round(t), do: t.round_tracker |> RoundTracker.current
   def speed(t, player), do: t.board[player] |> Car.speed
+  defp current_round(t), do: t.round_tracker |> RoundTracker.current
   defp locked_in?(t, player), do: t.round_tracker |> RoundTracker.locked_in?(player)
   defp legal_move?(t, player, coord), do: t.board[player] |> Car.legal_move?(coord)
 
