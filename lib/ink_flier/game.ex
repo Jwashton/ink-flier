@@ -37,6 +37,9 @@ defmodule InkFlier.Game do
     |> update_round_tracker(&RoundTracker.lock_in(&1, player))
   end
 
+  @doc false
+  def manual_move(t, player, coord), do: t |> update_car(player, &Car.move(&1, coord))
+
   @spec summary(t) :: summary
   def summary(t) do
     %{
