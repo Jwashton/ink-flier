@@ -40,6 +40,7 @@ defmodule InkFlier.Game.Server do
       t
       |> Game.move(player, coord)
       |> notify({:player_locked_in, player})
+      |> maybe_notify_round_change(previous_state: t)
       |> reply_with_speed(player)
     else
       error -> reply(t, error)
@@ -48,11 +49,25 @@ defmodule InkFlier.Game.Server do
 
   @impl GenServer
   def handle_call(:summary, _, t) do
+    t
+    |> build_summary
+    |> reply_message(t)
+  end
+
+
+  defp maybe_notify_round_change(t, previous_state: previous_state) do
+    if Game.current_round(t) > Game.current_round(previous_state) do
+      notify(t, {:new_round, build_summary(t)})
+    else
+      t
+    end
+  end
+
+  defp build_summary(t) do
     %{
       round: Game.current_round(t),
       positions: Game.current_positions(t),
     }
-    |> reply_message(t)
   end
 
   defp notify_starting_positions(t), do: notify(t, {:starting_positions, Game.current_positions(t)})

@@ -19,6 +19,15 @@ defmodule InkFlierTest.GameServer do
     assert %{a: {-1,-1}, b: {-2,-2}} = Server.summary(c.pid).positions
   end
 
+  test "summary updates round correctly", c do
+    assert %{round: 1} = Server.summary(c.pid)
+
+    {:ok, _speed} = Server.move(c.pid, :a, {0,-1})
+    {:ok, _speed} = Server.move(c.pid, :b, {-1,-2})
+
+    assert %{round: 2} = Server.summary(c.pid)
+  end
+
   describe "move" do
     test "Move once locks in", c do
       destination = {0,-1}
@@ -42,13 +51,17 @@ defmodule InkFlierTest.GameServer do
       assert {:error, :already_locked_in} = Server.move(c.pid, :a, {0,-1})
     end
 
-    test "Both players moved = next round", c do
-      assert %{round: 1} = Server.summary(c.pid)
+    test "On round change, notify everyone the new positions", c do
+      destination_a = {0,-1}
+      destination_b = {-1,-2}
 
-      {:ok, _speed} = Server.move(c.pid, :a, {0,-1})
-      {:ok, _speed} = Server.move(c.pid, :b, {-1,-2})
+      {:ok, _speed} = Server.move(c.pid, :a, destination_a)
+      refute_receive {:new_round, _}
+      {:ok, _speed} = Server.move(c.pid, :b, destination_b)
 
-      assert %{round: 2} = Server.summary(c.pid)
+      assert_receive {:new_round, summary}
+      assert %{round: 2} = summary
+      assert %{a: ^destination_a, b: ^destination_b} = summary.positions
     end
 
     test "Both players moved = Unlocked and able to move again", c do
@@ -57,8 +70,6 @@ defmodule InkFlierTest.GameServer do
 
       assert {:ok, _speed} = Server.move(c.pid, :a, {1,-1})
     end
-
-    # Round change:  - Send all current_positions
 
     # test "legal_move?" do
     # # NOTE extra interface function, yes. For drawing the x,y places you're allowed to hover over. Like the chess board
