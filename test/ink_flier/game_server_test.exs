@@ -71,14 +71,17 @@ defmodule InkFlierTest.GameServer do
       assert {:ok, _speed} = Server.move(c.pid, :a, {1,-1})
     end
 
-    # test "legal_move?" do
-    # # NOTE extra interface function, yes. For drawing the x,y places you're allowed to hover over. Like the chess board
-    # end
+    test "move results in crash" do
+      raise "TODO next"
+    end
 
-    # move results in crash
     # move results in win (after everyone locked in)
     #   - multiple winners possible
   end
+
+  # test "legal_move?" do
+  # # NOTE extra interface function, yes. For drawing the x,y places you're allowed to hover over. Like the chess board
+  # end
 
   # test "resign" do
   # end
