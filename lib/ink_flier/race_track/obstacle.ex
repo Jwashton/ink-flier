@@ -55,12 +55,8 @@ defmodule InkFlier.RaceTrack.Obstacle do
   """
   @spec add_collision_if_found(name_set, t, Line.t) :: name_set
   def add_collision_if_found(set, t, car_line) do
-    if collision?(car_line, wall_lines(t)), do: MapSet.put(set, name(t)), else: set
+    if collision?(car_line, t.wall_lines), do: MapSet.put(set, t.name), else: set
   end
-
-  def name(t), do: t.name
-  def coord_list(t), do: t.coord_list
-  def wall_lines(t), do: t.wall_lines
 
 
   defp build_wall_lines(coord_list) do
