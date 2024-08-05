@@ -41,20 +41,21 @@ defmodule InkFlier.Game do
     unless locked_in?(t, player), do: :ok, else: {:error, :already_locked_in}
   end
 
+
   defp car(t, player), do: get_in(t, car_key(player))
 
   defp car_key(player), do: [key(:board), key(player)]
 
 
-  def board(t), do: t.board
   def notify_target(t), do: t.notify_target
-  def round_tracker(t), do: t.round_tracker
+  defp board(t), do: t.board
+  defp round_tracker(t), do: t.round_tracker
 
   def current_positions(t), do: t |> board |> Board.current_positions
   def current_round(t), do: t |> round_tracker |> RoundTracker.current
-  defp locked_in?(t, player), do: t |> round_tracker |> RoundTracker.locked_in?(player)
   def speed(t, player), do: t |> car(player) |> Car.speed
-  def legal_move?(t, player, coord), do: t |> car(player) |> Car.legal_move?(coord)
+  defp locked_in?(t, player), do: t |> round_tracker |> RoundTracker.locked_in?(player)
+  defp legal_move?(t, player, coord), do: t |> car(player) |> Car.legal_move?(coord)
 
   defp update_car(t, player, func), do: update_in(t, car_key(player), func)
   defp update_round_tracker(t, func), do: update_in(t.round_tracker, func)
