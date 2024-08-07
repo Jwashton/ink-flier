@@ -32,8 +32,8 @@ defmodule InkFlier.Game do
 
   def move(t, player, coord) do
     t
-    |> update_board(&Board.move(&1, player, coord))
-    |> update_round_tracker(&RoundTracker.lock_in(&1, player))
+    |> do_move(player, coord)
+    |> lock_in(player)
   end
 
   @spec summary(t) :: summary
@@ -63,6 +63,6 @@ defmodule InkFlier.Game do
   defp locked_in?(t, player), do: t.round_tracker |> RoundTracker.locked_in?(player)
   defp legal_move?(t, player, coord), do: t.board |> Board.legal_move?(player, coord)
 
-  defp update_round_tracker(t, func), do: update_in(t.round_tracker, func)
-  defp update_board(t, func), do: update_in(t.board, func)
+  defp do_move(t, player, coord), do: update_in(t.board, &Board.move(&1, player, coord))
+  defp lock_in(t, player), do: update_in(t.round_tracker, &RoundTracker.lock_in(&1, player))
 end
