@@ -4,7 +4,6 @@ defmodule InkFlier.Game do
 
   alias InkFlier.Game.Server
   alias InkFlier.Board
-  alias InkFlier.Car
   alias InkFlier.RaceTrack
   alias InkFlier.RoundTracker
 
@@ -33,12 +32,12 @@ defmodule InkFlier.Game do
 
   def move(t, player, coord) do
     t
-    |> update_car(player, &Car.move(&1, coord))
+    |> do_move(player, coord)
     |> update_round_tracker(&RoundTracker.lock_in(&1, player))
   end
 
   @doc false
-  def manual_move(t, player, coord), do: t |> update_car(player, &Car.move(&1, coord))
+  defp do_move(t, player, coord), do: t |> update_board(&Board.move(&1, player, coord))
 
   @spec summary(t) :: summary
   def summary(t) do
@@ -67,6 +66,6 @@ defmodule InkFlier.Game do
   defp locked_in?(t, player), do: t.round_tracker |> RoundTracker.locked_in?(player)
   defp legal_move?(t, player, coord), do: t.board |> Board.legal_move?(player, coord)
 
-  defp update_car(t, player, func), do: update_in(t.board[player], func)
   defp update_round_tracker(t, func), do: update_in(t.round_tracker, func)
+  defp update_board(t, func), do: update_in(t.board, func)
 end

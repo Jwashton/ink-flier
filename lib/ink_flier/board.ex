@@ -31,4 +31,6 @@ defmodule InkFlier.Board do
 
   def speed(t, player), do: t[player] |> Car.speed
   def legal_move?(t, player, coord), do: t[player] |> Car.legal_move?(coord)
+
+  def move(t, player, coord), do: t[player] |> update_in(&Car.move(&1, coord))
 end
