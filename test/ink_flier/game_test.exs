@@ -11,4 +11,8 @@ defmodule InkFlierTest.Game do
     |> Game.current_positions
     |> Map.get(:a) == {99,99}
   end
+
+  test "new" do
+    t = Game.new([:a, :b], Helpers.test_track, self())
+  end
 end
