@@ -32,12 +32,9 @@ defmodule InkFlier.Game do
 
   def move(t, player, coord) do
     t
-    |> do_move(player, coord)
+    |> update_board(&Board.move(&1, player, coord))
     |> update_round_tracker(&RoundTracker.lock_in(&1, player))
   end
-
-  @doc false
-  defp do_move(t, player, coord), do: t |> update_board(&Board.move(&1, player, coord))
 
   @spec summary(t) :: summary
   def summary(t) do
