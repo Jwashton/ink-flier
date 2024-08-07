@@ -18,7 +18,6 @@ defmodule InkFlier.Board do
     |> Map.new
   end
 
-  def car(t, player), do: Map.get(t, player)
 
 
   defp coord_to_car_tuple({player, coord}), do: {player, Car.new(coord)}
@@ -28,4 +27,10 @@ defmodule InkFlier.Board do
   # TODO
   # defp players_in_order(players, true), do: ...
   defp players_in_order(players, false), do: players
+
+
+  def speed(t, player), do: t[player] |> Car.speed
+  def legal_move?(t, player, coord), do: t[player] |> Car.legal_move?(coord)
+
+  def move(t, player, coord), do: t[player] |> update_in(&Car.move(&1, coord))
 end
