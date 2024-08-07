@@ -62,10 +62,10 @@ defmodule InkFlier.Game do
   def notify_target(t), do: t.notify_target
 
   def current_positions(t), do: t.board |> Board.current_positions
-  def speed(t, player), do: t.board[player] |> Car.speed
+  def speed(t, player), do: t.board |> Board.speed(player)
   defp current_round(t), do: t.round_tracker |> RoundTracker.current
   defp locked_in?(t, player), do: t.round_tracker |> RoundTracker.locked_in?(player)
-  defp legal_move?(t, player, coord), do: t.board[player] |> Car.legal_move?(coord)
+  defp legal_move?(t, player, coord), do: t.board |> Board.legal_move?(player, coord)
 
   defp update_car(t, player, func), do: update_in(t.board[player], func)
   defp update_round_tracker(t, func), do: update_in(t.round_tracker, func)
