@@ -59,7 +59,7 @@ defmodule InkFlier.Game do
 
   def current_positions(t), do: t.board |> Board.current_positions
   def speed(t, player), do: t.board |> Board.speed(player)
+  defp legal_move?(t, player, coord), do: t.board |> Board.legal_move?(player, coord)
   defp current_round(t), do: t.round_tracker |> RoundTracker.current
   defp locked_in?(t, player), do: t.round_tracker |> RoundTracker.locked_in?(player)
-  defp legal_move?(t, player, coord), do: t.board |> Board.legal_move?(player, coord)
 end
