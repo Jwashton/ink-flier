@@ -1,3 +1,7 @@
+# 2024-08-06
+- Game sturcture might change in a bit to do functional core of a lot of what Server is currently doing (the :ok etc checks)
+  - I have other email notes about this but that's basic idea
+
 # 2024-08-04
 - RaceTrack.Obstacle.wall_lines type, try @opaque. See if that hides it when inspecting the struct
 - Standardize {:ok, {:speed...}} and {:ok, :won} returns from GameServer
