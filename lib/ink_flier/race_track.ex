@@ -1,17 +1,6 @@
 defmodule InkFlier.RaceTrack do
   @moduledoc """
   Struct and helpers for building a Race Track
-
-  ## Keys
-  - *start*-
-
-  - *check1*/*check2*- lines that must be crossed for valid win
-
-  - *goal*- Usually the same as the line of the `start` coords, but can be anywhere as long as you have to pass through the `check`'s to reach it
-
-  - *obstacles*
-    - See `InkFlier.RaceTrack.Obstacle`
-    - Recommended (but not required) obstacles are "Inner Track" and "Outer Track"
   """
 
   use TypedStruct
@@ -23,14 +12,31 @@ defmodule InkFlier.RaceTrack do
   @typedoc "List of coords for start positions, in order of desierability ([best_start_pos, second_best_start_pos, ...])"
   @type start :: [Coord.t]
 
+  @typedoc "Lines that must be crossed for valid win"
+  @type check :: Line.t
+
+  @typedoc """
+  Players win by crossing this line
+
+  Usually the same as the line of the `start` coords, but can be anywhere as long as you have to pass through the `check`'s to reach it
+  """
+  @type goal :: Line.t
+
+  @typedoc """
+  See `InkFlier.RaceTrack.Obstacle`
+
+  Recommended (but not required) obstacles are "Inner Track" and "Outer Track"
+  """
+  @type obstacles :: MapSet.t(Obstacle.t)
+
   @type collision_reply :: :ok | {:collision, Obstacle.name_set}
 
   typedstruct enforce: true do
     field :start, start
-    field :check1, Line.t
-    field :check2, Line.t
-    field :goal, Line.t
-    field :obstacles, MapSet.t(Obstacle.t)
+    field :check1, check
+    field :check2, check
+    field :goal, goal
+    field :obstacles, obstacles
   end
 
 
