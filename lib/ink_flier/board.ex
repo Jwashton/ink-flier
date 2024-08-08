@@ -2,13 +2,17 @@ defmodule InkFlier.Board do
   @moduledoc """
   Abstraction for tracking players and their current car position
   """
+  use TypedStruct
 
   alias InkFlier.Game
   alias InkFlier.Car
   alias InkFlier.Coord
   alias InkFlier.HouseRules
 
-  @type t :: %{Game.player_id => Car.t}
+  typedstruct enforce: true do
+    field :positions, %{Game.player_id => Car.t}
+    field :players, [Game.player_id], default: []
+  end
 
   @doc "Create a new board"
   @spec new([Game.player_id], [Coord.t]) :: t
