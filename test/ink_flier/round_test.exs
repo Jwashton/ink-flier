@@ -13,7 +13,7 @@ defmodule InkFlierTest.Round do
   test "new" do
     board = Board.new([:a, :b], [{-1,-1}, {-2,-2}, {-3,-3}, {-4,-4}])
 
-    assert {_round, instructions} = Round.new(1, board)
+    assert {_round, instructions} = Round.new(board, 1)
     assert instructions == [
       {:notify_room, {:new_round, 1}},
       {:notify_room, {:player_position, :a, %{coord: {-1,-1}, speed: 0}}},

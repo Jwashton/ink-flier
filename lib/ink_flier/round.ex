@@ -9,8 +9,8 @@ defmodule InkFlier.Round do
       | {:player_position, Game.player_id, %{coord: Coord.t, speed: integer}}
 
 
-  @spec new(integer, Board.t) :: reply
-  def new(round_number, current_board) do
+  @spec new(Board.t, integer) :: reply
+  def new(current_board, round_number) do
     {:TODO,
       for player <- Board.players(current_board) do
       {:notify_room, {:player_position, player, %{
