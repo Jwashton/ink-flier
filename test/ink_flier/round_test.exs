@@ -26,8 +26,10 @@ defmodule InkFlierTest.Round do
       board = Board.new([:a, :b], [{-1,-1}, {-2,-2}, {-3,-3}, {-4,-4}])
 
       destination = {-1,-2}
-      {round, _instructions} = Round.new(board, 1)
-      {round, instructions} = Round.move(round, :b, destination)
+      {round, instructions} =
+        board
+        |> Round.new(1)
+        |> Round.move(:b, destination)
 
       assert instructions == [
         {:notify_room, {:player_locked_in, :b}},

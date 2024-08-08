@@ -31,6 +31,9 @@ defmodule InkFlier.Round do
     {t, instructions}
   end
 
+  @doc false
+  def move({t, _previous_instructions}, player, destination), do: move(t, player, destination)
+
   def move(t, player, destination) do
     t =
       t
