@@ -1,6 +1,5 @@
 # 2024-08-07
-- Next step, finish pulling stuff into functional core from old server
-  - Start by doing a Round module as the main driver
+- Board might end up holding Track
 
 # 2024-08-06
 - Game sturcture might change in a bit to do functional core of a lot of what Server is currently doing (the :ok etc checks)
