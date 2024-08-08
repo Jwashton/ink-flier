@@ -22,7 +22,7 @@ defmodule InkFlierTest.Round do
   end
 end
 
-# start
+# [x] start
 # move
 # - normal
 # - illegal
@@ -40,5 +40,6 @@ end
 #     - confirm multiple players can win on the last round
 # resign
 # get-everything (summary)
+# - Doesn't send players locked-in position; send their position as-of BEGINING of current round; Everyone will get update of new positions after round ends and next one starts
 # legal_move?
 # - extra interface function needed, yes. For drawing the x,y places you're allowed to hover over. Like the chess board
