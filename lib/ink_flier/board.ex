@@ -39,6 +39,14 @@ defmodule InkFlier.Board do
     |> Map.new
   end
 
+  @doc "Get one player's current car positon"
+  @spec current_position(t, Game.player_id) :: Coord.t
+  def current_position(t, player) do
+    t
+    |> current_positions
+    |> Map.get(player)
+  end
+
   @doc "Get players in given order"
   def players(t), do: t.players
 
@@ -50,8 +58,8 @@ defmodule InkFlier.Board do
   defp players_in_order(players, _random_pole_position? = true, randomizer_func), do: randomizer_func.(players)
 
 
-  # def speed(t, player), do: t[player] |> Car.speed
-  # def legal_move?(t, player, coord), do: t[player] |> Car.legal_move?(coord)
+  def speed(t, player), do: t.positions[player] |> Car.speed
+  # def legal_move?(t, player, coord), do: t.positions[player] |> Car.legal_move?(coord)
 
-  # def move(t, player, coord), do: t[player] |> update_in(&Car.move(&1, coord))
+  # def move(t, player, coord), do: t.positions[player] |> update_in(&Car.move(&1, coord))
 end
