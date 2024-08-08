@@ -21,3 +21,24 @@ defmodule InkFlierTest.Round do
     ]
   end
 end
+
+# start
+# move
+# - normal
+# - illegal
+#   - too far
+#   - already locked in
+#   - last one to lock in
+#     - Round change
+#       - (don't Send summary, that'll happen automatically at START of NEXT round)
+# - crash (similar (or same?) as resign)
+# - cross any combination of check/goal lines
+#   - win with correct combo
+#     - All lines crossed in order
+#       - In previous turns leading up to this last crossing
+#       - Or you can cross multiple lines in a single turn
+#     - confirm multiple players can win on the last round
+# resign
+# get-everything (summary)
+# legal_move?
+# - extra interface function needed, yes. For drawing the x,y places you're allowed to hover over. Like the chess board
