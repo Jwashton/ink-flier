@@ -21,4 +21,9 @@ defmodule InkFlierTest.Board do
       end
     end
   end
+
+  # test "Board maintains list of player order" do
+  #   t = Board.new([:b, :z, :a], [{-1,-1}, {-2,-2}, {-3,-3}, {-4,-4}])
+  #   assert t |> Board.players == [:b, :z, :a]
+  # end
 end
