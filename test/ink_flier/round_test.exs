@@ -24,13 +24,16 @@ defmodule InkFlierTest.Round do
   describe "move" do
     test "Normal valid move locks player in" do
       board = Board.new([:a, :b], [{-1,-1}, {-2,-2}, {-3,-3}, {-4,-4}])
+
+      destination = {-1,-2}
       {round, _instructions} = Round.new(board, 1)
-      {_round, instructions} = Round.move(round, :b, {0,-1})
+      {round, instructions} = Round.move(round, :b, destination)
 
       assert instructions == [
         {:notify_room, {:player_locked_in, :b}},
         {:notify_player, :b, {:speed, 1}}
       ]
+      assert round |> Round.upcomming_move(:b) == destination
     end
   end
 end
