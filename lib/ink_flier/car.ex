@@ -16,6 +16,8 @@ defmodule InkFlier.Car do
     |> Coord.all_adjacent_and_original
   end
 
+  def legal_move?(t, coord), do: coord in legal_moves(t)
+
   def move(t, new_coord), do: %{t | position: new_coord, previous_position: t.position}
 
   def speed(t), do: Coord.m_distance(t.previous_position, t.position)
@@ -24,4 +26,6 @@ defmodule InkFlier.Car do
     momentum = Coord.get_offset(t.previous_position, t.position)
     Coord.apply_offset(t.position, momentum)
   end
+
+  def position(t), do: t.position
 end
