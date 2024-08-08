@@ -22,17 +22,19 @@ defmodule InkFlier.Board do
 
   @doc false
   def new(players, track_start_coords, random_pole_position?, randomizer_func) do
-    players
-    |> players_in_order(random_pole_position?, randomizer_func)
-    |> Enum.zip(track_start_coords)
-    |> Enum.map(&coord_to_car_tuple/1)
-    |> Map.new
+    struct!(__MODULE__, positions:
+      players
+      |> players_in_order(random_pole_position?, randomizer_func)
+      |> Enum.zip(track_start_coords)
+      |> Enum.map(&coord_to_car_tuple/1)
+      |> Map.new
+    )
   end
 
   @doc "Get each player's current car positon"
   @spec current_positions(t) :: %{Game.player_id => Coord.t}
   def current_positions(t) do
-    t
+    t.positions
     |> Enum.map(&car_to_coord_tuple/1)
     |> Map.new
   end
