@@ -11,7 +11,7 @@ defmodule InkFlier.Board do
 
   typedstruct enforce: true do
     field :positions, %{Game.player_id => Car.t}
-    field :players, [Game.player_id], default: []
+    field :players, [Game.player_id]
   end
 
   @doc "Create a new board"
@@ -22,7 +22,7 @@ defmodule InkFlier.Board do
 
   @doc false
   def new(players, track_start_coords, random_pole_position?, randomizer_func) do
-    struct!(__MODULE__, positions:
+    struct!(__MODULE__, players: players, positions:
       players
       |> players_in_order(random_pole_position?, randomizer_func)
       |> Enum.zip(track_start_coords)
@@ -38,6 +38,9 @@ defmodule InkFlier.Board do
     |> Enum.map(&car_to_coord_tuple/1)
     |> Map.new
   end
+
+  @doc "Get players in given order"
+  def players(t), do: t.players
 
 
   defp coord_to_car_tuple({player, coord}), do: {player, Car.new(coord)}
