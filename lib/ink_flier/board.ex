@@ -10,12 +10,9 @@ defmodule InkFlier.Board do
 
   @type t :: %{Game.player_id => Car.t}
 
-  @typedoc "List of all available track coordinates to start on, with most-desierabile first"
-  @type track_start_coords :: [Coord.t]
-
   @doc "Create a new board"
   @spec new([Game.player_id], [Coord.t]) :: t
-  @spec new([Game.player_id], track_start_coords, HouseRules.random_pole_position?) :: t
+  @spec new([Game.player_id], RaceTrack.start, HouseRules.random_pole_position?) :: t
   def new(players, track_start_coords, random_pole_position? \\ false), do:
     new(players, track_start_coords, random_pole_position?, &Enum.shuffle/1)
 
@@ -28,7 +25,7 @@ defmodule InkFlier.Board do
     |> Map.new
   end
 
-  @doc "Get player's current car positons"
+  @doc "Get each player's current car positon"
   @spec current_positions(t) :: %{Game.player_id => Coord.t}
   def current_positions(t) do
     t

@@ -3,7 +3,7 @@ defmodule InkFlier.RaceTrack do
   Struct and helpers for building a Race Track
 
   ## Keys
-  - *start*- List of coords for start positions, in order of desierability ([best_start_pos, second_best_start_pos, ...])
+  - *start*-
 
   - *check1*/*check2*- lines that must be crossed for valid win
 
@@ -20,16 +20,18 @@ defmodule InkFlier.RaceTrack do
   alias InkFlier.Coord
   alias InkFlier.Line
 
+  @typedoc "List of coords for start positions, in order of desierability ([best_start_pos, second_best_start_pos, ...])"
+  @type start :: [Coord.t]
+
+  @type collision_reply :: :ok | {:collision, Obstacle.name_set}
+
   typedstruct enforce: true do
-    field :start, coord_list
+    field :start, start
     field :check1, Line.t
     field :check2, Line.t
     field :goal, Line.t
     field :obstacles, MapSet.t(Obstacle.t)
   end
-
-  @type coord_list :: [Coord.t]
-  @type collision_reply :: :ok | {:collision, Obstacle.name_set}
 
 
   @spec new(Keyword.t) :: t
