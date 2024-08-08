@@ -1,3 +1,7 @@
+# 2024-08-08
+- Do the typedoc "hide all except explicitly included" thing
+  - Or actually, let's manually list the ones to exclude (all the generated stuff, InkFlier.Mailer, etc)
+
 # 2024-08-07
 - Board might end up holding Track
 
