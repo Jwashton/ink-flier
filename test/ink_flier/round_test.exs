@@ -37,6 +37,10 @@ defmodule InkFlierTest.Round do
       ]
       assert round |> Round.upcomming_move(:b) == destination
     end
+
+    test "Illegal move- bad destination" do
+      raise "TODO next"
+    end
   end
 end
 
