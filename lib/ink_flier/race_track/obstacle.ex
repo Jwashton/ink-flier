@@ -28,6 +28,7 @@ defmodule InkFlier.RaceTrack.Obstacle do
   import TinyMaps
 
   alias InkFlier.Line
+  alias InkFlier.Coord
 
   typedstruct enforce: true do
     field :name, name
@@ -36,7 +37,7 @@ defmodule InkFlier.RaceTrack.Obstacle do
   end
 
   @type name :: String.t
-  @type coord_list :: InkFlier.RaceTrack.coord_list
+  @type coord_list :: [Coord.t]
 
   @type name_set :: MapSet.t(name)
 

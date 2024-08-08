@@ -11,6 +11,7 @@ defmodule InkFlier.Game do
     round: RoundTracker.current_round,
     positions: %{RoundTracker.player_id => Coord.t},
   }
+  @type player_id :: any
 
   typedstruct enforce: true do
     field :board, Board.t
