@@ -22,6 +22,14 @@ defmodule InkFlier.Round do
     }
   end
 
+  def move(_t, _player, _destination) do
+    {:TODO,
+      [
+        {:notify_room, {:player_locked_in, :b}},
+        {:notify_player, :b, {:speed, 1}}
+      ]
+    }
+  end
 
   defp prepend(list, item), do: [item | list]
 end
