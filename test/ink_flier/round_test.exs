@@ -37,6 +37,18 @@ defmodule InkFlierTest.Round do
     end
 
     test "Illegal move- bad destination" do
+      unchanged_position = {-1,-1}
+      illegal_destination = {99,99}
+
+      {round, instructions} =
+        @board
+        |> Round.new(1)
+        |> Round.move(:a, illegal_destination)
+
+      assert instructions == [
+        {:notify_player, :a, {:error, :illegal_destination}}
+      ]
+      assert round |> Round.upcomming_move(:a) == unchanged_position
     end
   end
 end

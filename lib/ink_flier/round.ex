@@ -24,7 +24,8 @@ defmodule InkFlier.Round do
       {:player_locked_in, Game.player_id}
 
   @type player_instruction ::
-      {:speed, integer}
+      {:speed, integer} |
+      {:error, :illegal_destination}
 
   typedstruct enforce: true do
     field :board, Board.t
