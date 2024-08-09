@@ -10,10 +10,10 @@ defmodule InkFlierTest.Round do
   #   ~M{round}
   # end
 
-  test "new" do
-    board = Board.new([:a, :b], [{-1,-1}, {-2,-2}, {-3,-3}, {-4,-4}])
+  @board Board.new([:a, :b], [{-1,-1}, {-2,-2}, {-3,-3}, {-4,-4}])
 
-    assert {_round, instructions} = Round.new(board, 1)
+  test "new" do
+    assert {_round, instructions} = Round.new(@board, 1)
     assert instructions == [
       {:notify_room, {:new_round, 1}},
       {:notify_room, {:player_position, :a, %{coord: {-1,-1}, speed: 0}}},
@@ -23,11 +23,9 @@ defmodule InkFlierTest.Round do
 
   describe "move" do
     test "Normal valid move locks player in" do
-      board = Board.new([:a, :b], [{-1,-1}, {-2,-2}, {-3,-3}, {-4,-4}])
-
       destination = {-1,-2}
       {round, instructions} =
-        board
+        @board
         |> Round.new(1)
         |> Round.move(:b, destination)
 
@@ -39,7 +37,6 @@ defmodule InkFlierTest.Round do
     end
 
     test "Illegal move- bad destination" do
-      raise "TODO next"
     end
   end
 end
