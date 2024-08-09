@@ -1,18 +1,10 @@
 # 2024-08-08
 - Do the typedoc "hide all except explicitly included" thing
   - Or actually, let's manually list the ones to exclude (all the generated stuff, InkFlier.Mailer, etc)
-
-# 2024-08-07
-- Board might end up holding Track
-
-# 2024-08-06
-- Game sturcture might change in a bit to do functional core of a lot of what Server is currently doing (the :ok etc checks)
-  - I have other email notes about this but that's basic idea
+- Take a look at [dialyxir](https://github.com/jeremyjh/dialyxir)
 
 # 2024-08-04
 - RaceTrack.Obstacle.wall_lines type, try @opaque. See if that hides it when inspecting the struct
-- Standardize {:ok, {:speed...}} and {:ok, :won} returns from GameServer
-  - Decide on list, or keyword list, or maps for the 2nd element
 
 # 2024-08-03
 - Maybe extract another abstraction/module from Game: Round (aka a baby version of Stage/Phase engine)
@@ -24,11 +16,6 @@
 - Game.current_positions- Don't need this extra interface func afterall.
   - Just go back to original "get_current_game_state" get-everything function plan
   - And that'll return a map, which I'll pattern match on `%{current_positions: ...}` instead
-
-# 2024-08-01
-- I think I want to reverse Gamestate/server
-  - InkFlier.Game = the struct module, then InkFlier.Game.Server (which I can `as: GameServer` when there's a conflict and just Server the rest of the time, which is nice I think)
-  - It'll be Game.current_positions etc, instead of State.blabla which is a little harder to mentally parse I think
 
 # 2024-07-31b
 - Add types and doc
