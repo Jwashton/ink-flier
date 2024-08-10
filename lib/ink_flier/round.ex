@@ -34,14 +34,9 @@ defmodule InkFlier.Round do
   @doc "Build a new round and initial notification instructions"
   @spec new(Board.t, integer) :: Reply.t
   def new(current_board, round_number) do
-    reply =
-      struct!(__MODULE__, board: current_board)
-      |> Reply.instruction({:notify_room, {:new_round, round_number}})
-
-    current_board
-    |> player_position_tuples
-    |> Enum.map(& {:notify_room, &1})
-    |> Enum.reduce(reply, &Reply.instruction(&2, &1))
+    struct!(__MODULE__, board: current_board)
+    |> Reply.instruction({:notify_room, {:new_round, round_number}})
+    |> reply_player_positions(current_board)
   end
 
   @doc false
@@ -73,12 +68,18 @@ defmodule InkFlier.Round do
   end
 
 
-  defp player_position_tuples(board) do
+  defp reply_player_positions(reply, current_board) do
+    current_board
+    |> player_position_notifications
+    |> Enum.reduce(reply, &Reply.instruction(&2, &1))
+  end
+
+  defp player_position_notifications(board) do
     for player <- Board.players(board) do
-      {:player_position, player, %{
+      {:notify_room, {:player_position, player, %{
         coord: Board.current_position(board, player),
         speed: Board.speed(board, player),
-      }}
+      }}}
     end
   end
 
