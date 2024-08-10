@@ -34,9 +34,8 @@ defmodule InkFlier.Round.Reply do
   end
 
   @spec instruction(t, Round.instruction) :: t
-  def instruction({_round, instructions} = t, new_instruction) do
-    instructions ++ [new_instruction]
-    |> then(& put_elem(t, 1, &1) )
+  def instruction(t, new_instruction) do
+    instruction(t, [new_instruction])
   end
 
 
