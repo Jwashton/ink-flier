@@ -9,10 +9,9 @@ defmodule InkFlier.Round do
   """
   use TypedStruct
 
+  alias __MODULE__.Reply
   alias InkFlier.Game
   alias InkFlier.Board
-
-  @type reply :: {t, [instruction]}
 
   @type instruction ::
       {:notify_room, room_instruction} |
@@ -33,63 +32,51 @@ defmodule InkFlier.Round do
   end
 
   @doc "Build a new round and initial notification instructions"
-  @spec new(Board.t, integer) :: reply
+  @spec new(Board.t, integer) :: Reply.t
   def new(current_board, round_number) do
-    t = struct!(__MODULE__, board: current_board)
-
-    instructions =
-      for player <- Board.players(current_board) do
-        {:notify_room, {:player_position, player, %{
-          coord: Board.current_position(current_board, player),
-          speed: Board.speed(current_board, player),
-        }}}
-      end
-      |> prepend({:notify_room, {:new_round, round_number}})
-
-    {t, instructions}
+    struct!(__MODULE__, board: current_board)
+    |> Reply.instruction({:notify_room, {:new_round, round_number}})
+    |> Reply.instruction(player_position_notifications(current_board))
   end
-
-  @doc false
-  def move({t, _previous_instructions}, player, destination), do: move(t, player, destination)
 
   @doc """
   Attempt to move a player in the current round
 
   This is the main function of the game
 
-  Many replies to an attempted move are possible. They are listed in the `t:reply/0` type.
+  Many responses to an attempted move are possible. They are listed in the `t:instruction/0` type.
   Some examples:
   - "Normal move that was sucessful"
   - "Normal move by final player, so round ends"
   - "Illegal move, attempted to move too far"
   - "Illegal move, this player already locked in"
   """
-  @spec move(t, Game.player_id, Coord.t) :: reply
+  @spec move(t, Game.player_id, Coord.t) :: Reply.t
   def move(t, player, destination) do
     with :ok <- check_legal_move(t, player, destination) do
-      t =
-        t
-        |> do_move(player, destination)
-        |> lock_in(player)
-
-      instructions =
-        [
-          {:notify_room, {:player_locked_in, player}},
-          {:notify_player, player, {:speed, speed(t, player)}}
-        ]
-
-      {t, instructions}
-    else
-      error -> {t, [{:notify_player, player, error}]}
+      t
+      |> Reply.round(&do_move(&1, player, destination))
+      |> Reply.round(&lock_in(&1, player))
+      |> Reply.instruction({:notify_room, {:player_locked_in, player}})
+      |> Reply.instruction(&{:notify_player, player, {:speed, speed(&1, player)}})
     end
   end
 
 
-  defp prepend(list, item), do: [item | list]
+  defp player_position_notifications(board) do
+    for player <- Board.players(board) do
+      {:notify_room, {:player_position, player, %{
+        coord: Board.current_position(board, player),
+        speed: Board.speed(board, player),
+      }}}
+    end
+  end
 
   defp check_legal_move(t, player, destination) do
-    if Board.legal_move?(t.board, player, destination), do: :ok, else: {:error, :illegal_destination}
+    if Board.legal_move?(t.board, player, destination), do: :ok, else: reply_error(t, player, :illegal_destination)
   end
+
+  defp reply_error(t, player, msg), do: Reply.instruction(t, {:notify_player, player, {:error, msg}})
 
 
   @doc false

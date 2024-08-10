@@ -27,7 +27,7 @@ defmodule InkFlierTest.Round do
       {round, instructions} =
         @board
         |> Round.new(1)
-        |> Round.move(:b, destination)
+        |> move(:b, destination)
 
       assert instructions == [
         {:notify_room, {:player_locked_in, :b}},
@@ -43,7 +43,7 @@ defmodule InkFlierTest.Round do
       {round, instructions} =
         @board
         |> Round.new(1)
-        |> Round.move(:a, illegal_destination)
+        |> move(:a, illegal_destination)
 
       assert instructions == [
         {:notify_player, :a, {:error, :illegal_destination}}
@@ -51,6 +51,9 @@ defmodule InkFlierTest.Round do
       assert round |> Round.upcomming_move(:a) == unchanged_position
     end
   end
+
+
+  defp move({t, _previous_instructions}, player, destination), do: Round.move(t, player, destination)
 end
 
 # [x] start
