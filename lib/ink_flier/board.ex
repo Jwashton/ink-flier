@@ -15,7 +15,7 @@ defmodule InkFlier.Board do
   end
 
   @doc "Create a new board"
-  @spec new([Game.player_id], [Coord.t]) :: t
+  @spec new([Game.player_id], RaceTrack.start) :: t
   @spec new([Game.player_id], RaceTrack.start, HouseRules.random_pole_position?) :: t
   def new(players, track_start_coords, random_pole_position? \\ false), do:
     new(players, track_start_coords, random_pole_position?, &Enum.shuffle/1)
