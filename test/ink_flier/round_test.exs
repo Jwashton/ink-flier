@@ -50,6 +50,10 @@ defmodule InkFlierTest.Round do
       ]
       assert round |> Round.upcomming_move(:a) == unchanged_position
     end
+
+    test "Can't move again until all locked in" do
+      raise "TODO next"
+    end
   end
 
 
