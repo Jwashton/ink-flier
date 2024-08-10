@@ -14,15 +14,15 @@ defmodule InkFlier.Round do
   alias InkFlier.Board
 
   @type instruction ::
-      {:notify_room, room_instruction} |
-      {:notify_player, Game.player_id, player_instruction}
+      {:notify_room, room_notification} |
+      {:notify_player, Game.player_id, player_notification}
 
-  @type room_instruction ::
+  @type room_notification ::
       {:new_round, integer} |
       {:player_position, Game.player_id, %{coord: Coord.t, speed: integer}} |
       {:player_locked_in, Game.player_id}
 
-  @type player_instruction ::
+  @type player_notification ::
       {:speed, integer} |
       {:error, :illegal_destination} |
       {:error, :already_locked_in}
