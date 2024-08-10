@@ -39,9 +39,6 @@ defmodule InkFlier.Round do
     |> Reply.instruction(player_position_notifications(current_board))
   end
 
-  @doc false
-  def move({t, _previous_instructions}, player, destination), do: move(t, player, destination)
-
   @doc """
   Attempt to move a player in the current round
 
