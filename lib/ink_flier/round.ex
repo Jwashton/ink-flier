@@ -36,7 +36,6 @@ defmodule InkFlier.Round do
   def new(current_board, round_number) do
     reply =
       struct!(__MODULE__, board: current_board)
-      |> Reply.new
       |> Reply.instruction({:notify_room, {:new_round, round_number}})
 
     for player <- Board.players(current_board) do
@@ -67,13 +66,12 @@ defmodule InkFlier.Round do
   def move(t, player, destination) do
     with :ok <- check_legal_move(t, player, destination) do
       t
-      |> Reply.new
       |> Reply.round(&do_move(&1, player, destination))
       |> Reply.round(&lock_in(&1, player))
       |> Reply.instruction({:notify_room, {:player_locked_in, player}})
       |> Reply.instruction(&{:notify_player, player, {:speed, speed(&1, player)}})
     else
-      error -> t |> Reply.new |> Reply.instruction({:notify_player, player, error})
+      error -> Reply.instruction(t, {:notify_player, player, error})
     end
   end
 
