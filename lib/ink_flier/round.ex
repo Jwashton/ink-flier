@@ -66,7 +66,7 @@ defmodule InkFlier.Round do
   """
   @spec move(t, Game.player_id, Coord.t) :: reply
   def move(t, player, destination) do
-    if t.board |> Board.legal_move?(player, destination) do
+    with :ok <- check_legal_move(t, player, destination) do
       t =
         t
         |> do_move(player, destination)
@@ -80,17 +80,16 @@ defmodule InkFlier.Round do
 
       {t, instructions}
     else
-      instructions =
-        [
-          {:notify_player, player, {:error, :illegal_destination}}
-        ]
-
-      {t, instructions}
+      error -> {t, [{:notify_player, player, error}]}
     end
   end
 
 
   defp prepend(list, item), do: [item | list]
+
+  defp check_legal_move(t, player, destination) do
+    if Board.legal_move?(t.board, player, destination), do: :ok, else: {:error, :illegal_destination}
+  end
 
 
   @doc false
