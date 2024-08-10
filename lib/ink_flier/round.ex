@@ -66,18 +66,27 @@ defmodule InkFlier.Round do
   """
   @spec move(t, Game.player_id, Coord.t) :: reply
   def move(t, player, destination) do
-    t =
-      t
-      |> do_move(player, destination)
-      |> lock_in(player)
+    if t.board |> Board.legal_move?(player, destination) do
+      t =
+        t
+        |> do_move(player, destination)
+        |> lock_in(player)
 
-    instructions =
-      [
-        {:notify_room, {:player_locked_in, player}},
-        {:notify_player, player, {:speed, speed(t, player)}}
-      ]
+      instructions =
+        [
+          {:notify_room, {:player_locked_in, player}},
+          {:notify_player, player, {:speed, speed(t, player)}}
+        ]
 
-    {t, instructions}
+      {t, instructions}
+    else
+      instructions =
+        [
+          {:notify_player, player, {:error, :illegal_destination}}
+        ]
+
+      {t, instructions}
+    end
   end
 
 
