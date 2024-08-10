@@ -19,6 +19,12 @@ defmodule InkFlier.Round.Reply do
     instruction(t, new_instruction_func.(round))
   end
 
+  @spec instruction(t, [Round.instruction]) :: t
+  def instruction({_round, instructions} = t, new_instructions) when is_list(new_instructions) do
+    instructions ++ new_instructions
+    |> then(& put_elem(t, 1, &1) )
+  end
+
   @spec instruction(t, Round.instruction) :: t
   def instruction({_round, instructions} = t, new_instruction) do
     instructions ++ [new_instruction]

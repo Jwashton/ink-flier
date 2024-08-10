@@ -36,7 +36,7 @@ defmodule InkFlier.Round do
   def new(current_board, round_number) do
     struct!(__MODULE__, board: current_board)
     |> Reply.instruction({:notify_room, {:new_round, round_number}})
-    |> reply_player_positions(current_board)
+    |> Reply.instruction(player_position_notifications(current_board))
   end
 
   @doc false
@@ -67,12 +67,6 @@ defmodule InkFlier.Round do
     end
   end
 
-
-  defp reply_player_positions(reply, current_board) do
-    current_board
-    |> player_position_notifications
-    |> Enum.reduce(reply, &Reply.instruction(&2, &1))
-  end
 
   defp player_position_notifications(board) do
     for player <- Board.players(board) do
