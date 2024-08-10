@@ -73,7 +73,7 @@ end
 # - [x] normal
 # - illegal
 #   - [x] too far
-#   - already locked in
+#   - [x] already locked in
 #   - last one to lock in
 #     - Round change
 #       - (don't Send summary, that'll happen automatically at START of NEXT round)

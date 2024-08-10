@@ -24,7 +24,8 @@ defmodule InkFlier.Round do
 
   @type player_instruction ::
       {:speed, integer} |
-      {:error, :illegal_destination}
+      {:error, :illegal_destination} |
+      {:error, :already_locked_in}
 
   typedstruct enforce: true do
     field :board, Board.t
@@ -53,7 +54,8 @@ defmodule InkFlier.Round do
   """
   @spec move(t, Game.player_id, Coord.t) :: Reply.t
   def move(t, player, destination) do
-    with :ok <- check_legal_move(t, player, destination) do
+    with :ok <- check_legal_move(t, player, destination),
+         :ok <- check_not_already_locked_in(t, player) do
       t
       |> Reply.round(&do_move(&1, player, destination))
       |> Reply.round(&lock_in(&1, player))
@@ -76,7 +78,13 @@ defmodule InkFlier.Round do
     if Board.legal_move?(t.board, player, destination), do: :ok, else: reply_error(t, player, :illegal_destination)
   end
 
+  defp check_not_already_locked_in(t, player) do
+    unless locked_in?(t, player), do: :ok, else: reply_error(t, player, :already_locked_in)
+  end
+
   defp reply_error(t, player, msg), do: Reply.instruction(t, {:notify_player, player, {:error, msg}})
+
+  defp locked_in?(t, player), do: player in t.locked_in
 
 
   @doc false
