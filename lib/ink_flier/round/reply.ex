@@ -15,7 +15,7 @@ defmodule InkFlier.Round.Reply do
   def round({round, _} = t, round_updater) do
     round
     |> round_updater.()
-    |> then(& put_elem(t, 0, &1) )
+    |> update_round(t)
   end
 
 
@@ -23,14 +23,14 @@ defmodule InkFlier.Round.Reply do
   def instruction(%Round{} = round, a), do: round |> new |> instruction(a)
 
   @spec instruction(t, (Round.t -> Round.instruction) ) :: t
-  def instruction({round, _instructions} = t, new_instruction_func) when is_function(new_instruction_func) do
+  def instruction({round, _} = t, new_instruction_func) when is_function(new_instruction_func) do
     instruction(t, new_instruction_func.(round))
   end
 
   @spec instruction(t, [Round.instruction]) :: t
-  def instruction({_round, instructions} = t, new_instructions) when is_list(new_instructions) do
+  def instruction({_, instructions} = t, new_instructions) when is_list(new_instructions) do
     instructions ++ new_instructions
-    |> then(& put_elem(t, 1, &1) )
+    |> update_instructions(t)
   end
 
   @spec instruction(t, Round.instruction) :: t
@@ -40,4 +40,7 @@ defmodule InkFlier.Round.Reply do
 
 
   defp new(round), do: {round, []}
+
+  defp update_round(round, t), do: put_elem(t, 0, round)
+  defp update_instructions(instructions, t), do: put_elem(t, 1, instructions)
 end
