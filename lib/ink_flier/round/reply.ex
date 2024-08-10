@@ -1,8 +1,14 @@
 defmodule InkFlier.Round.Reply do
+  @moduledoc """
+  Helper module for managing a Round's reply, which consists of the Round itself, plus a list of Instructions
+  """
+
   alias InkFlier.Round
 
   @type t :: {Round.t, [Round.instruction]}
 
+
+  @spec round(Round.t, any) :: t
   def round(%Round{} = round, a), do: round |> new |> round(a)
 
   @spec round(t, (Round.t -> Round.t)) :: t
@@ -12,6 +18,8 @@ defmodule InkFlier.Round.Reply do
     |> then(& put_elem(t, 0, &1) )
   end
 
+
+  @spec instruction(Round.t, any) :: t
   def instruction(%Round{} = round, a), do: round |> new |> instruction(a)
 
   @spec instruction(t, (Round.t -> Round.instruction) ) :: t
