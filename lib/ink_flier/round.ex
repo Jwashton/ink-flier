@@ -38,12 +38,9 @@ defmodule InkFlier.Round do
       struct!(__MODULE__, board: current_board)
       |> Reply.instruction({:notify_room, {:new_round, round_number}})
 
-    for player <- Board.players(current_board) do
-      {:notify_room, {:player_position, player, %{
-        coord: Board.current_position(current_board, player),
-        speed: Board.speed(current_board, player),
-      }}}
-    end
+    current_board
+    |> player_position_tuples
+    |> Enum.map(& {:notify_room, &1})
     |> Enum.reduce(reply, &Reply.instruction(&2, &1))
   end
 
@@ -75,6 +72,15 @@ defmodule InkFlier.Round do
     end
   end
 
+
+  defp player_position_tuples(board) do
+    for player <- Board.players(board) do
+      {:player_position, player, %{
+        coord: Board.current_position(board, player),
+        speed: Board.speed(board, player),
+      }}
+    end
+  end
 
   defp check_legal_move(t, player, destination) do
     if Board.legal_move?(t.board, player, destination), do: :ok, else: {:error, :illegal_destination}
