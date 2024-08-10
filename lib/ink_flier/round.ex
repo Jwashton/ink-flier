@@ -62,8 +62,6 @@ defmodule InkFlier.Round do
       |> Reply.round(&lock_in(&1, player))
       |> Reply.instruction({:notify_room, {:player_locked_in, player}})
       |> Reply.instruction(&{:notify_player, player, {:speed, speed(&1, player)}})
-    else
-      error -> Reply.instruction(t, {:notify_player, player, error})
     end
   end
 
@@ -78,8 +76,10 @@ defmodule InkFlier.Round do
   end
 
   defp check_legal_move(t, player, destination) do
-    if Board.legal_move?(t.board, player, destination), do: :ok, else: {:error, :illegal_destination}
+    if Board.legal_move?(t.board, player, destination), do: :ok, else: reply_error(t, player, :illegal_destination)
   end
+
+  defp reply_error(t, player, msg), do: Reply.instruction(t, {:notify_player, player, {:error, msg}})
 
 
   @doc false
