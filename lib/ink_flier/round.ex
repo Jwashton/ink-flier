@@ -76,8 +76,11 @@ defmodule InkFlier.Round do
   end
 
   defp check_legal_move(t, player, destination) do
-    if Board.legal_move?(t.board, player, destination), do: :ok, else: reply_error(t, player, :illegal_destination)
+    check(Board.legal_move?(t.board, player, destination), reply_error(t, player, :illegal_destination))
   end
+
+  defp check(true, _), do: :ok
+  defp check(false, msg), do: msg
 
   defp reply_error(t, player, msg), do: Reply.instruction(t, {:notify_player, player, {:error, msg}})
 
