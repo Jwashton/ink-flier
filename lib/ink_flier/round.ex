@@ -34,18 +34,18 @@ defmodule InkFlier.Round do
   @doc "Build a new round and initial notification instructions"
   @spec new(Board.t, integer) :: Reply.t
   def new(current_board, round_number) do
-    t = struct!(__MODULE__, board: current_board)
+    reply =
+      struct!(__MODULE__, board: current_board)
+      |> Reply.new
+      |> Reply.instruction({:notify_room, {:new_round, round_number}})
 
-    instructions =
-      for player <- Board.players(current_board) do
-        {:notify_room, {:player_position, player, %{
-          coord: Board.current_position(current_board, player),
-          speed: Board.speed(current_board, player),
-        }}}
-      end
-      |> prepend({:notify_room, {:new_round, round_number}})
-
-    {t, instructions}
+    for player <- Board.players(current_board) do
+      {:notify_room, {:player_position, player, %{
+        coord: Board.current_position(current_board, player),
+        speed: Board.speed(current_board, player),
+      }}}
+    end
+    |> Enum.reduce(reply, &Reply.instruction(&2, &1))
   end
 
   @doc false
@@ -73,12 +73,10 @@ defmodule InkFlier.Round do
       |> Reply.instruction({:notify_room, {:player_locked_in, player}})
       |> Reply.instruction(&{:notify_player, player, {:speed, speed(&1, player)}})
     else
-      error -> {t, [{:notify_player, player, error}]}
+      error -> t |> Reply.new |> Reply.instruction({:notify_player, player, error})
     end
   end
 
-
-  defp prepend(list, item), do: [item | list]
 
   defp check_legal_move(t, player, destination) do
     if Board.legal_move?(t.board, player, destination), do: :ok, else: {:error, :illegal_destination}
