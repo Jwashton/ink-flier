@@ -45,14 +45,22 @@ defmodule InkFlierTest.Round do
         |> Round.new(1)
         |> move(:a, illegal_destination)
 
-      assert instructions == [
-        {:notify_player, :a, {:error, :illegal_destination}}
-      ]
+      assert instructions == [{:notify_player, :a, {:error, :illegal_destination}}]
       assert round |> Round.upcomming_move(:a) == unchanged_position
     end
 
     test "Can't move again until all locked in" do
-      raise "TODO next"
+      move1 = {0,-1}
+      move2 = {2,-1}
+
+      {round, instructions} =
+        @board
+        |> Round.new(1)
+        |> move(:a, move1)
+        |> move(:a, move2)
+
+      assert instructions == [{:notify_player, :a, {:error, :already_locked_in}}]
+      assert round |> Round.upcomming_move(:a) == move1
     end
   end
 
@@ -62,9 +70,9 @@ end
 
 # [x] start
 # move
-# - normal
+# - [x] normal
 # - illegal
-#   - too far
+#   - [x] too far
 #   - already locked in
 #   - last one to lock in
 #     - Round change
