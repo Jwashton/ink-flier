@@ -8,39 +8,39 @@ defmodule InkFlier.Round.Reply do
   @type t :: {Round.t, [Round.instruction]}
 
 
-  @spec round(Round.t, any) :: t
-  def round(%Round{} = round, a), do: round |> new |> round(a)
+  @spec update_round(Round.t, any) :: t
+  def update_round(%Round{} = round, a), do: round |> new |> update_round(a)
 
-  @spec round(t, (Round.t -> Round.t)) :: t
-  def round({round, _} = t, round_updater) do
+  @spec update_round(t, (Round.t -> Round.t)) :: t
+  def update_round({round, _} = t, round_updater) do
     round
     |> round_updater.()
-    |> update_round(t)
+    |> set_round(t)
   end
 
 
-  @spec instruction(Round.t, any) :: t
-  def instruction(%Round{} = round, a), do: round |> new |> instruction(a)
+  @spec add_instruction(Round.t, any) :: t
+  def add_instruction(%Round{} = round, a), do: round |> new |> add_instruction(a)
 
-  @spec instruction(t, (Round.t -> Round.instruction) ) :: t
-  def instruction({round, _} = t, new_instruction_func) when is_function(new_instruction_func) do
-    instruction(t, new_instruction_func.(round))
+  @spec add_instruction(t, (Round.t -> Round.instruction) ) :: t
+  def add_instruction({round, _} = t, new_instruction_func) when is_function(new_instruction_func) do
+    add_instruction(t, new_instruction_func.(round))
   end
 
-  @spec instruction(t, [Round.instruction]) :: t
-  def instruction({_, instructions} = t, new_instructions) when is_list(new_instructions) do
+  @spec add_instruction(t, [Round.instruction]) :: t
+  def add_instruction({_, instructions} = t, new_instructions) when is_list(new_instructions) do
     instructions ++ new_instructions
-    |> update_instructions(t)
+    |> set_instructions(t)
   end
 
-  @spec instruction(t, Round.instruction) :: t
-  def instruction(t, new_instruction) do
-    instruction(t, [new_instruction])
+  @spec add_instruction(t, Round.instruction) :: t
+  def add_instruction(t, new_instruction) do
+    add_instruction(t, [new_instruction])
   end
 
 
   defp new(round), do: {round, []}
 
-  defp update_round(round, t), do: put_elem(t, 0, round)
-  defp update_instructions(instructions, t), do: put_elem(t, 1, instructions)
+  defp set_round(round, t), do: put_elem(t, 0, round)
+  defp set_instructions(instructions, t), do: put_elem(t, 1, instructions)
 end

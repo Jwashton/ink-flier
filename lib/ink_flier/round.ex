@@ -36,8 +36,8 @@ defmodule InkFlier.Round do
   @spec new(Board.t, integer) :: Reply.t
   def new(current_board, round_number) do
     struct!(__MODULE__, board: current_board)
-    |> Reply.instruction({:notify_room, {:new_round, round_number}})
-    |> Reply.instruction(player_position_notifications(current_board))
+    |> Reply.add_instruction({:notify_room, {:new_round, round_number}})
+    |> Reply.add_instruction(player_position_notifications(current_board))
   end
 
   @doc """
@@ -57,10 +57,10 @@ defmodule InkFlier.Round do
     with :ok <- check_legal_move(t, player, destination),
          :ok <- check_not_already_locked_in(t, player) do
       t
-      |> Reply.round(&do_move(&1, player, destination))
-      |> Reply.round(&lock_in(&1, player))
-      |> Reply.instruction({:notify_room, {:player_locked_in, player}})
-      |> Reply.instruction(&{:notify_player, player, {:speed, speed(&1, player)}})
+      |> Reply.update_round(&do_move(&1, player, destination))
+      |> Reply.update_round(&lock_in(&1, player))
+      |> Reply.add_instruction({:notify_room, {:player_locked_in, player}})
+      |> Reply.add_instruction(&{:notify_player, player, {:speed, speed(&1, player)}})
     end
   end
 
@@ -82,7 +82,7 @@ defmodule InkFlier.Round do
     unless locked_in?(t, player), do: :ok, else: reply_error(t, player, :already_locked_in)
   end
 
-  defp reply_error(t, player, msg), do: Reply.instruction(t, {:notify_player, player, {:error, msg}})
+  defp reply_error(t, player, msg), do: Reply.add_instruction(t, {:notify_player, player, {:error, msg}})
 
   defp locked_in?(t, player), do: player in t.locked_in
 
