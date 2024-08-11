@@ -21,6 +21,28 @@ defmodule InkFlierTest.Round do
     ]
   end
 
+  test "summary gives positions from START of round. (Pending moves will show up @ start of NEXT round)" do
+    original_position_a = {-1,-1}
+    original_position_b = {-2,-2}
+    pending_move = {0,-1}
+
+    {original_round, _} =
+      @board
+      |> Round.new(1)
+      |> move(:a, pending_move)
+
+    {unchanged_round, instructions} =
+      original_round
+      |> summary(:observer_1)
+
+    assert unchanged_round == original_round
+    assert instructions == [
+      {:notify_observer, :observer_1, {:new_round, 1}},
+      {:notify_observer, :observer_1, {:player_position, :a, %{coord: original_position_a, speed: 0}}},
+      {:notify_observer, :observer_1, {:player_position, :b, %{coord: original_position_b, speed: 0}}},
+    ]
+  end
+
   describe "move" do
     test "Normal valid move locks player in" do
       destination = {-1,-2}
@@ -87,12 +109,10 @@ end
 # [x] start
 # move
 # - [x] normal
-# - illegal
+# - [x] illegal
 #   - [x] too far
 #   - [x] already locked in
-#   - last one to lock in
-#     - Round change
-#       - (don't Send summary, that'll happen automatically at START of NEXT round)
+#   - [x] last one to lock in
 # - crash (similar (or same?) as resign)
 # - cross any combination of check/goal lines
 #   - win with correct combo

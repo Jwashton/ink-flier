@@ -16,6 +16,7 @@ defmodule InkFlier.Round do
 
   @type instruction ::
       {:notify_room, room_notification} |
+      {:notify_observer, Game.observer_id, room_notification} |
       {:notify_player, Game.player_id, player_notification} |
       {:end_of_round, round_number}
 
