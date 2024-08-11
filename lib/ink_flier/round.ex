@@ -8,23 +8,21 @@ defmodule InkFlier.Round do
   like "a player locked in" or "the round ended"
   """
   use TypedStruct
+  import TinyMaps
 
   alias __MODULE__.Reply
   alias InkFlier.Game
   alias InkFlier.Board
 
-  @type reply ::
-      {t, [instruction]} |
-      {:end_of_round, round_number, Board.t}
-
   @type instruction ::
       {:notify_room, room_notification} |
-      {:notify_player, Game.player_id, player_notification}
+      {:notify_player, Game.player_id, player_notification} |
+      {:end_of_round, round_number}
 
   @type room_notification ::
       {:new_round, round_number} |
       {:player_position, Game.player_id, %{coord: Coord.t, speed: integer}} |
-      {:player_locked_in, Game.player_id} |
+      {:player_locked_in, Game.player_id}
 
   @type player_notification ::
       {:speed, integer} |
@@ -36,12 +34,13 @@ defmodule InkFlier.Round do
   typedstruct enforce: true do
     field :board, Board.t
     field :locked_in, MapSet.t(Game.player_id), default: MapSet.new
+    field :round_number, round_number
   end
 
   @doc "Build a new round and initial notification instructions"
   @spec new(Board.t, round_number) :: Reply.t
   def new(current_board, round_number) do
-    struct!(__MODULE__, board: current_board)
+    struct!(__MODULE__, ~M{round_number, board: current_board})
     |> Reply.add_instruction({:notify_room, {:new_round, round_number}})
     |> Reply.add_instruction(player_position_notifications(current_board))
   end
@@ -67,6 +66,7 @@ defmodule InkFlier.Round do
       |> Reply.update_round(&lock_in(&1, player))
       |> Reply.add_instruction({:notify_room, {:player_locked_in, player}})
       |> Reply.add_instruction(&{:notify_player, player, {:speed, speed(&1, player)}})
+      |> maybe_end_round
     end
   end
 
@@ -88,9 +88,17 @@ defmodule InkFlier.Round do
     unless locked_in?(t, player), do: :ok, else: reply_error(t, player, :already_locked_in)
   end
 
+  defp maybe_end_round({t, _} = reply) do
+    unless all_locked_in?(t), do: reply, else: reply |> Reply.add_instruction({:end_of_round, t.round_number})
+  end
+
+  defp all_locked_in?(t), do: MapSet.equal?(t.locked_in, players_set(t))
+
   defp reply_error(t, player, msg), do: Reply.add_instruction(t, {:notify_player, player, {:error, msg}})
 
   defp locked_in?(t, player), do: player in t.locked_in
+
+  defp players_set(t), do: t.board |> Board.players |> MapSet.new
 
 
   @doc false

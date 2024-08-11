@@ -39,7 +39,6 @@ defmodule InkFlierTest.Round do
     test "Illegal move- bad destination" do
       unchanged_position = {-1,-1}
       illegal_destination = {99,99}
-
       {round, instructions} =
         @board
         |> Round.new(1)
@@ -52,7 +51,6 @@ defmodule InkFlierTest.Round do
     test "Can't move again until all locked in" do
       move1 = {0,-1}
       move2 = {2,-1}
-
       {round, instructions} =
         @board
         |> Round.new(1)
@@ -64,13 +62,21 @@ defmodule InkFlierTest.Round do
     end
 
     test "When all players have moved, round ends" do
-      reply =
+      move_a = {0,-1}
+      move_b = {-1,-2}
+      {round, instructions} =
         @board
         |> Round.new(1)
-        |> move(:a, {0,-1})
-        |> move(:b, {-1,-2})
+        |> move(:a, move_a)
+        |> move(:b, move_b)
 
-      assert reply == {:end_of_round, 2, board}
+      assert instructions == [
+        {:notify_room, {:player_locked_in, :b}},
+        {:notify_player, :b, {:speed, 1}},
+        {:end_of_round, 1},
+      ]
+      assert round |> Round.upcomming_move(:a) == move_a
+      assert round |> Round.upcomming_move(:b) == move_b
     end
   end
 
@@ -95,6 +101,8 @@ end
 #       - Or you can cross multiple lines in a single turn
 #     - confirm multiple players can win on the last round
 # resign
+#   - if players resigned, they count as locked in
+#     - so round can still end
 # get-everything (summary)
 # - Doesn't send players locked-in position; send their position as-of BEGINING of current round; Everyone will get update of new positions after round ends and next one starts
 # legal_move?
