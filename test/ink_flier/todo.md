@@ -1,3 +1,9 @@
+# 2024-08-10
+- Round.player_position_notifications can be partially extracted to Board.
+  - The return gives those coord&speed maps, and the round comprehension uses THOSE to wrap {:notify room...} around it
+- In typedoc for Round.instruction, I might not really need this. Everything's self explanitory EXCEPT notify_member
+  - If I can make the "member = player OR observer" concept obvious somewhere or somehow else (rename it, or link to doc somewhere else...), then I can prob delete this unnecessary'ish typedoc
+
 # 2024-08-08
 - Do the typedoc "hide all except explicitly included" thing
   - Or actually, let's manually list the ones to exclude (all the generated stuff, InkFlier.Mailer, etc)
