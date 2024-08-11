@@ -5,8 +5,7 @@ defmodule InkFlier.Round.Reply do
 
   alias InkFlier.Round
 
-  @type t :: {Round.t, [Round.instruction]}
-
+  @type t :: Round.reply
 
   @spec update_round(Round.t, any) :: t
   def update_round(%Round{} = round, a), do: round |> new |> update_round(a)

@@ -62,6 +62,16 @@ defmodule InkFlierTest.Round do
       assert instructions == [{:notify_player, :a, {:error, :already_locked_in}}]
       assert round |> Round.upcomming_move(:a) == move1
     end
+
+    test "When all players have moved, round ends" do
+      reply =
+        @board
+        |> Round.new(1)
+        |> move(:a, {0,-1})
+        |> move(:b, {-1,-2})
+
+      assert reply == {:end_of_round, 2, board}
+    end
   end
 
 

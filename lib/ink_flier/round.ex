@@ -13,19 +13,25 @@ defmodule InkFlier.Round do
   alias InkFlier.Game
   alias InkFlier.Board
 
+  @type reply ::
+      {t, [instruction]} |
+      {:end_of_round, round_number, Board.t}
+
   @type instruction ::
       {:notify_room, room_notification} |
       {:notify_player, Game.player_id, player_notification}
 
   @type room_notification ::
-      {:new_round, integer} |
+      {:new_round, round_number} |
       {:player_position, Game.player_id, %{coord: Coord.t, speed: integer}} |
-      {:player_locked_in, Game.player_id}
+      {:player_locked_in, Game.player_id} |
 
   @type player_notification ::
       {:speed, integer} |
       {:error, :illegal_destination} |
       {:error, :already_locked_in}
+
+  @type round_number :: integer
 
   typedstruct enforce: true do
     field :board, Board.t
@@ -33,7 +39,7 @@ defmodule InkFlier.Round do
   end
 
   @doc "Build a new round and initial notification instructions"
-  @spec new(Board.t, integer) :: Reply.t
+  @spec new(Board.t, round_number) :: Reply.t
   def new(current_board, round_number) do
     struct!(__MODULE__, board: current_board)
     |> Reply.add_instruction({:notify_room, {:new_round, round_number}})
