@@ -33,13 +33,13 @@ defmodule InkFlierTest.Round do
 
     {unchanged_round, instructions} =
       original_round
-      |> summary(:observer_1)
+      |> Round.summary(:observer_1)
 
     assert unchanged_round == original_round
     assert instructions == [
-      {:notify_observer, :observer_1, {:new_round, 1}},
-      {:notify_observer, :observer_1, {:player_position, :a, %{coord: original_position_a, speed: 0}}},
-      {:notify_observer, :observer_1, {:player_position, :b, %{coord: original_position_b, speed: 0}}},
+      {:notify_member, :observer_1, {:new_round, 1}},
+      {:notify_member, :observer_1, {:player_position, :a, %{coord: original_position_a, speed: 0}}},
+      {:notify_member, :observer_1, {:player_position, :b, %{coord: original_position_b, speed: 0}}},
     ]
   end
 

@@ -14,9 +14,18 @@ defmodule InkFlier.Round do
   alias InkFlier.Game
   alias InkFlier.Board
 
+  @typedoc """
+  An instruction to be processed by a parent module/process
+
+  Notification targets may be:
+  - The entire room
+  - An individual player
+  - A room "member": usually an observer that joined partway through, but possibly a player that d/c'd then reconnected
+  - The parent module/process, recieving the end_of_round notice to start next round
+  """
   @type instruction ::
       {:notify_room, room_notification} |
-      {:notify_observer, Game.observer_id, room_notification} |
+      {:notify_member, Game.member_id, room_notification} |
       {:notify_player, Game.player_id, player_notification} |
       {:end_of_round, round_number}
 
