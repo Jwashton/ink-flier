@@ -1,14 +1,8 @@
 defmodule InkFlierTest.Round do
   use ExUnit.Case
-  # import TinyMaps
 
   alias InkFlier.Round
   alias InkFlier.Board
-
-  # setup do
-  #   round = Round.new(1, [:a, :b], Helpers.test_track)
-  #   ~M{round}
-  # end
 
   @board Board.new([:a, :b], [{-1,-1}, {-2,-2}, {-3,-3}, {-4,-4}])
 
