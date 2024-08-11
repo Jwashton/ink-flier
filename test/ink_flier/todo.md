@@ -2,6 +2,13 @@
 - I think I'll remember this, but whichever parent ends up handeling endOfRound->startOfNext will need the most upToDate board
   - Which will be in Round.board (which is WHY we return a final Round in the {round, instructions} even tho that round ended; we'll still need to retrieve that most upToDate board out of it)
 
+- Prob add some doc explaining the different clauses in Round.Reply (And use `## Examples` for each, just cut and pasting their uses from Round
+  - These two in their diff clauses, for example:
+      ```
+      |> Reply.add_instruction({:notify_room, {:player_locked_in, player}})
+      |> Reply.add_instruction(&{:notify_player, player, {:speed, speed(&1, player)}})
+      ```
+
 - Round.player_position_notifications can be partially extracted to Board.
   - The return gives those coord&speed maps, and the round comprehension uses THOSE to wrap {:notify room...} around it
 
