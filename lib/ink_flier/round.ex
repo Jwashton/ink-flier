@@ -71,6 +71,15 @@ defmodule InkFlier.Round do
   end
 
 
+  defp check_legal_move(t, player, destination) do
+    if Board.legal_move?(t.board, player, destination), do: :ok, else: reply_error(t, player, :illegal_destination)
+  end
+
+  defp check_not_already_locked_in(t, player) do
+    unless locked_in?(t, player), do: :ok, else: reply_error(t, player, :already_locked_in)
+  end
+
+
   defp player_position_notifications(board) do
     for player <- Board.players(board) do
       {:notify_room, {:player_position, player, %{
@@ -78,14 +87,6 @@ defmodule InkFlier.Round do
         speed: Board.speed(board, player),
       }}}
     end
-  end
-
-  defp check_legal_move(t, player, destination) do
-    if Board.legal_move?(t.board, player, destination), do: :ok, else: reply_error(t, player, :illegal_destination)
-  end
-
-  defp check_not_already_locked_in(t, player) do
-    unless locked_in?(t, player), do: :ok, else: reply_error(t, player, :already_locked_in)
   end
 
   defp maybe_end_round({t, _} = reply) do
