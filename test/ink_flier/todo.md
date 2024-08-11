@@ -1,6 +1,10 @@
 # 2024-08-10
+- I think I'll remember this, but whichever parent ends up handeling endOfRound->startOfNext will need the most upToDate board
+  - Which will be in Round.board (which is WHY we return a final Round in the {round, instructions} even tho that round ended; we'll still need to retrieve that most upToDate board out of it)
+
 - Round.player_position_notifications can be partially extracted to Board.
   - The return gives those coord&speed maps, and the round comprehension uses THOSE to wrap {:notify room...} around it
+
 - In typedoc for Round.instruction, I might not really need this. Everything's self explanitory EXCEPT notify_member
   - If I can make the "member = player OR observer" concept obvious somewhere or somehow else (rename it, or link to doc somewhere else...), then I can prob delete this unnecessary'ish typedoc
 
