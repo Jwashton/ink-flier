@@ -43,6 +43,7 @@ defmodule InkFlier.Round do
 
   typedstruct enforce: true do
     field :board, Board.t
+    field :start_of_round_board, Board.t
     field :locked_in, MapSet.t(Game.player_id), default: MapSet.new
     field :round_number, round_number
   end
@@ -50,7 +51,7 @@ defmodule InkFlier.Round do
   @doc "Build a new round and initial notification instructions"
   @spec new(Board.t, round_number) :: Reply.t
   def new(current_board, round_number) do
-    struct!(__MODULE__, ~M{round_number, board: current_board})
+    struct!(__MODULE__, ~M{round_number, board: current_board, start_of_round_board: current_board})
     |> Reply.add_instruction({:notify_room, {:new_round, round_number}})
     |> wrap_player_positions(current_board, &Reply.add_instruction(&2, {:notify_room, &1}))
   end
@@ -78,6 +79,31 @@ defmodule InkFlier.Round do
       |> Reply.add_instruction(&{:notify_player, player, {:speed, speed(&1, player)}})
       |> maybe_end_round
     end
+  end
+
+  @doc """
+  Ask for instructions to be sent to a room member, summarizing the current state of the round
+
+  Useful if a new observing member joins the room or a current player d/c's and reconnects
+
+  Given positions will be as-of round *beginning*. Wont reveal destination of players who
+  happen to have already locked in and are still be waiting for the others (until start of next round,
+  once *everyone* locked in)
+
+  ## Example
+      iex> {_round, instructions} = Round.summary(round, :observer_1)
+      iex> instructions
+      [
+        {:notify_member, :observer_1, {:new_round, 7}},
+        {:notify_member, :observer_1, {:player_position, :a, %{coord: {50,50}, speed: 7}}},
+        {:notify_member, :observer_1, {:player_position, :b, %{coord: {99,99}, speed: 10}}},
+      ]
+  """
+  @spec summary(t, Game.member_id) :: Reply.t
+  def summary(t, member) do
+    t
+    |> Reply.add_instruction(&{:notify_member, member, {:new_round, &1.round_number}})
+    |> wrap_player_positions(t.start_of_round_board, &Reply.add_instruction(&2, {:notify_member, member, &1}))
   end
 
 
