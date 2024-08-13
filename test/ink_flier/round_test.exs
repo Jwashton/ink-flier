@@ -96,6 +96,26 @@ defmodule InkFlierTest.Round do
     end
   end
 
+  # describe "Crash move" do
+  #   test "Multiple players remaining = game continues" do
+  #     move_a = {0,0}
+  #     move_b = {-1,-2}
+  #     move_c = {-2,-3}
+  #     {round, instructions} =
+  #       Board.new([:a, :b, :c], [{-1,-1}, {-2,-2}, {-3,-3}, {-4,-4}])
+  #       |> Round.new(1)
+  #       |> move(:a, move_a)
+  #       |> move(:b, move_b)
+  #       |> move(:c, move_c)
+
+  #     assert instructions
+  #     |> Enum.drop(2) == [
+  #       {:notify_room, {:crash, :a, move_a}},
+  #       {:end_of_round, 1},
+  #     ]
+  #   end
+  # end
+
 
   # NOTE Normally we would process all recieved instructions after each step. Can skip that in tests, since previous
   # instructions will have been checked in other tests
@@ -110,6 +130,9 @@ end
 #   - [x] already locked in
 #   - [x] last one to lock in
 # - crash (similar (or same?) as resign)
+#   - if multiple players remaining, game continues w/o crasher
+#   - if down to 1 player after crashes, they win
+#   - if down to 0 players after crashes, all players from start of round win
 # - cross any combination of check/goal lines
 #   - win with correct combo
 #     - All lines crossed in order
@@ -119,7 +142,7 @@ end
 # resign
 #   - if players resigned, they count as locked in
 #     - so round can still end
-# get-everything (summary)
+# [ ] get-everything (summary)
 # - Doesn't send players locked-in position; send their position as-of BEGINING of current round; Everyone will get update of new positions after round ends and next one starts
 # legal_move?
 # - extra interface function needed, yes. For drawing the x,y places you're allowed to hover over. Like the chess board
