@@ -97,11 +97,8 @@ defmodule InkFlierTest.Round do
   end
 
 
-  #
-  # NOTE Normally we would process ALL recieved instructions after each step. Here in tests we can skip that and use a pipeline
-  # to continue to next step. That way we can only focus on the *last* recieved instructions, since previous ones will have
-  # been tested in other tests
-  #
+  # NOTE Normally we would process all recieved instructions after each step. Can skip that in tests, since previous
+  # instructions will have been checked in other tests
   defp move({t, _previous_instructions}, player, destination), do: Round.move(t, player, destination)
 end
 
