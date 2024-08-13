@@ -52,7 +52,7 @@ defmodule InkFlier.Round do
   def new(current_board, round_number) do
     struct!(__MODULE__, ~M{round_number, board: current_board})
     |> Reply.add_instruction({:notify_room, {:new_round, round_number}})
-    |> Reply.add_instruction(player_position_notifications(current_board))
+    |> wrap_player_positions(current_board, &Reply.add_instruction(&2, {:notify_room, &1}))
   end
 
   @doc """
@@ -90,13 +90,19 @@ defmodule InkFlier.Round do
   end
 
 
-  defp player_position_notifications(board) do
+  defp player_position_tuples(board) do
     for player <- Board.players(board) do
-      {:notify_room, {:player_position, player, %{
+      {:player_position, player, %{
         coord: Board.current_position(board, player),
         speed: Board.speed(board, player),
-      }}}
+      }}
     end
+  end
+
+  defp wrap_player_positions(reply, board, wrap_func) do
+    board
+    |> player_position_tuples
+    |> Enum.reduce(reply, wrap_func)
   end
 
   defp maybe_end_round({t, _} = reply) do
