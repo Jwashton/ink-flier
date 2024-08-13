@@ -96,6 +96,7 @@ defmodule InkFlierTest.Round do
     end
   end
 
+  raise "TODO next, different versions of crash move"
   # describe "Crash move" do
   #   test "Multiple players remaining = game continues" do
   #     move_a = {0,0}
@@ -130,7 +131,7 @@ end
 #   - [x] already locked in
 #   - [x] last one to lock in
 # - crash (similar (or same?) as resign)
-#   - if multiple players remaining, game continues w/o crasher
+#   - [ ] if multiple players remaining, game continues w/o crasher
 #   - if down to 1 player after crashes, they win
 #   - if down to 0 players after crashes, all players from start of round win
 # - cross any combination of check/goal lines
@@ -142,7 +143,7 @@ end
 # resign
 #   - if players resigned, they count as locked in
 #     - so round can still end
-# [ ] get-everything (summary)
+# [x] get-everything (summary)
 # - Doesn't send players locked-in position; send their position as-of BEGINING of current round; Everyone will get update of new positions after round ends and next one starts
 # legal_move?
 # - extra interface function needed, yes. For drawing the x,y places you're allowed to hover over. Like the chess board
