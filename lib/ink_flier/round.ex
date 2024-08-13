@@ -52,7 +52,7 @@ defmodule InkFlier.Round do
   def new(current_board, round_number) do
     struct!(__MODULE__, ~M{round_number, board: current_board})
     |> Reply.add_instruction({:notify_room, {:new_round, round_number}})
-    |> wrap_player_positions(current_board, &Reply.add_instruction(&2, {:notify_room, &1}))
+    |> wrap_player_positions(&Reply.add_instruction(&2, {:notify_room, &1}))
   end
 
   @doc """
@@ -99,8 +99,8 @@ defmodule InkFlier.Round do
     end
   end
 
-  defp wrap_player_positions(reply, board, wrap_func) do
-    board
+  defp wrap_player_positions({t, _}=reply, wrap_func) do
+    t.board
     |> player_position_tuples
     |> Enum.reduce(reply, wrap_func)
   end
