@@ -1,3 +1,4 @@
+# 2024-08-13
 - Instruction abstraction
   - possible able to "extract module" away some of that `{:notify_player, player, {:speed, speed(&1, player)}}` wrapping
   - And clean it away from Round module etc
