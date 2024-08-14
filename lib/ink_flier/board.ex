@@ -3,11 +3,13 @@ defmodule InkFlier.Board do
   Abstraction for tracking players and their current car position
   """
   use TypedStruct
+  import TinyMaps
 
   alias InkFlier.Game
   alias InkFlier.Car
   alias InkFlier.Coord
   alias InkFlier.HouseRules
+  alias InkFlier.RaceTrack
 
   @typedoc """
   All players who started the game
@@ -22,23 +24,24 @@ defmodule InkFlier.Board do
     field :positions, %{Game.player_id => Car.t}
     field :players, starting_players
     field :crashed, MapSet.t(Game.player_id), default: MapSet.new
+    field :track, RaceTrack.t
   end
 
   @doc "Create a new board"
-  @spec new([Game.player_id], RaceTrack.start) :: t
-  @spec new([Game.player_id], RaceTrack.start, HouseRules.random_pole_position?) :: t
-  def new(players, track_start_coords, random_pole_position? \\ false), do:
-    new(players, track_start_coords, random_pole_position?, &Enum.shuffle/1)
+  @spec new([Game.player_id], RaceTrack.t) :: t
+  @spec new([Game.player_id], RaceTrack.t, HouseRules.random_pole_position?) :: t
+  def new(players, track, random_pole_position? \\ false), do:
+    new(players, track, random_pole_position?, &Enum.shuffle/1)
 
   @doc false
-  def new(players, track_start_coords, random_pole_position?, randomizer_func) do
-    struct!(__MODULE__, players: players, positions:
+  def new(players, track, random_pole_position?, randomizer_func) do
+    positions =
       players
       |> players_in_order(random_pole_position?, randomizer_func)
-      |> Enum.zip(track_start_coords)
+      |> Enum.zip(RaceTrack.start(track))
       |> Enum.map(&coord_to_car_tuple/1)
       |> Map.new
-    )
+    struct!(__MODULE__, ~M{track, players, positions})
   end
 
   @doc "Get each player's current car positon"

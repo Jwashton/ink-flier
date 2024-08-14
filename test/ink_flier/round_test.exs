@@ -3,8 +3,9 @@ defmodule InkFlierTest.Round do
 
   alias InkFlier.Round
   alias InkFlier.Board
+  alias InkFlierTest.Helpers
 
-  @board Board.new([:a, :b], [{-1,-1}, {-2,-2}, {-3,-3}, {-4,-4}])
+  @board Board.new([:a, :b], Helpers.test_track)
 
   test "new" do
     assert {_round, instructions} = Round.new(@board, 1)
