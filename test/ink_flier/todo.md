@@ -109,3 +109,8 @@
   - Rules checks here
     - eg. use Car.legal_moves to confirm move is legal
   - Maybe genserver like the islands book, circle back to that
+
+# General
+- Nice next reads list:
+  - https://hexdocs.pm/phoenix/channels.html
+  - https://pragprog.com/titles/cdc-elixir/learn-functional-programming-with-elixir/
