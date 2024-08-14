@@ -75,6 +75,7 @@ defmodule InkFlier.Round do
       t
       |> Reply.update_round(&do_move(&1, player, destination))
       |> Reply.update_round(&lock_in(&1, player))
+      # |> Reply.update_round(&maybe_crash(&1, player))
       |> Reply.add_instruction({:notify_room, {:player_locked_in, player}})
       |> Reply.add_instruction(&{:notify_player, player, {:speed, speed(&1, player)}})
       |> maybe_end_round
@@ -131,6 +132,11 @@ defmodule InkFlier.Round do
     |> Enum.reduce(reply, wrap_func)
   end
 
+  # defp maybe_crash(t, _player) do
+  #   # if RaceTrack
+  #   t
+  # end
+
   defp maybe_end_round({t, _} = reply) do
     unless all_locked_in?(t), do: reply, else: reply |> Reply.add_instruction({:end_of_round, t.round_number})
   end
@@ -143,6 +149,9 @@ defmodule InkFlier.Round do
 
   defp players_set(t), do: t.board |> Board.players |> MapSet.new
 
+
+  @doc false
+  def board(t), do: t.board
 
   @doc false
   def upcomming_move(t, player), do: t.board |> Board.current_position(player)

@@ -33,4 +33,8 @@ defmodule InkFlierTest.Board do
     |> Board.crash(:b)
     |> Board.remaining_players == [:c, :a]
   end
+
+  test "Board.move updates crash list if someone crashed" do
+    raise "TODO next. Let's have Board module automatically update the crashed list on it's .move. We can then just check that when making the instructions list above in Round"
+  end
 end

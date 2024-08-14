@@ -97,26 +97,27 @@ defmodule InkFlierTest.Round do
     end
   end
 
-  raise "TODO next, different versions of crash move"
-  # describe "Crash move" do
-  #   test "Multiple players remaining = game continues" do
-  #     move_a = {0,0}
-  #     move_b = {-1,-2}
-  #     move_c = {-2,-3}
-  #     {round, instructions} =
-  #       Board.new([:a, :b, :c], [{-1,-1}, {-2,-2}, {-3,-3}, {-4,-4}])
-  #       |> Round.new(1)
-  #       |> move(:a, move_a)
-  #       |> move(:b, move_b)
-  #       |> move(:c, move_c)
+  describe "Crash move" do
+    @tag :skip
+    test "Multiple players remaining = game continues" do
+      move_a = {0,0}
+      move_b = {-1,-2}
+      move_c = {-2,-3}
+      {round, instructions} =
+        Board.new([:a, :b, :c], Helpers.test_track)
+        |> Round.new(1)
+        |> move(:a, move_a)
+        |> move(:b, move_b)
+        |> move(:c, move_c)
 
-  #     assert instructions
-  #     |> Enum.drop(2) == [
-  #       {:notify_room, {:crash, :a, move_a}},
-  #       {:end_of_round, 1},
-  #     ]
-  #   end
-  # end
+      assert instructions
+      |> Enum.drop(2) == [
+        {:notify_room, {:crash, :a, move_a}},
+        {:end_of_round, 1},
+      ]
+      assert round |> Round.board |> Board.remaining_players == [:b, :c]
+    end
+  end
 
 
   # NOTE Normally we would process all recieved instructions after each step. Can skip that in tests, since previous
