@@ -9,9 +9,19 @@ defmodule InkFlier.Board do
   alias InkFlier.Coord
   alias InkFlier.HouseRules
 
+  @typedoc """
+  All players who started the game
+
+  Their cars will still show on board even if they crash or disconect and never leave starting position
+
+  Original given order is maintained, which is sometimes useful for things like starting position priority
+  """
+  @type starting_players :: [Game.player_id]
+
   typedstruct enforce: true do
     field :positions, %{Game.player_id => Car.t}
-    field :players, [Game.player_id]
+    field :players, starting_players
+    field :crashed, MapSet.t(Game.player_id), default: MapSet.new
   end
 
   @doc "Create a new board"
@@ -46,6 +56,14 @@ defmodule InkFlier.Board do
     |> current_positions
     |> Map.get(player)
   end
+
+  @doc "Add a player to the list of crashed cars"
+  @spec crash(t, Game.player_id) :: t
+  def crash(t, player), do: update_in(t.crashed, &MapSet.put(&1, player))
+
+  @doc "Get all original players minus any who crashed or resigned"
+  @spec remaining_players(t) :: [Game.player_id]
+  def remaining_players(t), do: t.players |> Enum.reject(&MapSet.member?(t.crashed, &1))
 
   @doc "Get players in given order"
   def players(t), do: t.players

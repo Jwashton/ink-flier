@@ -28,4 +28,10 @@ defmodule InkFlierTest.Board do
     t = Board.new([:b, :z, :a], @start_coords)
     assert t |> Board.players == [:b, :z, :a]
   end
+
+  test "crash and remaining_players" do
+    assert Board.new([:c, :b, :a], @start_coords)
+    |> Board.crash(:b)
+    |> Board.remaining_players == [:c, :a]
+  end
 end
