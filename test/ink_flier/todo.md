@@ -1,7 +1,13 @@
 # 2024-08-13
 - Instruction abstraction
-  - possible able to "extract module" away some of that `{:notify_player, player, {:speed, speed(&1, player)}}` wrapping
-  - And clean it away from Round module etc
+- possible able to "extract module" away some of that `{:notify_player, player, {:speed, speed(&1, player)}}` wrapping
+- And clean it away from Round module etc
+
+- Board is going to need to hold RaceTrack, not just take Racetrack.start
+  - so it can delete racetrack.start and just take racetrack in new
+  - Needs this to check collisions against (which is the entire point of racetrack module)
+
+- Actually, Board.move can probably do all the logic for checking crash and adding to crash list if it happened?
 
 # 2024-08-10
 - I think I'll remember this, but whichever parent ends up handeling endOfRound->startOfNext will need the most upToDate board
