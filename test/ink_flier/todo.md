@@ -1,3 +1,7 @@
+- Instruction abstraction
+  - possible able to "extract module" away some of that `{:notify_player, player, {:speed, speed(&1, player)}}` wrapping
+  - And clean it away from Round module etc
+
 # 2024-08-10
 - I think I'll remember this, but whichever parent ends up handeling endOfRound->startOfNext will need the most upToDate board
   - Which will be in Round.board (which is WHY we return a final Round in the {round, instructions} even tho that round ended; we'll still need to retrieve that most upToDate board out of it)
