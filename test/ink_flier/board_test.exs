@@ -28,18 +28,13 @@ defmodule InkFlierTest.Board do
     assert t |> Board.players == [:b, :z, :a]
   end
 
-  # TODO .crash should prob be private when .move does this automatically
-  # - then remainingPlayers prob checked in that test too?
   test "crash and remaining_players" do
     assert Board.new([:c, :b, :a], Helpers.test_track)
     |> Board.crash(:b)
     |> Board.remaining_players == [:c, :a]
   end
 
-  # TODO maybe move becomes private
   test "Board.move updates crash list if someone crashed" do
-    t =
-      Board.new([:a, :b, :c], Helpers.test_track)
-      |> Board.check_move(
+    raise "TODO next. Let's have Board module automatically update the crashed list on it's .move. We can then just check that when making the instructions list above in Round"
   end
 end
