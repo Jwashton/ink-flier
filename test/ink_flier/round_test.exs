@@ -48,7 +48,7 @@ defmodule InkFlierTest.Round do
 
       assert instructions == [
         {:notify_room, {:player_locked_in, :b}},
-        {:notify_player, :b, {:speed, 1}}
+        {:notify_player, :b, {:ok, {:speed, 1}}}
       ]
       assert round |> Round.upcomming_move(:b) == destination
     end
@@ -89,7 +89,7 @@ defmodule InkFlierTest.Round do
 
       assert instructions == [
         {:notify_room, {:player_locked_in, :b}},
-        {:notify_player, :b, {:speed, 1}},
+        {:notify_player, :b, {:ok, {:speed, 1}}},
         {:end_of_round, 1},
       ]
       assert round |> Round.upcomming_move(:a) == move_a

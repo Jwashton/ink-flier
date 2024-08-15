@@ -35,7 +35,7 @@ defmodule InkFlier.Round do
       {:player_locked_in, Game.player_id}
 
   @type player_notification ::
-      {:speed, integer} |
+      {:ok, {:speed, integer}} |
       {:error, :illegal_destination} |
       {:error, :already_locked_in}
 
@@ -77,7 +77,7 @@ defmodule InkFlier.Round do
       |> Reply.update_round(&lock_in(&1, player))
       # |> Reply.update_round(&maybe_crash(&1, player))
       |> Reply.add_instruction({:notify_room, {:player_locked_in, player}})
-      |> Reply.add_instruction(&{:notify_player, player, {:speed, speed(&1, player)}})
+      |> Reply.add_instruction(&{:notify_player, player, {:ok, {:speed, speed(&1, player)}}})
       |> maybe_end_round
     end
   end
