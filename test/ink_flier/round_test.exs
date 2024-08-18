@@ -98,7 +98,6 @@ defmodule InkFlierTest.Round do
   end
 
   describe "Crash move" do
-    @tag :skip
     test "Multiple players remaining = game continues" do
       move_a = {0,0}
       move_b = {-1,-2}

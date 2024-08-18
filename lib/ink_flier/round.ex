@@ -13,6 +13,7 @@ defmodule InkFlier.Round do
   alias __MODULE__.Reply
   alias InkFlier.Game
   alias InkFlier.Board
+  alias InkFlier.RaceTrack
 
   @typedoc """
   An instruction to be processed by a parent module/process
@@ -75,7 +76,7 @@ defmodule InkFlier.Round do
       t
       |> Reply.update_round(&do_move(&1, player, destination))
       |> Reply.update_round(&lock_in(&1, player))
-      # |> Reply.update_round(&maybe_crash(&1, player))
+      |> Reply.update_round(&maybe_crash(&1, player))
       |> Reply.add_instruction({:notify_room, {:player_locked_in, player}})
       |> Reply.add_instruction(&{:notify_player, player, {:ok, {:speed, speed(&1, player)}}})
       |> maybe_end_round
@@ -132,10 +133,16 @@ defmodule InkFlier.Round do
     |> Enum.reduce(reply, wrap_func)
   end
 
-  # defp maybe_crash(t, _player) do
-  #   # if RaceTrack
-  #   t
-  # end
+  defp maybe_crash(t, player) do
+    # TODO tmp, make Board getter (instead of .track and [player]) or extract this entire functionality to Board
+    track = t.board.track
+    car = t.board.positions[player]
+    if RaceTrack.check_collision(track, car) do
+      t = update_in(t.board, &Board.crash(&1, player))
+    else
+      t
+    end
+  end
 
   defp maybe_end_round({t, _} = reply) do
     unless all_locked_in?(t), do: reply, else: reply |> Reply.add_instruction({:end_of_round, t.round_number})
