@@ -33,4 +33,11 @@ defmodule InkFlierTest.Board do
     |> Board.crash(:b)
     |> Board.remaining_players == [:c, :a]
   end
+
+  test "TODO" do
+    t =
+      Board.new([:a, :b, :c], Helpers.test_track)
+      |> Board.move(:a, {99,99})
+    check_for_new_crashes(previous_t...
+  end
 end
