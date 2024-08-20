@@ -13,7 +13,7 @@ defmodule InkFlier.Round do
   alias __MODULE__.Reply
   alias InkFlier.Game
   alias InkFlier.Board
-  alias InkFlier.RaceTrack
+  # alias InkFlier.RaceTrack
 
   @typedoc """
   An instruction to be processed by a parent module/process
@@ -76,9 +76,9 @@ defmodule InkFlier.Round do
       t
       |> Reply.update_round(&do_move(&1, player, destination))
       |> Reply.update_round(&lock_in(&1, player))
-      |> Reply.update_round(&maybe_crash(&1, player))
       |> Reply.add_instruction({:notify_room, {:player_locked_in, player}})
       |> Reply.add_instruction(&{:notify_player, player, {:ok, {:speed, speed(&1, player)}}})
+      # |> maybe_crash(player, destination)
       |> maybe_end_round
     end
   end
@@ -118,6 +118,7 @@ defmodule InkFlier.Round do
   end
 
 
+
   defp player_position_tuples(board) do
     for player <- Board.players(board) do
       {:player_position, player, %{
@@ -133,19 +134,34 @@ defmodule InkFlier.Round do
     |> Enum.reduce(reply, wrap_func)
   end
 
-  defp maybe_crash(t, player) do
-    # TODO tmp, make Board getter (instead of .track and [player]) or extract this entire functionality to Board
-    track = t.board.track
-    car = t.board.positions[player]
-    if RaceTrack.check_collision(track, car) do
-      t = update_in(t.board, &Board.crash(&1, player))
-    else
-      t
-    end
+  defp handle_crashes({_t, _instructions} = reply) do
+    # # TODO tmp, make Board getter (instead of .track and [player]) or extract this entire functionality to Board
+    # track = t.board.track
+
+    # # update board with each crash
+    # board = Enum.reduce(t.board.players, t.board, fn player, board ->
+    # end)
+
+    # # check the board for crashes that weren't there at start of round
+
+    # car = t.board.positions[player]
+
+    # case RaceTrack.check_collision(track, car) do
+    #   :ok -> reply
+    #   {:collision, crashed_into_set} ->
+    #     t = update_in(t.board, &Board.crash(&1, player))
+
+    #     {t, instructions}
+    #     |> Reply.add_instruction({:notify_room, {:crash, player, destination, crashed_into_set}})
+    # end
+
+    reply
   end
 
+  # defp notify_if_crash({t, instructions} = reply)
+
   defp maybe_end_round({t, _} = reply) do
-    unless all_locked_in?(t), do: reply, else: reply |> Reply.add_instruction({:end_of_round, t.round_number})
+    unless all_locked_in?(t), do: reply, else: reply |> handle_crashes |> Reply.add_instruction({:end_of_round, t.round_number})
   end
 
   defp locked_in?(t, player), do: player in t.locked_in

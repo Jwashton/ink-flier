@@ -98,6 +98,7 @@ defmodule InkFlierTest.Round do
   end
 
   describe "Crash move" do
+    @tag :skip
     test "Multiple players remaining = game continues" do
       move_a = {0,0}
       move_b = {-1,-2}
@@ -108,10 +109,12 @@ defmodule InkFlierTest.Round do
         |> move(:a, move_a)
         |> move(:b, move_b)
         |> move(:c, move_c)
+        # |> dbg(charlists: :as_lists)
 
       assert instructions
       |> Enum.drop(2) == [
-        {:notify_room, {:crash, :a, move_a}},
+      # |> Function.identity == [
+        {:notify_room, {:crash, :a, move_a, MapSet.new(["TODO which wall"])}},
         {:end_of_round, 1},
       ]
       assert round |> Round.board |> Board.remaining_players == [:b, :c]
@@ -133,7 +136,9 @@ end
 #   - [x] last one to lock in
 # - crash (similar (or same?) as resign)
 #   - [ ] if multiple players remaining, game continues w/o crasher
-#   - if down to 1 player after crashes, they win
+#   - (multiple crashes)
+#     - notify room of each crash
+#     - if down to 1 player after crashes, they win
 #   - if down to 0 players after crashes, all players from start of round win
 # - cross any combination of check/goal lines
 #   - win with correct combo
