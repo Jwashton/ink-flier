@@ -80,7 +80,12 @@ defmodule InkFlier.Board do
   """
   @spec move(t, Game.player_id, Coord.t) :: {:ok, t} | {RaceTrack.collision_notification, t}
   def move(t, player, coord) do
-    {:ok, force_move(t, player, coord)}
+    t = force_move(t, player, coord)
+
+    case RaceTrack.check_collision(t.track, t.positions[player]) do
+      :ok -> {:ok, t}
+      {:collision, _} = collision -> {collision, t}
+    end
   end
 
 

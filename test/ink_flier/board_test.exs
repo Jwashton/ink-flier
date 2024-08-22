@@ -41,7 +41,7 @@ defmodule InkFlierTest.Board do
         Board.new([:a, :b, :c], Helpers.test_track)
         |> Board.move(:a, normal_move)
       assert {:ok, t} = reply
-      assert %{a: normal_move} = t |> Board.current_positions
+      assert %{a: ^normal_move} = t |> Board.current_positions
     end
 
     test "returns :error if crash" do
@@ -49,8 +49,8 @@ defmodule InkFlierTest.Board do
       reply =
         Board.new([:a, :b, :c], Helpers.test_track)
         |> Board.move(:a, crash_move)
-      assert {{:collision, :TODO}, t} = reply
-      assert %{a: crash_move} = t |> Board.current_positions
+      assert {{:collision, %MapSet{}}, t} = reply
+      assert %{a: ^crash_move} = t |> Board.current_positions
     end
   end
 end
