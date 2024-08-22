@@ -34,10 +34,23 @@ defmodule InkFlierTest.Board do
     |> Board.remaining_players == [:c, :a]
   end
 
-  test "TODO" do
-    t =
-      Board.new([:a, :b, :c], Helpers.test_track)
-      |> Board.move(:a, {99,99})
-    check_for_new_crashes(previous_t...
+  describe "move" do
+    test "normally returns :ok" do
+      normal_move = {-2,-2}
+      reply =
+        Board.new([:a, :b, :c], Helpers.test_track)
+        |> Board.move(:a, normal_move)
+      assert {:ok, t} = reply
+      assert %{a: normal_move} = t |> Board.current_positions
+    end
+
+    test "returns :error if crash" do
+      crash_move = {99,99}
+      reply =
+        Board.new([:a, :b, :c], Helpers.test_track)
+        |> Board.move(:a, crash_move)
+      assert {{:collision, :TODO}, t} = reply
+      assert %{a: crash_move} = t |> Board.current_positions
+    end
   end
 end

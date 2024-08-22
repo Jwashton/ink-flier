@@ -71,6 +71,18 @@ defmodule InkFlier.Board do
   @doc "Get players in given order"
   def players(t), do: t.players
 
+  @doc """
+  Moves a player and announces wether a crash occured
+
+  Only notifies about collisions. The move IS always preformed, even if it results in a crash
+
+  Actual illegal attempted moves, such as wrong speed or going not-on-your-turn, are checked elsewhere
+  """
+  @spec move(t, Game.player_id, Coord.t) :: {:ok, t} | {RaceTrack.collision_notification, t}
+  def move(t, player, coord) do
+    {:ok, force_move(t, player, coord)}
+  end
+
 
   defp coord_to_car_tuple({player, coord}), do: {player, Car.new(coord)}
   defp car_to_coord_tuple({player, car}), do: {player, Car.position(car)}
@@ -82,5 +94,7 @@ defmodule InkFlier.Board do
   def speed(t, player), do: t.positions[player] |> Car.speed
   def legal_move?(t, player, coord), do: t.positions[player] |> Car.legal_move?(coord)
 
-  def move(t, player, coord), do: t.positions[player] |> update_in(&Car.move(&1, coord))
+  @doc "Move the player without checking for crashes"
+  @spec force_move(t, Game.player_id, Coord.t) :: t
+  def force_move(t, player, coord), do: t.positions[player] |> update_in(&Car.move(&1, coord))
 end

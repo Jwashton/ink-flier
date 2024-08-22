@@ -30,7 +30,8 @@ defmodule InkFlier.RaceTrack do
   """
   @type obstacles :: MapSet.t(Obstacle.t)
 
-  @type collision_reply :: :ok | {:collision, Obstacle.name_set}
+  @type collision_reply :: :ok | collision_notification
+  @type collision_notification :: {:collision, Obstacle.name_set}
 
   typedstruct enforce: true do
     field :start, start
