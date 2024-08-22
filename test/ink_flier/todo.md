@@ -1,3 +1,10 @@
+- Sucessfully update Board.move's return tupe (:ok.. / :collision...
+  - Next step is to update the calls to it in Round
+  - Prob put the call to move in a wrapped error handler in the <- with call
+  - *duplicate* the main logic pipeline in Round.move at first
+    - with the added line for if you're on the crash/collision branch to notify of the crash
+    - *then* can easily DRY out however looks good
+
 # 2024-08-13
 - Instruction abstraction
 - possible able to "extract module" away some of that `{:notify_player, player, {:speed, speed(&1, player)}}` wrapping
