@@ -13,7 +13,7 @@ defmodule InkFlier.Round do
   alias __MODULE__.Reply
   alias InkFlier.Game
   alias InkFlier.Board
-  # alias InkFlier.RaceTrack
+  alias InkFlier.RaceTrack.Obstacle
 
   @typedoc """
   An instruction to be processed by a parent module/process
@@ -33,7 +33,8 @@ defmodule InkFlier.Round do
   @type room_notification ::
       {:new_round, round_number} |
       {:player_position, Game.player_id, %{coord: Coord.t, speed: integer}} |
-      {:player_locked_in, Game.player_id}
+      {:player_locked_in, Game.player_id} |
+      crash_notification
 
   @type player_notification ::
       {:ok, {:speed, integer}} |
@@ -41,11 +42,13 @@ defmodule InkFlier.Round do
       {:error, :already_locked_in}
 
   @type round_number :: integer
+  @type crash_notification :: {:crash, Game.player_id, destination :: Coord.t, Obstacle.name_set}
 
   typedstruct enforce: true do
     field :board, Board.t
     field :start_of_round_board, Board.t
     field :locked_in, MapSet.t(Game.player_id), default: MapSet.new
+    field :crashed_this_round, [crash_notification], default: []
     field :round_number, round_number
   end
 
@@ -61,6 +64,8 @@ defmodule InkFlier.Round do
   Attempt to move a player in the current round
 
   This is the main function of the game
+
+  Crashes aren't announced until end of round, after everyone (including the crasher) has locked in
 
   Many responses to an attempted move are possible. They are listed in the `t:instruction/0` type.
   Some examples:
@@ -81,15 +86,17 @@ defmodule InkFlier.Round do
           |> Reply.add_instruction({:notify_room, {:player_locked_in, player}})
           |> Reply.add_instruction(&{:notify_player, player, {:ok, {:speed, speed(&1, player)}}})
           |> maybe_end_round
-      end
 
-#       t
-#       |> Reply.update_round(&do_move(&1, player, destination))
-#       |> Reply.update_round(&lock_in(&1, player))
-#       |> Reply.add_instruction({:notify_room, {:player_locked_in, player}})
-#       |> Reply.add_instruction(&{:notify_player, player, {:ok, {:speed, speed(&1, player)}}})
-#       # |> maybe_crash(player, destination)
-#       |> maybe_end_round
+        {{:collision, obstacle_name_set}, new_board} ->
+          put_in(t.board, new_board)
+          |> update_crashed(fn crash_list ->
+            [{:crash, player, destination, obstacle_name_set} | crash_list]
+          end)
+          |> Reply.update_round(&lock_in(&1, player))
+          |> Reply.add_instruction({:notify_room, {:player_locked_in, player}})
+          |> Reply.add_instruction(&{:notify_player, player, {:ok, {:speed, speed(&1, player)}}})
+          |> maybe_end_round
+      end
     end
   end
 
@@ -144,28 +151,14 @@ defmodule InkFlier.Round do
     |> Enum.reduce(reply, wrap_func)
   end
 
-  defp handle_crashes({_t, _instructions} = reply) do
-    # # TODO tmp, make Board getter (instead of .track and [player]) or extract this entire functionality to Board
-    # track = t.board.track
+  defp update_crashed(t, func), do: update_in(t.crashed_this_round, func)
 
-    # # update board with each crash
-    # board = Enum.reduce(t.board.players, t.board, fn player, board ->
-    # end)
-
-    # # check the board for crashes that weren't there at start of round
-
-    # car = t.board.positions[player]
-
-    # case RaceTrack.check_collision(track, car) do
-    #   :ok -> reply
-    #   {:collision, crashed_into_set} ->
-    #     t = update_in(t.board, &Board.crash(&1, player))
-
-    #     {t, instructions}
-    #     |> Reply.add_instruction({:notify_room, {:crash, player, destination, crashed_into_set}})
-    # end
-
-    reply
+  defp handle_crashes({t, _instructions} = reply) do
+    t.crashed_this_round
+    |> Enum.reverse
+    |> Enum.reduce(reply, fn crash_notification, reply ->
+      Reply.add_instruction(reply, {:notify_room, crash_notification})
+    end)
   end
 
   # defp notify_if_crash({t, instructions} = reply)
