@@ -84,7 +84,7 @@ defmodule InkFlier.Board do
 
     case RaceTrack.check_collision(t.track, t.positions[player]) do
       :ok -> {:ok, t}
-      {:collision, _} = collision -> {collision, t}
+      {:collision, _} = collision_notification -> {collision_notification, crash(t, player)}
     end
   end
 

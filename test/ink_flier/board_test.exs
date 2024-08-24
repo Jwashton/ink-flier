@@ -52,5 +52,13 @@ defmodule InkFlierTest.Board do
       assert {{:collision, %MapSet{}}, t} = reply
       assert %{a: ^crash_move} = t |> Board.current_positions
     end
+
+    test "updates crashed list/remaining_players" do
+      crash_move = {99,99}
+      {{:collision, _obstacles}, t} =
+        Board.new([:a, :b, :c], Helpers.test_track)
+        |> Board.move(:a, crash_move)
+      assert t |> Board.remaining_players == [:b, :c]
+    end
   end
 end
