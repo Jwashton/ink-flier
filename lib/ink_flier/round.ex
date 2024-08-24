@@ -73,13 +73,23 @@ defmodule InkFlier.Round do
   def move(t, player, destination) do
     with :ok <- check_legal_move(t, player, destination),
          :ok <- check_not_already_locked_in(t, player) do
-      t
-      |> Reply.update_round(&do_move(&1, player, destination))
-      |> Reply.update_round(&lock_in(&1, player))
-      |> Reply.add_instruction({:notify_room, {:player_locked_in, player}})
-      |> Reply.add_instruction(&{:notify_player, player, {:ok, {:speed, speed(&1, player)}}})
-      # |> maybe_crash(player, destination)
-      |> maybe_end_round
+
+      case Board.move(t.board, player, destination) do
+        {:ok, new_board} ->
+          put_in(t.board, new_board)
+          |> Reply.update_round(&lock_in(&1, player))
+          |> Reply.add_instruction({:notify_room, {:player_locked_in, player}})
+          |> Reply.add_instruction(&{:notify_player, player, {:ok, {:speed, speed(&1, player)}}})
+          |> maybe_end_round
+      end
+
+#       t
+#       |> Reply.update_round(&do_move(&1, player, destination))
+#       |> Reply.update_round(&lock_in(&1, player))
+#       |> Reply.add_instruction({:notify_room, {:player_locked_in, player}})
+#       |> Reply.add_instruction(&{:notify_player, player, {:ok, {:speed, speed(&1, player)}}})
+#       # |> maybe_crash(player, destination)
+#       |> maybe_end_round
     end
   end
 
@@ -180,6 +190,5 @@ defmodule InkFlier.Round do
   def upcomming_move(t, player), do: t.board |> Board.current_position(player)
   defp speed(t, player), do: t.board |> Board.speed(player)
 
-  defp do_move(t, player, destination), do: update_in(t.board, &Board.move(&1, player, destination))
   defp lock_in(t, player), do: update_in(t.locked_in, &MapSet.put(&1, player))
 end
