@@ -132,9 +132,9 @@ end
 #   - [x] already locked in
 #   - [x] last one to lock in
 # - crash (similar (or same?) as resign)
-#   - [ ] if multiple players remaining, game continues w/o crasher
+#   - [x] if multiple players remaining, game continues w/o crasher
 #   - (multiple crashes)
-#     - notify room of each crash
+#     - [ ] notify room of each crash
 #     - if down to 1 player after crashes, they win
 #   - if down to 0 players after crashes, all players from start of round win
 # - cross any combination of check/goal lines
