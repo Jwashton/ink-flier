@@ -60,9 +60,6 @@ defmodule InkFlier.Board do
     |> Map.get(player)
   end
 
-  @doc "Add a player to the list of crashed cars"
-  @spec crash(t, Game.player_id) :: t
-  def crash(t, player), do: update_in(t.crashed, &MapSet.put(&1, player))
 
   @doc "Get all original players minus any who crashed or resigned"
   @spec remaining_players(t) :: [Game.player_id]
@@ -102,4 +99,6 @@ defmodule InkFlier.Board do
   @doc "Move the player without checking for crashes"
   @spec force_move(t, Game.player_id, Coord.t) :: t
   def force_move(t, player, coord), do: t.positions[player] |> update_in(&Car.move(&1, coord))
+  @doc false
+  def crash(t, player), do: update_in(t.crashed, &MapSet.put(&1, player))
 end
