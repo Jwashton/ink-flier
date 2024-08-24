@@ -1,15 +1,14 @@
-- Sucessfully update Board.move's return tupe (:ok.. / :collision...
-  - Next step is to update the calls to it in Round
-  - Prob put the call to move in a wrapped error handler in the <- with call
-  - *duplicate* the main logic pipeline in Round.move at first
-    - with the added line for if you're on the crash/collision branch to notify of the crash
-    - *then* can easily DRY out however looks good
+# 2024-08-24
+- Do one of the below refactorings or do the next Round.move crash test (multiple crashes = multiple notifications) and (all-but-1crashes = last guy is winner), etc
+- Round.move
+  - Looks like the only change is in one place at top of pipe. I can do it at top of move just after the with I think
+  - Then rest of pipe is the same, can DRY the doubled pipe I think
+
+- Instruction abstraction
+  - possible able to "extract module" away some of that `{:notify_player, player, {:speed, speed(&1, player)}}` wrapping
+  - And clean it away from Round module etc
 
 # 2024-08-13
-- Instruction abstraction
-- possible able to "extract module" away some of that `{:notify_player, player, {:speed, speed(&1, player)}}` wrapping
-- And clean it away from Round module etc
-
 - Board is going to need to hold RaceTrack, not just take Racetrack.start
   - so it can delete racetrack.start and just take racetrack in new
   - Needs this to check collisions against (which is the entire point of racetrack module)
