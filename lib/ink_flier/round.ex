@@ -78,25 +78,12 @@ defmodule InkFlier.Round do
   def move(t, player, destination) do
     with :ok <- check_legal_move(t, player, destination),
          :ok <- check_not_already_locked_in(t, player) do
-
-      case Board.move(t.board, player, destination) do
-        {:ok, new_board} ->
-          put_in(t.board, new_board)
-          |> Reply.update_round(&lock_in(&1, player))
-          |> Reply.add_instruction({:notify_room, {:player_locked_in, player}})
-          |> Reply.add_instruction(&{:notify_player, player, {:ok, {:speed, speed(&1, player)}}})
-          |> maybe_end_round
-
-        {{:collision, obstacle_name_set}, new_board} ->
-          put_in(t.board, new_board)
-          |> update_crashed(fn crash_list ->
-            [{:crash, player, destination, obstacle_name_set} | crash_list]
-          end)
-          |> Reply.update_round(&lock_in(&1, player))
-          |> Reply.add_instruction({:notify_room, {:player_locked_in, player}})
-          |> Reply.add_instruction(&{:notify_player, player, {:ok, {:speed, speed(&1, player)}}})
-          |> maybe_end_round
-      end
+      t
+      |> maybe_crash(player, destination)
+      |> Reply.update_round(&lock_in(&1, player))
+      |> Reply.add_instruction({:notify_room, {:player_locked_in, player}})
+      |> Reply.add_instruction(&{:notify_player, player, {:ok, {:speed, speed(&1, player)}}})
+      |> maybe_end_round
     end
   end
 
@@ -135,6 +122,15 @@ defmodule InkFlier.Round do
   end
 
 
+  defp maybe_crash(t, player, destination) do
+    case Board.move(t.board, player, destination) do
+      {:ok, new_board} -> put_in(t.board, new_board)
+
+      {{:collision, obstacle_name_set}, new_board} ->
+        put_in(t.board, new_board)
+        |> update_crashed(&[{:crash, player, destination, obstacle_name_set} | &1])
+    end
+  end
 
   defp player_position_tuples(board) do
     for player <- Board.players(board) do
@@ -160,8 +156,6 @@ defmodule InkFlier.Round do
       Reply.add_instruction(reply, {:notify_room, crash_notification})
     end)
   end
-
-  # defp notify_if_crash({t, instructions} = reply)
 
   defp maybe_end_round({t, _} = reply) do
     unless all_locked_in?(t), do: reply, else: reply |> handle_crashes |> Reply.add_instruction({:end_of_round, t.round_number})
