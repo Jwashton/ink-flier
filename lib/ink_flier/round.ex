@@ -152,9 +152,7 @@ defmodule InkFlier.Round do
   defp handle_crashes({t, _instructions} = reply) do
     t.crashed_this_round
     |> Enum.reverse
-    |> Enum.reduce(reply, fn crash_notification, reply ->
-      Reply.add_instruction(reply, {:notify_room, crash_notification})
-    end)
+    |> Enum.reduce(reply, &Reply.add_instruction(&2, {:notify_room, &1}))
   end
 
   defp maybe_end_round({t, _} = reply) do
