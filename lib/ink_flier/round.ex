@@ -80,7 +80,7 @@ defmodule InkFlier.Round do
          :ok <- check_not_already_locked_in(t, player) do
       t
       |> maybe_crash(player, destination)
-      |> Reply.update_round(&lock_in(&1, player))
+      |> lock_in(player)
       |> Reply.add_instruction({:notify_room, {:player_locked_in, player}})
       |> Reply.add_instruction(&{:notify_player, player, {:ok, {:speed, speed(&1, player)}}})
       |> maybe_end_round
