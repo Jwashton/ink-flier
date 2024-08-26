@@ -1,12 +1,17 @@
 # 2024-08-24
-- Do one of the below refactorings or do the next Round.move crash test (multiple crashes = multiple notifications) and (all-but-1crashes = last guy is winner), etc
-- Round.move
-  - Looks like the only change is in one place at top of pipe. I can do it at top of move just after the with I think
-  - Then rest of pipe is the same, can DRY the doubled pipe I think
-
 - Instruction abstraction
   - possible able to "extract module" away some of that `{:notify_player, player, {:speed, speed(&1, player)}}` wrapping
   - And clean it away from Round module etc
+
+- Next Round.move crash test (multiple crashes = multiple notifications) and (all-but-1crashes = last guy is winner), etc
+
+- Think about round_test file. Round itself isn't bad, but the tests might be getting a bit brittle or clunky or something
+  - Is there a nicer way to handle checking the returned instruction LIST?
+    - Scanning for is_member?
+    - But will that lose order information I need to check?
+  - Related: Do instructions need to be a list? Maybe they're room-notifications (THAT'S a list) and each player's notification (each one is a list, the order matters there) but the order DOESN'T matter for what order THOSE outers go out in
+    - Send player b's notifications, then send room notifications, then send player a's... that's fine
+      - Just as long as the notifications sent to each of those sub groups go in order
 
 # 2024-08-13
 - Board is going to need to hold RaceTrack, not just take Racetrack.start
