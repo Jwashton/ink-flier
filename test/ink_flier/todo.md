@@ -1,3 +1,37 @@
+# 2024-08-27
+- Get better idea of the api/retuns (instruction list, etc). By starting from top level, channels. Which will prob spin up a GenServer Game module, which will then call down to most of the stuff in Round
+  - And try to adapt existing Round each step of the way, making small alters to it's stuff, but if I can, resist the urge to scrap it and start from scratch (That's a good tool too, but let me practice the working within existing stuff side of the spectrum too)
+  - Also the merge early and merge often, I can get to a tests-passing, non-breaking-other-stuff state of round, but then can pullrequest/merge that on. "This is a Round that starts and can make a normal move in. It has to be non-illegal, non-crashing, non-winning `normal` move, which are things I still want to add. But this is a nice stable point, I can save and merge/pull request this pretty freely
+
+- For Round.Reply/Round/Round.Instruction:
+```
+with :ok <- check_legal_move(t, player, destination),
+     :ok <- check_not_already_locked_in(t, player) do
+  t
+  |> maybe_crash(player, destination)
+  |> lock_in(player)
+
+# this part, 2 different ideas. Prob the 2nd one. Solves the "triangle heirchy problem. Just Round calls to Reply. BUT I still get the benifit of keeping the Instruction.notify_room(:soAndSoMoved...) stuff in a seperate file. Kind of the best of both worlds
+  |> Reply.add_instruction(Instruction.notify_room/2... / notify_one/3)
+  |> Reply.notify_room/2... / notify_one/3, but defdelegate to another module (Instruction) to still keep seperate)
+
+  |> Reply.add_instruction({:notify_room, {:player_locked_in, player}})
+  |> Reply.add_instruction(&{:notify_player, player, {:ok, {:speed, speed(&1, player)}}})
+
+```
+
+- Extra reminder that Game.summary will handle the "original board state BEFORE starting this round", which Round currently has a field for (original_board) but wont need to handle. just the higher Game will handle that. Round is handleing the still-changeing-and-only-partially-locked-in-board
+
+- Prob use callback for how to handle the instruction list returns. The tests can prob use a PID and process and assert_recieved
+  - Question of how the real code will want that callback to look
+  - Thus the starting from channels top-level above, and seeing what shape I want the returns to look like most helpfully
+
+- For tiebreaker winners
+  - Whose crossed most checkpoints
+  - Tiebreaker there: pathfinder (AoC style) to next checkpoint!
+- For crash, maybe respawn at last checkpoint
+  - But maybe save that for houserules
+
 # 2024-08-24
 - Instruction abstraction
   - possible able to "extract module" away some of that `{:notify_player, player, {:speed, speed(&1, player)}}` wrapping
