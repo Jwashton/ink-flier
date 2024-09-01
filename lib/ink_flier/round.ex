@@ -81,7 +81,7 @@ defmodule InkFlier.Round do
       t
       |> maybe_crash(player, destination)
       |> lock_in(player)
-      |> Reply.add_instruction({:notify_room, {:player_locked_in, player}})
+      |> Reply.player_locked_in(player)
       |> Reply.add_instruction(&{:notify_player, player, {:ok, {:speed, speed(&1, player)}}})
       |> maybe_end_round
     end
