@@ -1,16 +1,16 @@
 # 2024-08-31
-- Change Round.move doc to not say "lots of possible replies" and instead list all the examples
+- Later Change Round.move doc to not say "lots of possible replies" and instead list all the examples
   - Either there or more likely, in Instruction under each of those docs
     - And link to them in a list in Round.move's doc, maybe?
 - Skip doing the big doc and type move FOR NOW tho, because after the channel stuff (`get better idea of api` below, and the callback module etc), the return type of these lists will change so these examples will look different
 - Again, this module (Instruction) will prob be the place to build all that shape tho
 
 # 2024-08-27
-- Get better idea of the api/retuns (instruction list, etc). By starting from top level, channels. Which will prob spin up a GenServer Game module, which will then call down to most of the stuff in Round
+- [ ] Get better idea of the api/retuns (instruction list, etc). By starting from top level, channels. Which will prob spin up a GenServer Game module, which will then call down to most of the stuff in Round
   - And try to adapt existing Round each step of the way, making small alters to it's stuff, but if I can, resist the urge to scrap it and start from scratch (That's a good tool too, but let me practice the working within existing stuff side of the spectrum too)
   - Also the merge early and merge often, I can get to a tests-passing, non-breaking-other-stuff state of round, but then can pullrequest/merge that on. "This is a Round that starts and can make a normal move in. It has to be non-illegal, non-crashing, non-winning `normal` move, which are things I still want to add. But this is a nice stable point, I can save and merge/pull request this pretty freely
 
-- [ ] For Round.Reply/Round/Round.Instruction:
+- For Round.Reply/Round/Round.Instruction:
 ```
 with :ok <- check_legal_move(t, player, destination),
      :ok <- check_not_already_locked_in(t, player) do
@@ -34,6 +34,7 @@ with :ok <- check_legal_move(t, player, destination),
 - Prob use callback for how to handle the instruction list returns. The tests can prob use a PID and process and assert_recieved
   - Question of how the real code will want that callback to look
   - Thus the starting from channels top-level above, and seeing what shape I want the returns to look like most helpfully
+  - 2024-09-01: I'm not sure this will work. Any code here is gonna need a process/pid to catch the other stuff...
 
 - For tiebreaker winners
   - Whose crossed most checkpoints
