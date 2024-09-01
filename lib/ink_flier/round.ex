@@ -82,7 +82,6 @@ defmodule InkFlier.Round do
       |> maybe_crash(player, destination)
       |> lock_in(player)
       |> Reply.player_locked_in(player)
-      |> Reply.add_instruction(&{:notify_player, player, {:ok, {:speed, speed(&1, player)}}})
       |> maybe_end_round
     end
   end
@@ -173,7 +172,7 @@ defmodule InkFlier.Round do
 
   @doc false
   def upcomming_move(t, player), do: t.board |> Board.current_position(player)
-  defp speed(t, player), do: t.board |> Board.speed(player)
+  def speed(t, player), do: t.board |> Board.speed(player)
 
   defp lock_in(t, player), do: update_in(t.locked_in, &MapSet.put(&1, player))
 end
