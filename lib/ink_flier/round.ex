@@ -56,10 +56,8 @@ defmodule InkFlier.Round do
   @spec new(Board.t, round_number) :: Reply.t
   def new(current_board, round_number) do
     struct!(__MODULE__, ~M{round_number, board: current_board, start_of_round_board: current_board})
-    |> Reply.add_instruction({:notify_room, {:new_round, round_number}})
+    |> Reply.new_round(round_number)
     |> wrap_player_positions(current_board, &Reply.add_instruction(&2, {:notify_room, &1}))
-    |> Reply.new_round(...
-      "todo next. Simple extract the above 2. Then simple extract Round.summary's 2; Then can DRY them if able (all in Instruction); Note this will also pull wrap_player_positions and friends to Instruction, which is good. It's all Instruction tuple stuff"
   end
 
   @doc """
