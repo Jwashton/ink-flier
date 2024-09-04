@@ -58,7 +58,6 @@ defmodule InkFlier.Round do
     struct!(__MODULE__, ~M{round_number, board: current_board, start_of_round_board: current_board})
     |> Reply.new_round(round_number)
     |> Reply.send_summary(:all)
-    # |> wrap_player_positions(current_board, &Reply.add_instruction(&2, {:notify_room, &1}))
   end
 
   @doc """
@@ -109,7 +108,7 @@ defmodule InkFlier.Round do
   def summary(t, member) do
     t
     |> Reply.add_instruction(&{:notify_member, member, {:new_round, &1.round_number}})
-    |> wrap_player_positions(t.start_of_round_board, &Reply.add_instruction(&2, {:notify_member, member, &1}))
+    |> Reply.send_summary(member)
   end
 
 
@@ -130,21 +129,6 @@ defmodule InkFlier.Round do
         put_in(t.board, new_board)
         |> update_crashed(&[{:crash, player, destination, obstacle_name_set} | &1])
     end
-  end
-
-  defp player_position_tuples(board) do
-    for player <- Board.players(board) do
-      {:player_position, player, %{
-        coord: Board.current_position(board, player),
-        speed: Board.speed(board, player),
-      }}
-    end
-  end
-
-  defp wrap_player_positions(reply, board, wrap_func) do
-    board
-    |> player_position_tuples
-    |> Enum.reduce(reply, wrap_func)
   end
 
   defp update_crashed(t, func), do: update_in(t.crashed_this_round, func)
