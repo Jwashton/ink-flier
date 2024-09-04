@@ -56,8 +56,8 @@ defmodule InkFlier.Round do
   @spec new(Board.t, round_number) :: Reply.t
   def new(current_board, round_number) do
     struct!(__MODULE__, ~M{round_number, board: current_board, start_of_round_board: current_board})
-    |> Reply.add_instruction({:notify_room, {:new_round, round_number}})
-    |> wrap_player_positions(current_board, &Reply.add_instruction(&2, {:notify_room, &1}))
+    |> Reply.new_round(round_number)
+    |> Reply.send_summary(:all)
   end
 
   @doc """
@@ -81,8 +81,7 @@ defmodule InkFlier.Round do
       t
       |> maybe_crash(player, destination)
       |> lock_in(player)
-      |> Reply.add_instruction({:notify_room, {:player_locked_in, player}})
-      |> Reply.add_instruction(&{:notify_player, player, {:ok, {:speed, speed(&1, player)}}})
+      |> Reply.player_locked_in(player)
       |> maybe_end_round
     end
   end
@@ -109,7 +108,7 @@ defmodule InkFlier.Round do
   def summary(t, member) do
     t
     |> Reply.add_instruction(&{:notify_member, member, {:new_round, &1.round_number}})
-    |> wrap_player_positions(t.start_of_round_board, &Reply.add_instruction(&2, {:notify_member, member, &1}))
+    |> Reply.send_summary(member)
   end
 
 
@@ -130,21 +129,6 @@ defmodule InkFlier.Round do
         put_in(t.board, new_board)
         |> update_crashed(&[{:crash, player, destination, obstacle_name_set} | &1])
     end
-  end
-
-  defp player_position_tuples(board) do
-    for player <- Board.players(board) do
-      {:player_position, player, %{
-        coord: Board.current_position(board, player),
-        speed: Board.speed(board, player),
-      }}
-    end
-  end
-
-  defp wrap_player_positions(reply, board, wrap_func) do
-    board
-    |> player_position_tuples
-    |> Enum.reduce(reply, wrap_func)
   end
 
   defp update_crashed(t, func), do: update_in(t.crashed_this_round, func)
@@ -170,10 +154,11 @@ defmodule InkFlier.Round do
 
   @doc false
   def board(t), do: t.board
+  def start_of_round_board(t), do: t.start_of_round_board
 
   @doc false
   def upcomming_move(t, player), do: t.board |> Board.current_position(player)
-  defp speed(t, player), do: t.board |> Board.speed(player)
+  def speed(t, player), do: t.board |> Board.speed(player)
 
   defp lock_in(t, player), do: update_in(t.locked_in, &MapSet.put(&1, player))
 end
