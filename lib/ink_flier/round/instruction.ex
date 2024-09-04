@@ -29,15 +29,12 @@ defmodule InkFlier.Round.Instruction do
   end
 
   def send_summary({round, _instructions}=reply, :all) do
-    reply
-    |> wrap_player_positions(Round.start_of_round_board(round), &Reply.add_instruction(&2, {:notify_room, &1}))
+    wrap_player_positions(reply, Round.start_of_round_board(round), &Reply.add_instruction(&2, {:notify_room, &1}))
   end
 
   def send_summary({round, _instructions}=reply, member) do
-    reply
-    |> wrap_player_positions(Round.start_of_round_board(round), &Reply.add_instruction(&2, {:notify_member, member, &1}))
+    wrap_player_positions(reply, Round.start_of_round_board(round), &Reply.add_instruction(&2, {:notify_member, member, &1}))
   end
-
 
 
   defp wrap_player_positions(reply, board, wrap_func) do
