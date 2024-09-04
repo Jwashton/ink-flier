@@ -24,8 +24,7 @@ defmodule InkFlier.Round.Instruction do
   end
 
   def new_round(reply, round_number) do
-    reply
-    |> Reply.add_instruction({:notify_room, {:new_round, round_number}})
+    Reply.add_instruction(reply, {:notify_room, {:new_round, round_number}})
   end
 
   def send_summary(reply, :all) do
