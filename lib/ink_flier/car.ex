@@ -2,6 +2,7 @@ defmodule InkFlier.Car do
   use TypedStruct
 
   alias InkFlier.Coord
+  alias InkFlier.Line
 
   typedstruct enforce: true do
     field :position, Coord.t
@@ -28,4 +29,8 @@ defmodule InkFlier.Car do
   end
 
   def position(t), do: t.position
+
+  @doc "Return line drawn between previous and current positions"
+  @spec move_line(t) :: Line.t
+  def move_line(t), do: Line.new(t.position, t.previous_position)
 end

@@ -8,6 +8,7 @@ defmodule InkFlier.RaceTrack do
   alias InkFlier.RaceTrack.Obstacle
   alias InkFlier.Coord
   alias InkFlier.Line
+  alias InkFlier.Car
 
   @typedoc "List of coords for start positions, in order of desierability ([best_start_pos, second_best_start_pos, ...])"
   @type start :: [Coord.t]
@@ -29,7 +30,8 @@ defmodule InkFlier.RaceTrack do
   """
   @type obstacles :: MapSet.t(Obstacle.t)
 
-  @type collision_reply :: :ok | {:collision, Obstacle.name_set}
+  @type collision_reply :: :ok | collision_notification
+  @type collision_notification :: {:collision, Obstacle.name_set}
 
   typedstruct enforce: true do
     field :start, start
@@ -49,6 +51,9 @@ defmodule InkFlier.RaceTrack do
   @doc """
   Check if the line between a car's previous & new position collides with any track obstacles
   """
+  @spec check_collision(t, Car.t) :: collision_reply
+  def check_collision(t, %Car{} = car), do: check_collision(t, car |> Car.move_line)
+
   @spec check_collision(t, Line.t) :: collision_reply
   def check_collision(t, car_line) do
     t.obstacles
