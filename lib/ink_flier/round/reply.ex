@@ -10,6 +10,7 @@ defmodule InkFlier.Round.Reply do
 
   defdelegate player_locked_in(t, player), to: Instruction
   defdelegate new_round(t, round_number), to: Instruction
+  defdelegate send_summary(t, target), to: Instruction
 
 
   @spec add_instruction(Round.t, any) :: t

@@ -57,7 +57,8 @@ defmodule InkFlier.Round do
   def new(current_board, round_number) do
     struct!(__MODULE__, ~M{round_number, board: current_board, start_of_round_board: current_board})
     |> Reply.new_round(round_number)
-    |> wrap_player_positions(current_board, &Reply.add_instruction(&2, {:notify_room, &1}))
+    |> Reply.send_summary(:all)
+    # |> wrap_player_positions(current_board, &Reply.add_instruction(&2, {:notify_room, &1}))
   end
 
   @doc """
@@ -169,6 +170,7 @@ defmodule InkFlier.Round do
 
   @doc false
   def board(t), do: t.board
+  def start_of_round_board(t), do: t.start_of_round_board
 
   @doc false
   def upcomming_move(t, player), do: t.board |> Board.current_position(player)
