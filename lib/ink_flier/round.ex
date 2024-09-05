@@ -53,11 +53,16 @@ defmodule InkFlier.Round do
   end
 
   @doc "Build a new round and initial notification instructions"
-  @spec new(Board.t, round_number) :: Reply.t
+  @spec new(Board.t, round_number) :: Instructions.t
   def new(current_board, round_number) do
-    struct!(__MODULE__, ~M{round_number, board: current_board, start_of_round_board: current_board})
-    |> Reply.new_round(round_number)
-    |> Reply.send_summary(:all)
+    t = struct!(__MODULE__, ~M{round_number, board: current_board, start_of_round_board: current_board})
+
+    instructions =
+      Instructions.new
+      |> Instructions.new_round(round_number)
+      |> Instructions.send_summary(t.start_of_round_board, :all)
+
+    {t, instructions}
   end
 
   @doc """
@@ -74,15 +79,21 @@ defmodule InkFlier.Round do
   - "Illegal move, attempted to move too far"
   - "Illegal move, this player already locked in"
   """
-  @spec move(t, Game.player_id, Coord.t) :: Reply.t
+  @spec move(t, Game.player_id, Coord.t) :: Instructions.t
   def move(t, player, destination) do
     with :ok <- check_legal_move(t, player, destination),
          :ok <- check_not_already_locked_in(t, player) do
-      t
-      |> maybe_crash(player, destination)
-      |> lock_in(player)
-      |> Reply.player_locked_in(player)
-      |> maybe_end_round
+      t =
+        t
+        |> maybe_crash(player, destination)
+        |> lock_in(player)
+
+      instructions =
+        Instructions.new
+        |> Instructions.player_locked_in(player)
+        |> maybe_end_round
+
+      {t, instructions}
     end
   end
 
@@ -104,11 +115,15 @@ defmodule InkFlier.Round do
         {:notify_member, :observer_1, {:player_position, :b, %{coord: {99,99}, speed: 10}}},
       ]
   """
-  @spec summary(t, Game.member_id) :: Reply.t
+  @spec summary(t, Game.member_id) :: Instructions.t
   def summary(t, member) do
-    t
-    |> Reply.add_instruction(&{:notify_member, member, {:new_round, &1.round_number}})
-    |> Reply.send_summary(member)
+    instructions =
+      Instructions.new
+      # TODO add an Instructions.new_round(:all vs member) version
+      |> Instructions.add_instruction(&{:notify_member, member, {:new_round, &1.round_number}})
+      |> Instructions.send_summary(t.start_of_round_board, member)
+
+    {t, instructions}
   end
 
 
@@ -154,7 +169,6 @@ defmodule InkFlier.Round do
 
   @doc false
   def board(t), do: t.board
-  def start_of_round_board(t), do: t.start_of_round_board
 
   @doc false
   def upcomming_move(t, player), do: t.board |> Board.current_position(player)
