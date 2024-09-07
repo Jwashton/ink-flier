@@ -18,6 +18,11 @@ defmodule InkFlier.Round.Instruction do
 
   """
   def player_locked_in(reply, player) do
+    {round, instructions} = reply
+
+    instructions
+    |>
+
     reply
     |> Reply.add_instruction({:notify_room, {:player_locked_in, player}})
     |> Reply.add_instruction(&{:notify_player, player, {:ok, {:speed, Round.speed(&1, player)}}})
