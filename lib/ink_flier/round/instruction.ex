@@ -19,10 +19,9 @@ defmodule InkFlier.Round.Instruction do
 
   """
   def player_locked_in(t, player) do
-    # TODO next continue converting things. Round calling -> .player_locked_in here, converting these replys to Instructions list
-    reply
-    |> Reply.add_instruction({:notify_room, {:player_locked_in, player}})
-    |> Reply.add_instruction(&{:notify_player, player, {:ok, {:speed, Round.speed(&1, player)}}})
+    t
+    |> Instructions.add_instruction({:notify_room, {:player_locked_in, player}})
+    |> Instructions.add_instruction(&{:notify_player, player, {:ok, {:speed, Round.speed(&1, player)}}})
   end
 
   def new_round(t, round_number) do
@@ -45,6 +44,6 @@ defmodule InkFlier.Round.Instruction do
         speed: Board.speed(board, player),
       }}
     end
-    |> Enum.reduce(reply, instruction_func)
+    |> Enum.reduce(t, instruction_func)
   end
 end

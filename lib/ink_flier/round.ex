@@ -148,21 +148,28 @@ defmodule InkFlier.Round do
 
   defp update_crashed(t, func), do: update_in(t.crashed_this_round, func)
 
+  # TODO inline this func
   defp handle_crashes({t, _instructions} = reply) do
     t.crashed_this_round
     |> Enum.reverse
-    |> Enum.reduce(reply, &Reply.add_instruction(&2, {:notify_room, &1}))
+    |> Enum.reduce(reply, &Instructions.add_instruction(&2, {:notify_room, &1}))
   end
 
   defp maybe_end_round({t, _} = reply) do
-    unless all_locked_in?(t), do: reply, else: reply |> handle_crashes |> Reply.add_instruction({:end_of_round, t.round_number})
+    if all_locked_in?(t) do
+      reply
+      |> handle_crashes
+      |> Instructions.add_instruction({:end_of_round, t.round_number})
+    else
+      reply
+    end
   end
 
   defp locked_in?(t, player), do: player in t.locked_in
 
   defp all_locked_in?(t), do: MapSet.equal?(t.locked_in, players_set(t))
 
-  defp reply_error(t, player, msg), do: Reply.add_instruction(t, {:notify_player, player, {:error, msg}})
+  defp reply_error(t, player, msg), do: Instructions.add_instruction(t, {:notify_player, player, {:error, msg}})
 
   defp players_set(t), do: t.board |> Board.players |> MapSet.new
 
