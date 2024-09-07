@@ -33,7 +33,7 @@ defmodule InkFlier.Round.Reply do
   end
 
 
-  defp new(round), do: {round, []}
+  def new(round), do: {round, []}
 
   defp set_instructions(instructions, t), do: put_elem(t, 1, instructions)
 end

@@ -81,6 +81,7 @@ defmodule InkFlier.Round do
       t
       |> maybe_crash(player, destination)
       |> lock_in(player)
+      |> Reply.new
       |> Reply.player_locked_in(player)
       |> maybe_end_round
     end
