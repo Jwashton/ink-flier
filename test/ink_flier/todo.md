@@ -1,3 +1,7 @@
+# 2024-09-10
+- First get rid of all calls to Reply.\*
+  - Then start passing JUST instructions ([]) to Instruction, plus any specific info it needs pulled out of t/round from the old {round, reply} tuple (in a seperate extra param)
+
 # 2024-08-31
 - Later Change Round.move doc to not say "lots of possible replies" and instead list all the examples
   - Either there or more likely, in Instruction under each of those docs
