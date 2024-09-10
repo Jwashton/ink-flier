@@ -37,7 +37,24 @@ defmodule InkFlier.Round.Instruction do
   end
 
   def send_summary(reply, :all) do
-    add_instruction_for_each_player_position(reply, &Reply.add_instruction(&2, {:notify_room, &1}))
+    {round, instructions} = reply
+    board = Round.start_of_round_board(round)
+
+    inners =
+      for player <- Board.players(board) do
+        {:player_position, player, %{
+          coord: Board.current_position(board, player),
+          speed: Board.speed(board, player),
+        }}
+      end
+
+    instructions =
+      inners
+      |> Enum.reduce(instructions, fn inner, new_instructions ->
+        Kernel.++(new_instructions, [{:notify_room, inner}])
+      end)
+
+    {round, instructions}
   end
 
   def send_summary(reply, member) do
