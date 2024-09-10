@@ -56,7 +56,9 @@ defmodule InkFlier.Round do
   @doc "Build a new round and initial notification instructions"
   @spec new(Board.t, round_number) :: Reply.t
   def new(current_board, round_number) do
-    struct!(__MODULE__, ~M{round_number, board: current_board, start_of_round_board: current_board})
+    t = struct!(__MODULE__, ~M{round_number, board: current_board, start_of_round_board: current_board})
+
+    {t, []}
     |> Instruction.new_round(round_number)
     |> Instruction.send_summary(:all)
   end

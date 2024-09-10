@@ -28,7 +28,12 @@ defmodule InkFlier.Round.Instruction do
   end
 
   def new_round(reply, round_number) do
-    Reply.add_instruction(reply, {:notify_room, {:new_round, round_number}})
+    {round, instructions} = reply
+    instructions =
+      instructions
+      |> Kernel.++([{:notify_room, {:new_round, round_number}}])
+
+    {round, instructions}
   end
 
   def send_summary(reply, :all) do
