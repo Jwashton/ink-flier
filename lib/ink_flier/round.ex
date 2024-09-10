@@ -11,6 +11,7 @@ defmodule InkFlier.Round do
   import TinyMaps
 
   alias __MODULE__.Reply
+  alias __MODULE__.Instruction
   alias InkFlier.Game
   alias InkFlier.Board
   alias InkFlier.RaceTrack.Obstacle
@@ -56,8 +57,8 @@ defmodule InkFlier.Round do
   @spec new(Board.t, round_number) :: Reply.t
   def new(current_board, round_number) do
     struct!(__MODULE__, ~M{round_number, board: current_board, start_of_round_board: current_board})
-    |> Reply.new_round(round_number)
-    |> Reply.send_summary(:all)
+    |> Instruction.new_round(round_number)
+    |> Instruction.send_summary(:all)
   end
 
   @doc """
@@ -78,11 +79,13 @@ defmodule InkFlier.Round do
   def move(t, player, destination) do
     with :ok <- check_legal_move(t, player, destination),
          :ok <- check_not_already_locked_in(t, player) do
-      t
-      |> maybe_crash(player, destination)
-      |> lock_in(player)
-      |> Reply.new
-      |> Reply.player_locked_in(player)
+      t =
+        t
+        |> maybe_crash(player, destination)
+        |> lock_in(player)
+
+      {t, []}
+      |> Instruction.player_locked_in(player)
       |> maybe_end_round
     end
   end
