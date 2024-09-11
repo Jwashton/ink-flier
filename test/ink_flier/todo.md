@@ -4,10 +4,10 @@
     - eg. Reply.round & Reply.instruction
   - If I wanted at that point I could make the Instruction stuff a side effect (Agent/GenServer), but I probably shouldn't bother
   - The 3 modules work good, a nice seperation
+
 - Probably go to this form (from below):
-    Reply.add_instruction(reply, Instruction.notify_room/2... / notify_one/3)
-  - Later if I want to I can make some sugar in JUST Reply to do it all without Round knowing both Reply and Instruction
-    - With defdelegate or macros or this:
+  - `Reply.add_instruction(reply, Instruction.notify_room/2... / notify_one/3)`
+  - Then use something along these lines to fix the a->b->c->b thing that was annoying me with the bidirectional triangle
       ```
       defmodule InkFlier.Round.Reply do
       # ...
@@ -32,6 +32,10 @@
           # |> Reply.add_instruction()
         end
       ```
+
+  - Later if I want to I can make some sugar in JUST Reply to do it all without Round knowing both Reply and Instruction
+    - With defdelegate or macros or something
+
 - Then have fun with channels
 
 # 2024-09-10
