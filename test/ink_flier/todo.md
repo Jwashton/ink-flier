@@ -1,3 +1,39 @@
+# 2024-09-10b
+- After talking to William, probably *keep* Reply abstraction, don't flatten
+  - Probably make it MORE of a black box, by giving it getters instead of straight getting the `{}` tuple out of it
+    - eg. Reply.round & Reply.instruction
+  - If I wanted at that point I could make the Instruction stuff a side effect (Agent/GenServer), but I probably shouldn't bother
+  - The 3 modules work good, a nice seperation
+- Probably go to this form (from below):
+    Reply.add_instruction(reply, Instruction.notify_room/2... / notify_one/3)
+  - Later if I want to I can make some sugar in JUST Reply to do it all without Round knowing both Reply and Instruction
+    - With defdelegate or macros or this:
+      ```
+      defmodule InkFlier.Round.Reply do
+      # ...
+
+      # defdelegate player_locked_in(t, player), to: Instruction
+      def player_locked_in(reply, player) do
+        reply
+        |> add_instruction(Instruction.player_locked_in)
+
+        # |> add_instruction(&{:notify_player, player, {:ok, {:speed, Round.speed(&1, player)}}})
+      end
+      ```
+      ```
+        def player_locked_in(reply, player) do
+          [
+            {:notify_room, {:player_locked_in, player}},
+            &{:notify_player, player, {:ok, {:speed, Round.speed(&1, player)}}}
+          ]
+
+          # reply
+          # |> Reply.add_instruction({:notify_room, {:player_locked_in, player}})
+          # |> Reply.add_instruction()
+        end
+      ```
+- Then have fun with channels
+
 # 2024-09-10
 - First get rid of all calls to Reply.\*
   - Then start passing JUST instructions ([]) to Instruction, plus any specific info it needs pulled out of t/round from the old {round, reply} tuple (in a seperate extra param)
