@@ -26,20 +26,20 @@ defmodule InkFlier.Round.Instruction do
   def new_round(round_number), do: {:notify_room, {:new_round, round_number}}
 
   def send_summary(board, :all) do
-    for player <- Board.players(board) do
-      {:notify_room, {:player_position, player, %{
-        coord: Board.current_position(board, player),
-        speed: Board.speed(board, player),
-      }}}
-    end
+    for position <- positions(board), do: {:notify_room, position}
   end
 
   def send_summary(board, member) do
+    for position <- positions(board), do: {:notify_member, member, position}
+  end
+
+
+  defp positions(board) do
     for player <- Board.players(board) do
-      {:notify_member, member, {:player_position, player, %{
+      {:player_position, player, %{
         coord: Board.current_position(board, player),
         speed: Board.speed(board, player),
-      }}}
+      }}
     end
   end
 end
