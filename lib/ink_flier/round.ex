@@ -61,7 +61,6 @@ defmodule InkFlier.Round do
     t
     |> Reply.add_instruction(Instruction.new_round(round_number))
     |> Reply.add_instruction(Instruction.send_summary(t.start_of_round_board, :all))
-    raise "next, continue updating all the Reply.* calls like above"
   end
 
   @doc """
@@ -85,7 +84,7 @@ defmodule InkFlier.Round do
       t
       |> maybe_crash(player, destination)
       |> lock_in(player)
-      |> Reply.player_locked_in(player)
+      |> Reply.add_instruction(&Instruction.player_locked_in(player, speed(&1, player)))
       |> maybe_end_round
     end
   end

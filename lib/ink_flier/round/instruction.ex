@@ -1,7 +1,5 @@
 defmodule InkFlier.Round.Instruction do
-  alias InkFlier.Round
   alias InkFlier.Board
-  alias InkFlier.Round.Reply
 
   @doc """
   Instructions after locking in a player
@@ -17,10 +15,11 @@ defmodule InkFlier.Round.Instruction do
       ]
 
   """
-  def player_locked_in(reply, player) do
-    reply
-    |> Reply.add_instruction({:notify_room, {:player_locked_in, player}})
-    |> Reply.add_instruction(&{:notify_player, player, {:ok, {:speed, Round.speed(&1, player)}}})
+  def player_locked_in(player, speed) do
+    [
+      {:notify_room, {:player_locked_in, player}},
+      {:notify_player, player, {:ok, {:speed, speed}}},
+    ]
   end
 
   def new_round(round_number), do: {:notify_room, {:new_round, round_number}}
