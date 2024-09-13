@@ -110,6 +110,7 @@ defmodule InkFlier.Round do
   @spec summary(t, Game.member_id) :: Reply.t
   def summary(t, member) do
     t
+    raise "Here next to continue the Reply.add_instruction converts like above :)"
     |> Reply.add_instruction(&{:notify_member, member, {:new_round, &1.round_number}})
     |> Reply.add_instruction(Instruction.send_summary(t.start_of_round_board, member))
   end
