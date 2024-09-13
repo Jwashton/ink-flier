@@ -11,6 +11,7 @@ defmodule InkFlier.Round do
   import TinyMaps
 
   alias __MODULE__.Reply
+  alias __MODULE__.Instruction
   alias InkFlier.Game
   alias InkFlier.Board
   alias InkFlier.RaceTrack.Obstacle
@@ -56,7 +57,7 @@ defmodule InkFlier.Round do
   @spec new(Board.t, round_number) :: Reply.t
   def new(current_board, round_number) do
     struct!(__MODULE__, ~M{round_number, board: current_board, start_of_round_board: current_board})
-    |> Reply.new_round(round_number)
+    |> Reply.add_instruction(Instruction.new_round(round_number))
     |> Reply.send_summary(:all)
   end
 

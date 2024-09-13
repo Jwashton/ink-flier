@@ -9,7 +9,6 @@ defmodule InkFlier.Round.Reply do
   @type t :: {Round.t, [Round.instruction]}
 
   defdelegate player_locked_in(t, player), to: Instruction
-  defdelegate new_round(t, round_number), to: Instruction
   defdelegate send_summary(t, target), to: Instruction
 
 
