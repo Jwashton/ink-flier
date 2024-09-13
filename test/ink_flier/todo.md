@@ -1,3 +1,6 @@
+# 2024-09-13
+- Prob remove the automatically-create-new-[] part of add_instruction, and when I delete it it'll tell me the places to manaully call a Reply.new
+
 # 2024-09-10b
 - After talking to William, probably *keep* Reply abstraction, don't flatten
   - Probably make it MORE of a black box, by giving it getters instead of straight getting the `{}` tuple out of it
