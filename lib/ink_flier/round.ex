@@ -56,9 +56,11 @@ defmodule InkFlier.Round do
   @doc "Build a new round and initial notification instructions"
   @spec new(Board.t, round_number) :: Reply.t
   def new(current_board, round_number) do
-    struct!(__MODULE__, ~M{round_number, board: current_board, start_of_round_board: current_board})
+    t = struct!(__MODULE__, ~M{round_number, board: current_board, start_of_round_board: current_board})
+
+    t
     |> Reply.add_instruction(Instruction.new_round(round_number))
-    |> Reply.send_summary(:all)
+    |> Reply.add_instruction(Instruction.send_summary(t.start_of_round_board, :all))
   end
 
   @doc """
@@ -109,7 +111,7 @@ defmodule InkFlier.Round do
   def summary(t, member) do
     t
     |> Reply.add_instruction(&{:notify_member, member, {:new_round, &1.round_number}})
-    |> Reply.send_summary(member)
+    |> Reply.add_instruction(Instruction.send_summary(t.start_of_round_board, member))
   end
 
 
