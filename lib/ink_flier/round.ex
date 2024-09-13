@@ -61,6 +61,7 @@ defmodule InkFlier.Round do
     t
     |> Reply.add_instruction(Instruction.new_round(round_number))
     |> Reply.add_instruction(Instruction.send_summary(t.start_of_round_board, :all))
+    raise "next, continue updating all the Reply.* calls like above"
   end
 
   @doc """
