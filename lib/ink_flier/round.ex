@@ -59,7 +59,7 @@ defmodule InkFlier.Round do
     t = struct!(__MODULE__, ~M{round_number, board: current_board, start_of_round_board: current_board})
 
     t
-    |> Reply.add_instruction(Instruction.new_round(round_number))
+    |> Reply.add_instruction(Instruction.new_round(round_number, :all))
     |> Reply.add_instruction(Instruction.send_summary(t.start_of_round_board, :all))
   end
 
@@ -110,8 +110,7 @@ defmodule InkFlier.Round do
   @spec summary(t, Game.member_id) :: Reply.t
   def summary(t, member) do
     t
-    raise "Here next to continue the Reply.add_instruction converts like above :)"
-    |> Reply.add_instruction(&{:notify_member, member, {:new_round, &1.round_number}})
+    |> Reply.add_instruction(Instruction.new_round(t.round_number, member))
     |> Reply.add_instruction(Instruction.send_summary(t.start_of_round_board, member))
   end
 

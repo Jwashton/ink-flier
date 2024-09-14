@@ -22,7 +22,8 @@ defmodule InkFlier.Round.Instruction do
     ]
   end
 
-  def new_round(round_number), do: {:notify_room, {:new_round, round_number}}
+  def new_round(round_number, :all), do: {:notify_room, {:new_round, round_number}}
+  def new_round(round_number, member), do: {:notify_member, member, {:new_round, round_number}}
 
   def send_summary(board, :all) do
     for position <- positions(board), do: {:notify_room, position}
