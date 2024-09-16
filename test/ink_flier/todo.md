@@ -1,6 +1,7 @@
 # 2024-09-13
-- Prob remove the automatically-create-new-[] part of add_instruction, and when I delete it it'll tell me the places to manaully call a Reply.new
 - Update type and doc for Round. Possibly delete it and start from scratch just based on looking at the actual code
+- For now, let's stop poking at round and play with Channels
+- Later work more on all the Move edge cases (including winners, crashes, checkpoints, and the shortestPath algorithim for tiebreakers of all who crossed furthest checkpoint)
 
 # 2024-09-10b
 - After talking to William, probably *keep* Reply abstraction, don't flatten
