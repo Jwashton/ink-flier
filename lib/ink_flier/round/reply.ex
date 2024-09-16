@@ -1,6 +1,6 @@
 defmodule InkFlier.Round.Reply do
   @moduledoc """
-  Helper module for managing a Round's reply, which consists of the Round itself, plus a list of Instructions
+  An abstraction for returning both an updated Round and a of notification Instructions
   """
 
   alias InkFlier.Round
