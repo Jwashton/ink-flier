@@ -26,6 +26,10 @@ defmodule InkFlier.Round.Instruction do
     {:notify_room, {:crash, player, destination, obstacle_name_set}}
   end
 
+  def error(player, msg) do
+    {:notify_player, player, {:error, msg}}
+  end
+
   def new_round(round_number, :all), do: {:notify_room, {:new_round, round_number}}
   def new_round(round_number, member), do: {:notify_member, member, {:new_round, round_number}}
 
