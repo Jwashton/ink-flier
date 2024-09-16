@@ -146,7 +146,7 @@ defmodule InkFlier.Round do
     if all_locked_in?(t) do
       reply
       |> add_crash_instructions
-      |> Reply.add_instruction({:end_of_round, t.round_number})
+      |> Reply.add_instruction(Instruction.end_of_round(t.round_number))
     else
       reply
     end
