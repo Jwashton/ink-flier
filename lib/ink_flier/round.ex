@@ -130,20 +130,20 @@ defmodule InkFlier.Round do
 
       {{:collision, obstacle_name_set}, new_board} ->
         put_in(t.board, new_board)
-        |> update_crashed(&[{:crash, player, destination, obstacle_name_set} | &1])
+        |> update_crashed(&[Instruction.crash(player, destination, obstacle_name_set) | &1])
     end
   end
 
   defp update_crashed(t, func), do: update_in(t.crashed_this_round, func)
 
-  defp handle_crashes({t, _instructions} = reply) do
+  defp add_crash_instructions({t, _instructions} = reply) do
     t.crashed_this_round
     |> Enum.reverse
-    |> Enum.reduce(reply, &Reply.add_instruction(&2, {:notify_room, &1}))
+    |> Enum.reduce(reply, &Reply.add_instruction(&2, &1))
   end
 
   defp maybe_end_round({t, _} = reply) do
-    unless all_locked_in?(t), do: reply, else: reply |> handle_crashes |> Reply.add_instruction({:end_of_round, t.round_number})
+    unless all_locked_in?(t), do: reply, else: reply |> add_crash_instructions |> Reply.add_instruction({:end_of_round, t.round_number})
   end
 
   defp locked_in?(t, player), do: player in t.locked_in
