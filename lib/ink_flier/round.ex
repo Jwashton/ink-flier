@@ -143,7 +143,13 @@ defmodule InkFlier.Round do
   end
 
   defp maybe_end_round({t, _} = reply) do
-    unless all_locked_in?(t), do: reply, else: reply |> add_crash_instructions |> Reply.add_instruction({:end_of_round, t.round_number})
+    if all_locked_in?(t) do
+      reply
+      |> add_crash_instructions
+      |> Reply.add_instruction({:end_of_round, t.round_number})
+    else
+      reply
+    end
   end
 
   defp locked_in?(t, player), do: player in t.locked_in
