@@ -11,6 +11,7 @@ defmodule InkFlier.Round do
   import TinyMaps
 
   alias __MODULE__.Reply
+  alias __MODULE__.Instruction
   alias InkFlier.Game
   alias InkFlier.Board
   alias InkFlier.RaceTrack.Obstacle
@@ -55,9 +56,11 @@ defmodule InkFlier.Round do
   @doc "Build a new round and initial notification instructions"
   @spec new(Board.t, round_number) :: Reply.t
   def new(current_board, round_number) do
-    struct!(__MODULE__, ~M{round_number, board: current_board, start_of_round_board: current_board})
-    |> Reply.new_round(round_number)
-    |> Reply.send_summary(:all)
+    t = struct!(__MODULE__, ~M{round_number, board: current_board, start_of_round_board: current_board})
+
+    t
+    |> Reply.add_instruction(Instruction.new_round(round_number, :all))
+    |> Reply.add_instruction(Instruction.send_summary(t.start_of_round_board, :all))
   end
 
   @doc """
@@ -81,7 +84,7 @@ defmodule InkFlier.Round do
       t
       |> maybe_crash(player, destination)
       |> lock_in(player)
-      |> Reply.player_locked_in(player)
+      |> Reply.add_instruction(&Instruction.player_locked_in(player, speed(&1, player)))
       |> maybe_end_round
     end
   end
@@ -107,17 +110,17 @@ defmodule InkFlier.Round do
   @spec summary(t, Game.member_id) :: Reply.t
   def summary(t, member) do
     t
-    |> Reply.add_instruction(&{:notify_member, member, {:new_round, &1.round_number}})
-    |> Reply.send_summary(member)
+    |> Reply.add_instruction(Instruction.new_round(t.round_number, member))
+    |> Reply.add_instruction(Instruction.send_summary(t.start_of_round_board, member))
   end
 
 
   defp check_legal_move(t, player, destination) do
-    if Board.legal_move?(t.board, player, destination), do: :ok, else: reply_error(t, player, :illegal_destination)
+    if Board.legal_move?(t.board, player, destination), do: :ok, else: t |> Reply.add_instruction(Instruction.error(player, :illegal_destination))
   end
 
   defp check_not_already_locked_in(t, player) do
-    unless locked_in?(t, player), do: :ok, else: reply_error(t, player, :already_locked_in)
+    unless locked_in?(t, player), do: :ok, else: t |> Reply.add_instruction(Instruction.error(player, :already_locked_in))
   end
 
 
@@ -127,27 +130,31 @@ defmodule InkFlier.Round do
 
       {{:collision, obstacle_name_set}, new_board} ->
         put_in(t.board, new_board)
-        |> update_crashed(&[{:crash, player, destination, obstacle_name_set} | &1])
+        |> update_crashed(&[Instruction.crash(player, destination, obstacle_name_set) | &1])
     end
   end
 
   defp update_crashed(t, func), do: update_in(t.crashed_this_round, func)
 
-  defp handle_crashes({t, _instructions} = reply) do
+  defp add_crash_instructions({t, _instructions} = reply) do
     t.crashed_this_round
     |> Enum.reverse
-    |> Enum.reduce(reply, &Reply.add_instruction(&2, {:notify_room, &1}))
+    |> Enum.reduce(reply, &Reply.add_instruction(&2, &1))
   end
 
   defp maybe_end_round({t, _} = reply) do
-    unless all_locked_in?(t), do: reply, else: reply |> handle_crashes |> Reply.add_instruction({:end_of_round, t.round_number})
+    if all_locked_in?(t) do
+      reply
+      |> add_crash_instructions
+      |> Reply.add_instruction(Instruction.end_of_round(t.round_number))
+    else
+      reply
+    end
   end
 
   defp locked_in?(t, player), do: player in t.locked_in
 
   defp all_locked_in?(t), do: MapSet.equal?(t.locked_in, players_set(t))
-
-  defp reply_error(t, player, msg), do: Reply.add_instruction(t, {:notify_player, player, {:error, msg}})
 
   defp players_set(t), do: t.board |> Board.players |> MapSet.new
 

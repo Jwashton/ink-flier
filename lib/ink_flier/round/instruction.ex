@@ -1,7 +1,5 @@
 defmodule InkFlier.Round.Instruction do
-  alias InkFlier.Round
   alias InkFlier.Board
-  alias InkFlier.Round.Reply
 
   @doc """
   Instructions after locking in a player
@@ -17,35 +15,41 @@ defmodule InkFlier.Round.Instruction do
       ]
 
   """
-  def player_locked_in(reply, player) do
-    reply
-    |> Reply.add_instruction({:notify_room, {:player_locked_in, player}})
-    |> Reply.add_instruction(&{:notify_player, player, {:ok, {:speed, Round.speed(&1, player)}}})
+  def player_locked_in(player, speed) do
+    [
+      {:notify_room, {:player_locked_in, player}},
+      {:notify_player, player, {:ok, {:speed, speed}}},
+    ]
   end
 
-  def new_round(reply, round_number) do
-    Reply.add_instruction(reply, {:notify_room, {:new_round, round_number}})
+  def crash(player, destination, obstacle_name_set) do
+    {:notify_room, {:crash, player, destination, obstacle_name_set}}
   end
 
-  def send_summary(reply, :all) do
-    add_instruction_for_each_player_position(reply, &Reply.add_instruction(&2, {:notify_room, &1}))
+  def error(player, msg) do
+    {:notify_player, player, {:error, msg}}
   end
 
-  def send_summary(reply, member) do
-    add_instruction_for_each_player_position(reply, &Reply.add_instruction(&2, {:notify_member, member, &1}))
+  def new_round(round_number, :all), do: {:notify_room, {:new_round, round_number}}
+  def new_round(round_number, member), do: {:notify_member, member, {:new_round, round_number}}
+
+  def end_of_round(round_number), do: {:end_of_round, round_number}
+
+  def send_summary(board, :all) do
+    for position <- positions(board), do: {:notify_room, position}
+  end
+
+  def send_summary(board, member) do
+    for position <- positions(board), do: {:notify_member, member, position}
   end
 
 
-  defp add_instruction_for_each_player_position(reply, instruction_func) do
-    {round, _instruction} = reply
-    board = Round.start_of_round_board(round)
-
+  defp positions(board) do
     for player <- Board.players(board) do
       {:player_position, player, %{
         coord: Board.current_position(board, player),
         speed: Board.speed(board, player),
       }}
     end
-    |> Enum.reduce(reply, instruction_func)
   end
 end

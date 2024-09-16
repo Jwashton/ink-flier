@@ -1,16 +1,11 @@
 defmodule InkFlier.Round.Reply do
   @moduledoc """
-  Helper module for managing a Round's reply, which consists of the Round itself, plus a list of Instructions
+  An abstraction for returning both an updated Round and a of notification Instructions
   """
 
   alias InkFlier.Round
-  alias InkFlier.Round.Instruction
 
   @type t :: {Round.t, [Round.instruction]}
-
-  defdelegate player_locked_in(t, player), to: Instruction
-  defdelegate new_round(t, round_number), to: Instruction
-  defdelegate send_summary(t, target), to: Instruction
 
 
   @spec add_instruction(Round.t, any) :: t
@@ -31,6 +26,9 @@ defmodule InkFlier.Round.Reply do
   def add_instruction(t, new_instruction) do
     add_instruction(t, [new_instruction])
   end
+
+#   def round(t), do: elem(t, 0)
+#   def instructions(t), do: elem(t, 1)
 
 
   defp new(round), do: {round, []}
