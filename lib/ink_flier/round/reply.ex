@@ -4,11 +4,8 @@ defmodule InkFlier.Round.Reply do
   """
 
   alias InkFlier.Round
-  alias InkFlier.Round.Instruction
 
   @type t :: {Round.t, [Round.instruction]}
-
-  defdelegate player_locked_in(t, player), to: Instruction
 
 
   @spec add_instruction(Round.t, any) :: t

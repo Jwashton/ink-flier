@@ -139,7 +139,6 @@ defmodule InkFlier.Round do
   defp handle_crashes({t, _instructions} = reply) do
     t.crashed_this_round
     |> Enum.reverse
-    raise "Here next for a bit more Reply cleaning"
     |> Enum.reduce(reply, &Reply.add_instruction(&2, {:notify_room, &1}))
   end
 
