@@ -59,6 +59,7 @@ defmodule InkFlier.Round do
     t = struct!(__MODULE__, ~M{round_number, board: current_board, start_of_round_board: current_board})
 
     t
+    |> Reply.new
     |> Reply.add_instruction(Instruction.new_round(round_number, :all))
     |> Reply.add_instruction(Instruction.send_summary(t.start_of_round_board, :all))
   end
@@ -84,6 +85,7 @@ defmodule InkFlier.Round do
       t
       |> maybe_crash(player, destination)
       |> lock_in(player)
+      |> Reply.new
       |> Reply.add_instruction(&Instruction.player_locked_in(player, speed(&1, player)))
       |> maybe_end_round
     end
@@ -110,17 +112,30 @@ defmodule InkFlier.Round do
   @spec summary(t, Game.member_id) :: Reply.t
   def summary(t, member) do
     t
+    |> Reply.new
     |> Reply.add_instruction(Instruction.new_round(t.round_number, member))
     |> Reply.add_instruction(Instruction.send_summary(t.start_of_round_board, member))
   end
 
 
   defp check_legal_move(t, player, destination) do
-    if Board.legal_move?(t.board, player, destination), do: :ok, else: t |> Reply.add_instruction(Instruction.error(player, :illegal_destination))
+    if Board.legal_move?(t.board, player, destination) do
+      :ok
+    else
+      t
+      |> Reply.new
+      |> Reply.add_instruction(Instruction.error(player, :illegal_destination))
+    end
   end
 
   defp check_not_already_locked_in(t, player) do
-    unless locked_in?(t, player), do: :ok, else: t |> Reply.add_instruction(Instruction.error(player, :already_locked_in))
+    unless locked_in?(t, player) do
+      :ok
+    else
+      t
+      |> Reply.new
+      |> Reply.add_instruction(Instruction.error(player, :already_locked_in))
+    end
   end
 
 
