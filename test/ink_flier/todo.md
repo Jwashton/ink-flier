@@ -1,3 +1,6 @@
+# 2024-09-17
+- Get rid of the direct {} = Reply.... calls, and use getters instead (to not assume the internals of Reply)
+
 # 2024-09-13
 - Update type and doc for Round. Possibly delete it and start from scratch just based on looking at the actual code
 - For now, let's stop poking at round and play with Channels
