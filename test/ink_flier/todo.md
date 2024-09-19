@@ -1,3 +1,15 @@
+# 2024-09-18
+- With william, can we do the channels start stuff together
+
+- Do I need updated elixir/phx versions?
+- Just to get started with a starter blank page to print fields and output to "here's the walls, here's the list of (x,y)s for the cars, here's an input to move... and say your player name?
+  - (how do I identify one player or another. just a field they can fill in for now? or need to do some kind of session login thing right from the begining?)
+- Do I need the entire phx.gen.html? It makes like 17 files :(((
+- Ran the phx.gen.channel from [Testing Channels guide](https://hexdocs.pm/phoenix/testing_channels.html)
+  - But instantly get console errors:
+      Loading failed for the <script> with source “http://localhost:4000/assets/app.js”.
+  - Trying the island book's first step of `var phoenix = require("phoenix")` also errors with `require is not defined`
+
 # 2024-09-17
 - Get rid of the direct {} = Reply.... calls, and use getters instead (to not assume the internals of Reply)
 
