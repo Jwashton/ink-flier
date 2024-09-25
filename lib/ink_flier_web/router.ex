@@ -16,7 +16,6 @@ defmodule InkFlierWeb.Router do
 
   pipeline :game do
     plug :put_root_layout, html: {InkFlierWeb.GameLayouts, :root}
-    plug :put_layout, html: {InkFlierWeb.GameLayouts, :app}
   end
 
   scope "/", InkFlierWeb do
@@ -29,7 +28,6 @@ defmodule InkFlierWeb.Router do
     pipe_through [:browser, :game]
 
     get "/sandbox", GameController, :sandbox
-    get "/lobby", GameController, :lobby
   end
 
   # Other scopes may use custom stacks.
