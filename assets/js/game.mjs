@@ -23,12 +23,12 @@ const objects = [];
 
 const graphColor = window.currentTheme() === 'dark' ? 'hsl(60deg 22% 86%)' : 'hsl(26deg 47% 6%)';
 
-DOT_ROW_COUNT = 40;
-DOT_SPACING = 50;
-DOT_SIZE = 4;
-DOT_HALF_SIZE = DOT_SIZE / 2;
-DOT_HALF_ROW_COUNT = Math.trunc(DOT_ROW_COUNT / 2);
-DOT_ROW_HALF_LENGTH = DOT_HALF_ROW_COUNT * DOT_SPACING;
+const DOT_ROW_COUNT = 40;
+const DOT_SPACING = 50;
+const DOT_SIZE = 4;
+const DOT_HALF_SIZE = DOT_SIZE / 2;
+const DOT_HALF_ROW_COUNT = Math.trunc(DOT_ROW_COUNT / 2);
+const DOT_ROW_HALF_LENGTH = DOT_HALF_ROW_COUNT * DOT_SPACING;
 
 [...Array(DOT_ROW_COUNT ** 2).keys()].forEach(n => {
   objects.push({
