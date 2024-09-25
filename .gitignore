@@ -30,4 +30,3 @@ node_modules
 
 # Ignore compiled assets
 /priv/static/
-/package-lock.json
