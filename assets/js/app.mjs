@@ -10,4 +10,6 @@
 // into your javascript bundle:
 // * deps/phoenix_live_view/priv/static/phoenix_live_view.js
 
+import "./user_socket.js"
+
 console.log('Hello!');
