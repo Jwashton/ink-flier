@@ -59,4 +59,13 @@ channel.join()
   .receive("ok", resp => { console.log("Joined successfully", resp) })
   .receive("error", resp => { console.log("Unable to join", resp) })
 
+
+
+
+const clear_session_button = document.querySelector("#clear_session")
+
+clear_session_button.onclick = function () {
+  console.log("Got in function")
+}
+
 export default socket

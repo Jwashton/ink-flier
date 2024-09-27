@@ -12,4 +12,4 @@
 
 import "./user_socket.js"
 
-console.log('Hello!');
+// console.log('Hello!');
