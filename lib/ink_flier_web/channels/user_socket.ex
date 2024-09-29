@@ -25,7 +25,10 @@ defmodule InkFlierWeb.UserSocket do
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
   @impl true
-  def connect(_params, socket, _connect_info) do
+  def connect(params, socket, _connect_info) do
+    params
+    |> dbg(charlists: :as_lists)
+
     {:ok, socket}
   end
 

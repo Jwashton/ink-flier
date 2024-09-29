@@ -3,6 +3,9 @@ defmodule InkFlierWeb.RoomChannel do
 
   @impl true
   def join("room:lobby", payload, socket) do
+    socket
+    |> dbg(charlists: :as_lists)
+
     if authorized?(payload) do
       {:ok, socket}
     else

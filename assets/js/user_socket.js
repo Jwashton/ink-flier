@@ -4,9 +4,15 @@
 // Bring in Phoenix channels client library:
 import {Socket} from "phoenix"
 
+const url_string = window.location.href
+const url = new URL(url_string);
+const user_string = url.searchParams.get("user");
+console.log(`user_string: ${user_string}`)
+
 // And connect to the path in "lib/ink_flier_web/endpoint.ex". We pass the
 // token for authentication. Read below how it should be used.
-let socket = new Socket("/socket", {params: {token: window.userToken}})
+// let socket = new Socket("/socket", {params: {token: window.userToken}})
+let socket = new Socket("/socket", {params: {user: user_string}})
 
 // When you connect, you'll often need to authenticate the client.
 // For example, imagine you have an authentication plug, `MyAuth`,
