@@ -1,0 +1,31 @@
+<div class="centered">
+
+  <form method="POST" action="/login">
+    <input type="hidden" name="_csrf_token" value={Phoenix.Controller.get_csrf_token()}>
+
+    <label for="username">Username</label>
+    <input id="username" name="user_name">
+
+    <button>Log in</button>
+  </form>
+
+</div>
+
+
+
+
+
+
+<style>
+div {
+  border: 1px solid black;
+  padding: 20px;
+}
+
+.centered {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+</style>
