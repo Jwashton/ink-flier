@@ -1,3 +1,9 @@
+- @William
+  - Right way to do css in, for example, this small login page?
+    - Is tailwind off? It still works on their main "/" page
+      - But doesn't work in this new clean page, even if I turn off render(conn, :new, layout: false) and remove the false part
+  - If no tailwind is the way to go, is there a way to make a new empty starter css file and tell the controller to use that?
+
 # 2024-09-29
 - @William
 - In user_socket.ex I'm getting string data from either the url or javascript or whoever
