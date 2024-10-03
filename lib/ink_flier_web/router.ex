@@ -23,6 +23,7 @@ defmodule InkFlierWeb.Router do
 
     get "/", PageController, :home
     get "/lobby", LobbyController, :home
+    get "/login", LoginController, :new
   end
 
   scope "/game", InkFlierWeb do
