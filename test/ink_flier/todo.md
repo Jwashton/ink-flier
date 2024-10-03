@@ -3,6 +3,7 @@
     - Is tailwind off? It still works on their main "/" page
       - But doesn't work in this new clean page, even if I turn off render(conn, :new, layout: false) and remove the false part
   - If no tailwind is the way to go, is there a way to make a new empty starter css file and tell the controller to use that?
+  - I'd kind of like to turn tailwind on for this just cause I'm a little more used to it. But it's fine if not
 
 # 2024-09-29
 - @William
