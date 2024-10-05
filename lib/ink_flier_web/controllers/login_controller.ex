@@ -7,12 +7,22 @@ defmodule InkFlierWeb.LoginController do
     |> render(:new, layout: false)
   end
 
-  def create(conn, _params) do
+  def create(conn, %{"user_name" => raw_user} = _params) do
     conn
-    |> assign_user
-    |> render(:new, layout: false)
+    |> put_session(:user, raw_user)
+    |> redirect(to: ~p"/login")
+  end
+
+  def delete(conn, _params) do
+    conn
+    |> delete_session(:user)
+    |> redirect(to: ~p"/login")
   end
 
 
-  defp assign_user(conn), do: assign(conn, :user, :TODO)
+  defp assign_user(conn) do
+    conn
+    |> get_session(:user)
+    |> then(&assign(conn, :user, &1))
+  end
 end

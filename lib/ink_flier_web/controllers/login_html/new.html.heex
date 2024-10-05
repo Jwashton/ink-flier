@@ -1,5 +1,10 @@
-<div>
-  User: <%= @user %>
+<div class="flex">
+  <span>
+    User: <%= @user %>
+  </span>
+  <span>
+    <a href="/logout">Logout</a>
+  </span>
 </div>
 
 <div class="centered">
@@ -31,5 +36,10 @@ div {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.flex {
+  display: flex;
+  gap: 30px;
 }
 </style>
