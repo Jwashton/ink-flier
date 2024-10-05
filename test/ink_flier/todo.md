@@ -1,3 +1,7 @@
+# 2024-10-05
+- New router section, required to be already logged in (user in session not nil)
+
+# 2024-10-01
 - @William
   - Right way to do css in, for example, this small login page?
     - Is tailwind off? It still works on their main "/" page
