@@ -15,6 +15,8 @@
 
     - the create function in login_controller is ugly, is this normal?
 
+  - I can't get the `<InkFlierWeb.LoginHTML.new user={@user} />` on lobby_html\home.html to align right
+
 # 2024-09-29
 - @William
 - In user_socket.ex I'm getting string data from either the url or javascript or whoever
