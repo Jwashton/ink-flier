@@ -12,7 +12,7 @@ defmodule InkFlierWeb.LoginController do
 
     if user == "" do
       conn
-      |> put_flash(:info, "Can't be blank")
+      |> put_flash(:error, "Can't be blank")
       |> redirect(to: ~p"/login")
     else
       conn
@@ -29,6 +29,7 @@ defmodule InkFlierWeb.LoginController do
 
 
   defp assign_user(conn) do
+    # conn
     assign(conn, :user, get_session(conn, :user))
   end
 end
