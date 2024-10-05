@@ -8,9 +8,17 @@ defmodule InkFlierWeb.LoginController do
   end
 
   def create(conn, %{"user_name" => raw_user} = _params) do
-    conn
-    |> put_session(:user, raw_user)
-    |> redirect(to: ~p"/login")
+    user = String.trim(raw_user)
+
+    if user == "" do
+      conn
+      |> put_flash(:info, "Can't be blank")
+      |> redirect(to: ~p"/login")
+    else
+      conn
+      |> put_session(:user, user)
+      |> redirect(to: ~p"/login")
+    end
   end
 
   def delete(conn, _params) do
