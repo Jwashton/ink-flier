@@ -5,6 +5,14 @@
   - If no tailwind is the way to go, is there a way to make a new empty starter css file and tell the controller to use that?
   - I'd kind of like to turn tailwind on for this just cause I'm a little more used to it. But it's fine if not
 
+  - Redirect (after submitting login, post)
+    - Sometimes there's the redirect to whichever page I just came from
+      - Do I save that in a url param and default to send-to "/" or something otherwise?
+    - It would be nice to make this login a tiny piece of bigger pages
+      - Click login at the top right corner. That piece of the page changes to UserProfile blabla + a logout button
+      - But the rest of the page stays on the same page
+      - But the "inner" login piece would need somehow to know who the outer parent was to redirect or render them?
+
 # 2024-09-29
 - @William
 - In user_socket.ex I'm getting string data from either the url or javascript or whoever
