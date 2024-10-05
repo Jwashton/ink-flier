@@ -1,18 +1,20 @@
-<form>
-  <label for="player_id">Player id:</label>
-  <div id="player_id">
-    <%= @player_id %>
-  </div>
+<div>
+  <span class="align_right">
+    <InkFlierWeb.LoginHTML.new user={@user} />
+  </span>
+</div>
 
-  <a href="#" id="clear_session">Clear session</a>
+<hr />
 
-  <hr />
+<%# <input id="player_id" type="text"> %>
+<code>
+  <%= inspect @conn %>
+</code>
 
-  <%# <input id="player_id" type="text"> %>
-  <code>
-    <%= inspect @conn %>
-  </code>
 
-<%#   <label for="player_id">Player id:</label> %>
-<%#   <input id="player_id" type="text"> %>
-</form>
+<style>
+.align_right {
+  position: relative;
+  right: 0;
+}
+</style>
