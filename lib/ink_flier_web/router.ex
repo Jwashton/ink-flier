@@ -18,8 +18,12 @@ defmodule InkFlierWeb.Router do
     plug :put_root_layout, html: {InkFlierWeb.GameLayouts, :root}
   end
 
+  pipeline :user do
+    plug InkFlierWeb.Plugs.AssignUser
+  end
+
   scope "/", InkFlierWeb do
-    pipe_through :browser
+    pipe_through [:browser, :user]
 
     get "/", PageController, :home
     get "/lobby", LobbyController, :home
