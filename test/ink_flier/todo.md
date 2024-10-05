@@ -21,6 +21,17 @@
 
   - I can't get the `<InkFlierWeb.LoginHTML.new user={@user} />` on lobby_html\home.html to align right
 
+  - Redirecting "to this same page" from INSIDE another rendered html ("partial" or "function component" or whatever)
+    - in login_controller currently I hardcoded to:
+      ```
+      redirect(conn, to: ~p"/login")
+      or
+      redirect(conn, to: ~p"/lobby")
+      ```
+    - It would be nice if I could use this `<InkFlierWeb.LoginHTML.new user={@user} />` partial in ANY outer html and have it redirect to THAT page
+    - I have 2 examples on "For revert" in commit history on 2024-10-05
+
+
 # 2024-09-29
 - @William
 - In user_socket.ex I'm getting string data from either the url or javascript or whoever
