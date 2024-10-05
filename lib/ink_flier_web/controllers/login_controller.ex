@@ -21,8 +21,6 @@ defmodule InkFlierWeb.LoginController do
 
 
   defp assign_user(conn) do
-    conn
-    |> get_session(:user)
-    |> then(&assign(conn, :user, &1))
+    assign(conn, :user, get_session(conn, :user))
   end
 end
