@@ -6,10 +6,7 @@ defmodule InkFlierWeb.LoginController do
     |> render(:new, layout: false)
   end
 
-  def create(conn, params) do
-    %{"user_name" => raw_user, "return_to" => return_to} = params
-                                                           |> dbg(charlists: :as_lists)
-
+  def create(conn, %{"user_name" => raw_user} = _params) do
     user = String.trim(raw_user)
 
     if user == "" do
@@ -31,6 +28,6 @@ defmodule InkFlierWeb.LoginController do
 
 
   defp redirect_to_self(conn) do
-    redirect(conn, to: conn.assigns.return_to)
+    redirect(conn, to: conn.assigns.current_path)
   end
 end
