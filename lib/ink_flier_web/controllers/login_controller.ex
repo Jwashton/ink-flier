@@ -1,9 +1,10 @@
 defmodule InkFlierWeb.LoginController do
   use InkFlierWeb, :controller
 
+  plug :assign_user
+
   def new(conn, _params) do
     conn
-    |> assign_user
     |> render(:new, layout: false)
   end
 
@@ -28,8 +29,7 @@ defmodule InkFlierWeb.LoginController do
   end
 
 
-  defp assign_user(conn) do
-    # conn
+  defp assign_user(conn, _opts) do
     assign(conn, :user, get_session(conn, :user))
   end
 end
