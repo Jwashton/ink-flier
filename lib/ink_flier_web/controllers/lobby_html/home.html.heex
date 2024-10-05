@@ -1,6 +1,6 @@
 <div>
   <span class="align_right">
-    <InkFlierWeb.LoginHTML.new user={@user} />
+    <InkFlierWeb.LoginHTML.new user={@user} current_path={Phoenix.Controller.current_path(@conn)}/>
   </span>
 </div>
 
