@@ -14,7 +14,6 @@
       - But the "inner" login piece would need somehow to know who the outer parent was to redirect or render them?
 
     - the create function in login_controller is ugly, is this normal?
-      - And the put_flash isn't working
 
 # 2024-09-29
 - @William
