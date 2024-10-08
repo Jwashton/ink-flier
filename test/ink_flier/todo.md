@@ -13,11 +13,14 @@
 
   - I can't get the `<InkFlierWeb.LoginHTML.new user={@user} />` on lobby_html\home.html to align to right side
 
-  - In user_socket.ex I'm getting string data from either the url or javascript or whoever
+  - "sanitize user input"
+    - In user_socket.ex I'm getting string data from either the url or javascript or whoever
     - Pretty sure I'm supposed to "clean" this before using it
       - I know ecto does that with whitelist stuff, but I'd rather not add a bunch of ecto changesets here unless that's what we're always supposed to do with user input
     - For now I'm just using it as a place to write userName (until there's login code or something later)
     - Is there a quicker way to clean input before using it to call functions like `Game.new(playerNameIGotFromJavascriptCall)`
+      - I think the answer might be I AM always supposed to use the ecto changeset thing for form input
+        - I think I actually remember the meerkats & other books doing this. Having a changeset even if there wasn't ecto save happening. Just for the form validation-error-messages but also for the clean input, now that I think about it
 
 
 # 2024-09-17
