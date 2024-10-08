@@ -22,6 +22,11 @@
       - I think the answer might be I AM always supposed to use the ecto changeset thing for form input
         - I think I actually remember the meerkats & other books doing this. Having a changeset even if there wasn't ecto save happening. Just for the form validation-error-messages but also for the clean input, now that I think about it
 
+  - Tests for the controller/flow of the pages
+    - For example the login and out, which page it redirects to with the "return_to" stuff I added...
+    - There's a decent number of clicks involved in checking if everything works. Really feels like test
+    - But am I not supposed to test the frontend so much?
+    - But I think I DID see controller tests in hexdoc. Maybe I should reread and just do a few for the login stuff
 
 # 2024-09-17
 - Get rid of the direct {} = Reply.... calls, and use getters instead (to not assume the internals of Reply)
