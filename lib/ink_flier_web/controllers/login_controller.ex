@@ -1,5 +1,6 @@
 defmodule InkFlierWeb.LoginController do
   use InkFlierWeb, :controller
+  import TinyMaps
 
   plug :default_return_to, "/login"
 
@@ -8,9 +9,8 @@ defmodule InkFlierWeb.LoginController do
     |> render(:new, layout: false)
   end
 
-  def create(conn, params) do
-    %{"user_name" => raw_user, "return_to" => return_to} = params
-    user = String.trim(raw_user)
+  def create(conn, ~m{user_name, return_to}) do
+    user = String.trim(user_name)
 
     if user == "" do
       conn
@@ -23,9 +23,7 @@ defmodule InkFlierWeb.LoginController do
     end
   end
 
-  def delete(conn, params) do
-    %{"return_to" => return_to} = params
-
+  def delete(conn, ~m{return_to}) do
     conn
     |> delete_session(:user)
     |> redirect(to: return_to)
