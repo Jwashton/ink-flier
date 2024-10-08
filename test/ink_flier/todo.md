@@ -3,60 +3,22 @@
 
 # 2024-10-01
 - @William
-  - update to most of below:
-    - Just in general, how to do a "partial" or function component that has "User: blabla <Logout>" / "Login: <field>"
-    - And redirects to "self" after setting the session
-      - (Self might be the direct login itself, or ...
-      - Hrm, actually, maybe it IS a function component, and it always requires the needed "redirect-to" param or something
-
   - Right way to do css in, for example, this small login page?
     - Is tailwind off? It still works on their main "/" page
       - But doesn't work in this new clean page, even if I turn off render(conn, :new, layout: false) and remove the false part
   - If no tailwind is the way to go, is there a way to make a new empty starter css file and tell the controller to use that?
   - I'd kind of like to turn tailwind on for this just cause I'm a little more used to it. But it's fine if not
 
-  - Redirect (after submitting login, post)
-    - Sometimes there's the redirect to whichever page I just came from
-      - Do I save that in a url param and default to send-to "/" or something otherwise?
-    - It would be nice to make this login a tiny piece of bigger pages
-      - Click login at the top right corner. That piece of the page changes to UserProfile blabla + a logout button
-      - But the rest of the page stays on the same page
-      - But the "inner" login piece would need somehow to know who the outer parent was to redirect or render them?
+  - the create function in login_controller is ugly, is this normal?
 
-    - the create function in login_controller is ugly, is this normal?
+  - I can't get the `<InkFlierWeb.LoginHTML.new user={@user} />` on lobby_html\home.html to align to right side
 
-  - I can't get the `<InkFlierWeb.LoginHTML.new user={@user} />` on lobby_html\home.html to align right
+  - In user_socket.ex I'm getting string data from either the url or javascript or whoever
+    - Pretty sure I'm supposed to "clean" this before using it
+      - I know ecto does that with whitelist stuff, but I'd rather not add a bunch of ecto changesets here unless that's what we're always supposed to do with user input
+    - For now I'm just using it as a place to write userName (until there's login code or something later)
+    - Is there a quicker way to clean input before using it to call functions like `Game.new(playerNameIGotFromJavascriptCall)`
 
-  - Redirecting "to this same page" from INSIDE another rendered html ("partial" or "function component" or whatever)
-    - in login_controller currently I hardcoded to:
-      ```
-      redirect(conn, to: ~p"/login")
-      or
-      redirect(conn, to: ~p"/lobby")
-      ```
-    - It would be nice if I could use this `<InkFlierWeb.LoginHTML.new user={@user} />` partial in ANY outer html and have it redirect to THAT page
-    - I have 2 examples on "For revert" in commit history on 2024-10-05
-
-
-# 2024-09-29
-- @William
-- In user_socket.ex I'm getting string data from either the url or javascript or whoever
-  - Pretty sure I'm supposed to "clean" this before using it
-    - I know ecto does that with whitelist stuff, but I'd rather not add a bunch of ecto changesets here unless that's what we're always supposed to do with user input
-  - For now I'm just using it as a place to write userName (until there's login code or something later)
-  - Is there a quicker way to clean input before using it to call functions like `Game.new(playerNameIGotFromJavascriptCall)`
-
-# 2024-09-18
-- With william, can we do the channels start stuff together
-
-- Do I need updated elixir/phx versions?
-- Just to get started with a starter blank page to print fields and output to "here's the walls, here's the list of (x,y)s for the cars, here's an input to move... and say your player name?
-  - (how do I identify one player or another. just a field they can fill in for now? or need to do some kind of session login thing right from the begining?)
-- Do I need the entire phx.gen.html? It makes like 17 files :(((
-- Ran the phx.gen.channel from [Testing Channels guide](https://hexdocs.pm/phoenix/testing_channels.html)
-  - But instantly get console errors:
-      Loading failed for the <script> with source “http://localhost:4000/assets/app.js”.
-  - Trying the island book's first step of `var phoenix = require("phoenix")` also errors with `require is not defined`
 
 # 2024-09-17
 - Get rid of the direct {} = Reply.... calls, and use getters instead (to not assume the internals of Reply)
