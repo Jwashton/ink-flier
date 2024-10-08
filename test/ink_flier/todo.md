@@ -1,8 +1,14 @@
 # 2024-10-05
-- New router section, required to be already logged in (user in session not nil)
+- [ ] New router section, required to be already logged in (user in session not nil)
 
 # 2024-10-01
 - @William
+  - update to most of below:
+    - Just in general, how to do a "partial" or function component that has "User: blabla <Logout>" / "Login: <field>"
+    - And redirects to "self" after setting the session
+      - (Self might be the direct login itself, or ...
+      - Hrm, actually, maybe it IS a function component, and it always requires the needed "redirect-to" param or something
+
   - Right way to do css in, for example, this small login page?
     - Is tailwind off? It still works on their main "/" page
       - But doesn't work in this new clean page, even if I turn off render(conn, :new, layout: false) and remove the false part
