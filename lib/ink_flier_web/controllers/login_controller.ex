@@ -28,6 +28,6 @@ defmodule InkFlierWeb.LoginController do
 
 
   defp redirect_to_self(conn) do
-    redirect(conn, to: conn.assigns.current_path)
+    redirect(conn, to: ~p"/lobby")
   end
 end
