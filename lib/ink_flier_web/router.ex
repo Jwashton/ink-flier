@@ -26,11 +26,16 @@ defmodule InkFlierWeb.Router do
     pipe_through [:browser, :user]
 
     get "/", PageController, :home
-    get "/lobby", LobbyController, :home
 
     get "/login", LoginController, :new
     post "/login", LoginController, :create
     get "/logout", LoginController, :delete
+  end
+
+  scope "/", InkFlierWeb do
+    pipe_through [:browser, :user, :login_required]
+
+    get "/lobby", LobbyController, :home
   end
 
   scope "/game", InkFlierWeb do
