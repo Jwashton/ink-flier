@@ -1,13 +1,14 @@
 <div :if={@user} class="border centered">
   User: <%= @user %>
   <span class="margin_left">
-    <a href="/logout">Logout</a>
+    <a href={~p"/logout?return_to=#{@return_to}"}>Logout</a>
   </span>
 </div>
 
 <div :if={!@user} class="border centered">
   <form method="POST" action="/login">
     <input type="hidden" name="_csrf_token" value={Phoenix.Controller.get_csrf_token()}>
+    <input type="hidden" name="return_to" value={@return_to}>
 
     <label for="username">Username</label>
     <input id="username" name="user_name">
