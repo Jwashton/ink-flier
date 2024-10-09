@@ -1,7 +1,3 @@
-# 2024-10-09
-- Cleanup redirect after notLoggedIn->type /lobby->get redirected->login-><...doesn't return us to /lobby>
-  - Prob use params and return_to and Phoenix.Controller.current_path
-
 # 2024-10-01
 - @William
   - Right way to do css in, for example, this small login page?
