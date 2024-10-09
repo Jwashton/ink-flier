@@ -26,6 +26,7 @@ defmodule InkFlierWeb.Router do
   pipeline :login_required do
     plug :browser
     plug InkFlierWeb.Plugs.LoginRequired
+    plug InkFlierWeb.Plugs.AssignUser
   end
 
 
@@ -34,9 +35,9 @@ defmodule InkFlierWeb.Router do
 
     get "/", PageController, :home
 
-    get "/login", LoginController, :new
+    get  "/login", LoginController, :new
     post "/login", LoginController, :create
-    get "/logout", LoginController, :delete
+    get  "/logout", LoginController, :delete
   end
 
   scope "/", InkFlierWeb do
