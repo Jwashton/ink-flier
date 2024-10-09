@@ -19,18 +19,31 @@ defmodule InkFlierWeb.Router do
   end
 
   pipeline :user do
+    plug :browser
     plug InkFlierWeb.Plugs.AssignUser
   end
 
+  pipeline :login_required do
+    plug :browser
+    plug InkFlierWeb.Plugs.LoginRequired
+    plug InkFlierWeb.Plugs.AssignUser
+  end
+
+
   scope "/", InkFlierWeb do
-    pipe_through [:browser, :user]
+    pipe_through :user
 
     get "/", PageController, :home
-    get "/lobby", LobbyController, :home
 
-    get "/login", LoginController, :new
+    get  "/login", LoginController, :new
     post "/login", LoginController, :create
-    get "/logout", LoginController, :delete
+    get  "/logout", LoginController, :delete
+  end
+
+  scope "/", InkFlierWeb do
+    pipe_through :login_required
+
+    get "/lobby", LobbyController, :home
   end
 
   scope "/game", InkFlierWeb do
@@ -38,6 +51,7 @@ defmodule InkFlierWeb.Router do
 
     get "/sandbox", GameController, :sandbox
   end
+
 
   # Other scopes may use custom stacks.
   # scope "/api", InkFlierWeb do
