@@ -1,5 +1,6 @@
-# 2024-10-05
-- [ ] New router section, required to be already logged in (user in session not nil)
+# 2024-10-09
+- Cleanup redirect after notLoggedIn->type /lobby->get redirected->login-><...doesn't return us to /lobby>
+  - Prob use params and return_to and Phoenix.Controller.current_path
 
 # 2024-10-01
 - @William
