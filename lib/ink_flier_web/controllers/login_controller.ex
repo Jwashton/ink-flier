@@ -4,6 +4,12 @@ defmodule InkFlierWeb.LoginController do
 
   plug :default_return_to, "/login"
 
+  def new(conn, ~m{return_to}) do
+    conn
+    |> assign(:return_to, return_to)
+    |> new(nil)
+  end
+
   def new(conn, _params) do
     conn
     |> render(:new, layout: false)
