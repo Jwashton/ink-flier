@@ -1,10 +1,21 @@
 # 2024-10-01
 - @William
-  - Right way to do css in, for example, this small login page?
-    - Is tailwind off? It still works on their main "/" page
-      - But doesn't work in this new clean page, even if I turn off render(conn, :new, layout: false) and remove the false part
-  - If no tailwind is the way to go, is there a way to make a new empty starter css file and tell the controller to use that?
-  - I'd kind of like to turn tailwind on for this just cause I'm a little more used to it. But it's fine if not
+  - Update css:
+    - Tailwind works on their page_controller, but not on my lobby_controller
+    - But they're both using layout: false, or even if it's off they're both pointing at the layouts.ex file
+    - I think I'm not understanding how layouts work. For example, layouts.ex has `embed_templates "layouts/*"`
+      - Pointing at that layouts/ directory, just like page_html/ etc directorys. Same structure, great
+      - But where is the explanation for app.html and root.html
+      - I can't find the code for who calls that, or doc for if it's overrided, or whatever. How does phoenix get from InkFlierWeb.Layouts to "root.html" specifically. And how does THAT know that "inner content" is supposed to be "app.html"
+    - And just in general, how do I turn on stinky tailwind. And how do I override app.html, or root.html, or both, for a specific page, but only when I want
+    - If I check "inspect" in firefox, it is actually using those tailwind classes on the "/" route homepage, but completely ignores those tailwind classes on my "/lobby" etc
+
+  - old css:
+    - Right way to do css in, for example, this small login page?
+      - Is tailwind off? It still works on their main "/" page
+        - But doesn't work in this new clean page, even if I turn off render(conn, :new, layout: false) and remove the false part
+    - If no tailwind is the way to go, is there a way to make a new empty starter css file and tell the controller to use that?
+    - I'd kind of like to turn tailwind on for this just cause I'm a little more used to it. But it's fine if not
 
   - the create function in login_controller is ugly, is this normal?
 
