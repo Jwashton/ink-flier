@@ -25,6 +25,12 @@
     - But am I not supposed to test the frontend so much?
     - But I think I DID see controller tests in hexdoc. Maybe I should reread and just do a few for the login stuff
 
+  - mix format, or a plugin, or something? It seems awful but maybe good...
+    - But it touches a million files
+    - It would be nice to only touch recently changed files, or something
+    - Also what if I disagree with a specific change and it keeps fighting me
+    - Mostly I just wanted it for a tailwind plugin that supposedly exists to put the tailwind classes all in a standard order instead of just the random -whatever-order-I-typed-themin
+
 # 2024-09-17
 - Get rid of the direct {} = Reply.... calls, and use getters instead (to not assume the internals of Reply)
 
