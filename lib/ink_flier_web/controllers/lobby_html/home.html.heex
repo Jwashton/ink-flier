@@ -8,16 +8,17 @@
 <hr />
 
 Tracks:
-<div style="display: grid; grid-template-columns: 1fr 2fr; border: 1px solid black; margin-left: 20px; margin-right: 40px;">
-  <span>Track 1</span>
+<div :for={{id, track} <- @tracks} style="display: grid; grid-template-columns: 3fr 1fr; border: 1px solid black; margin-left: 20px; margin-right: 40px;">
+  <span style="font-size: 1.25rem; line-height: 1.75rem;">Track <%= id %></span>
   <a href="#">Create</a>
-  <div style="margin-left: 25px;">
-    Objectsssssssssssssssssss
-    Objectsssssssssssssssssss
-    Objectsssssssssssssssssss
-    Objectsssssssssssssssssss
-    Objectsssssssssssssssssss
-    Objectsssssssssssssssssss
-    Objectsssssssssssssssssss
+  <div>
+    <div :for={obstacle <- track.obstacles}>
+      <%= obstacle.name %>:
+      <div style="display: grid; grid-auto-flow: column; grid-template-rows: repeat(3, 1fr); grid-template-columns: auto; margin-left: 25px;">
+        <div :for={{a, b} <- obstacle.wall_lines}>
+          <%= "#{inspect a} #{inspect b}" %>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
