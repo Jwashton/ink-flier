@@ -1,3 +1,8 @@
+# 2024-10-11
+- Eventually make Lobby use a Registry (reread the Supervisor and Registry parts of the Elixir book)
+- For now we'll just store the games with an id counter we'll keep, and map that to the pids
+
+
 # 2024-10-01
 - @William
   - Update css:
