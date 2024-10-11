@@ -1,23 +1,18 @@
 defmodule InkFlier.Lobby do
-  use GenServer
+  use TypedStruct
 
-  def start_link(_), do: GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
+  alias InkFlier.Game
 
-  def create_game(track), do: GenServer.call(__MODULE__, {:create_game, track})
-
-  def games, do: GenServer.call(__MODULE__, :games)
-
-
-  @impl GenServer
-  def init(:ok) do
-    {:ok, %{}}
+  typedstruct enforce: true do
+    field :next_game_id, game_id, default: 1
+    field :games, games, default: %{}
   end
 
-  @impl GenServer
-  def handle_call({:create_game, track}, _from, state) do
-    {:reply, "hi", state}
-  end
+  @type game_id :: integer
+  @type games :: %{game_id => Game.t}
 
-  @impl GenServer
-  def handle_call(:games, _from, state), do: {:reply, state, state}
+  def new, do: struct!(__MODULE__)
+
+
+  def games(t), do: t.games
 end
