@@ -1,5 +1,6 @@
 defmodule InkFlierWeb.LobbyController do
   use InkFlierWeb, :controller
+  import TinyMaps
 
   alias InkFlier.RaceTrack
 
@@ -24,6 +25,12 @@ defmodule InkFlierWeb.LobbyController do
         ])
       ),
     }
+
+#   def home(conn, ~m{create}) do
+#     conn
+#     |> assign(:tracks, @tracks)
+#     |> render(:home, layout: false)
+#   end
 
   def home(conn, _params) do
     conn
