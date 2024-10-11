@@ -5,6 +5,8 @@ defmodule InkFlier.Lobby do
 
   def create_game(track), do: GenServer.call(__MODULE__, {:create_game, track})
 
+  def games, do: GenServer.call(__MODULE__, :games)
+
 
   @impl GenServer
   def init(:ok) do
@@ -15,4 +17,7 @@ defmodule InkFlier.Lobby do
   def handle_call({:create_game, track}, _from, state) do
     {:reply, "hi", state}
   end
+
+  @impl GenServer
+  def handle_call(:games, _from, state), do: {:reply, state, state}
 end
