@@ -3,15 +3,7 @@ defmodule InkFlierWeb.LobbyController do
 
   alias InkFlier.RaceTrack
 
-  def home(conn, _params) do
-    conn
-    |> assign_tracks
-    |> render(:home, layout: false)
-  end
-
-
-  defp assign_tracks(conn) do
-    assign(conn, :tracks, %{
+  @tracks %{
       1 => RaceTrack.new(
         start: [{-1,-1}, {-2,-2}, {-3,-3}, {-4,-4}],
         check1: {{10,0}, {15,-5}},
@@ -22,7 +14,6 @@ defmodule InkFlierWeb.LobbyController do
           RaceTrack.new_obstacle("Outer Wall", [{-5,-5}, {15,-5}, {15,15}, {-5,15}, {-5,-5}]),
         ])
       ),
-
       2 => RaceTrack.new(
         start: [{-1,-1}, {-2,-2}, {-3,-3}, {-4,-4}],
         check1: {{10,0}, {15,-5}},
@@ -32,6 +23,11 @@ defmodule InkFlierWeb.LobbyController do
           RaceTrack.new_obstacle("Rock", [{0,0}, {1,0}, {1,1}, {0,1}, {0,0}]),
         ])
       ),
-    })
+    }
+
+  def home(conn, _params) do
+    conn
+    |> assign(:tracks, @tracks)
+    |> render(:home, layout: false)
   end
 end
