@@ -28,7 +28,12 @@ Tracks:
 
 Games:
 <div style="border: 1px solid black; margin-left: 20px; margin-right: 40px;">
-  <div :for={{game_id, _game} <- @games}>
-    Game number: <%= game_id %>
+  <div :for={{game_id, game} <- @games} style="display: grid; grid-tenplate_columns: 1fr 1fr;">
+    <span>
+      Game number: <%= game_id %>
+    </span>
+    <span>
+      Creator: <%= Game.creator(game) %>
+    </span>
   </div>
 </div>
