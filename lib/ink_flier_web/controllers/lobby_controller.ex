@@ -35,8 +35,14 @@ defmodule InkFlierWeb.LobbyController do
   def home(conn, _params) do
     conn
     |> assign(:tracks, @tracks)
-    |> assign(:games, LobbyServer.games)
-    # |> tap(& IO.inspect(&1.assigns))
+    |> assign_games
     |> render(:home, layout: false)
+  end
+
+
+  defp assign_games(conn) do
+    LobbyServer.games
+    |> Enum.sort_by(&elem(&1, 0), :desc)
+    |> then(& assign(conn, :games, &1) )
   end
 end
