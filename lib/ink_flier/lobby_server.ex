@@ -1,4 +1,4 @@
-defmodule InkFlier.Lobby.Server do
+defmodule InkFlier.LobbyServer do
   use GenServer
   alias InkFlier.Lobby
 
