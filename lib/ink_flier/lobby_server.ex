@@ -3,24 +3,19 @@ defmodule InkFlier.LobbyServer do
   alias InkFlier.Lobby
 
   def start_link(_), do: GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
-
-  def create_game(track), do: GenServer.call(__MODULE__, {:create_game, track})
-
+  def add_game(game), do: GenServer.call(__MODULE__, {:add_game, game})
   def games, do: GenServer.call(__MODULE__, :games)
 
 
   @impl GenServer
-  def init(:ok) do
-    {:ok, Lobby.new}
+  def init(:ok), do: {:ok, Lobby.new}
+
+  @impl GenServer
+  def handle_call({:add_game, game}, _from, t) do
+    {t, game_id} = Lobby.add_game(t, game)
+    {:reply, game_id, t}
   end
 
   @impl GenServer
-  def handle_call({:create_game, _track}, _from, lobby) do
-    {:reply, "hi", lobby}
-  end
-
-  # @impl GenServer
-  # def handle_call(:games, _from, lobby) do
-    # {:reply, Lobby.games(lobby), lobby}
-  # end
+  def handle_call(:games, _from, lobby), do: {:reply, Lobby.games(t), t}
 end

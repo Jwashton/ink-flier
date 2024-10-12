@@ -23,6 +23,7 @@ defmodule InkFlier.Lobby do
     {t, game_id}
   end
 
+  def games(t), do: t.games
   def game(t, game_id), do: t.games[game_id]
 
 
