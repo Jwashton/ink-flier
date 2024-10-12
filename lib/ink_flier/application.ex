@@ -17,6 +17,7 @@ defmodule InkFlier.Application do
       # Start a worker by calling: InkFlier.Worker.start_link(arg)
       # {InkFlier.Worker, arg},
       # Start to serve requests, typically the last entry
+      InkFlier.LobbyServer,
       InkFlierWeb.Endpoint
     ]
 

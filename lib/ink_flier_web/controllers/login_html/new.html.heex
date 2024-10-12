@@ -1,11 +1,11 @@
-<div :if={@user} class="border centered">
+<div :if={@user} class="my-border">
   User: <%= @user %>
   <span class="margin_left">
     <a href={~p"/logout?return_to=#{@return_to}"}>Logout</a>
   </span>
 </div>
 
-<div :if={!@user} class="border centered">
+<div :if={!@user} class="my-border ">
   <form method="POST" action="/login">
     <input type="hidden" name="_csrf_token" value={Phoenix.Controller.get_csrf_token()}>
     <input type="hidden" name="return_to" value={@return_to}>
@@ -23,7 +23,7 @@
 
 
 <style>
-.border {
+.my-border {
   border: 1px solid black;
   padding: 20px;
   width: 40%;
