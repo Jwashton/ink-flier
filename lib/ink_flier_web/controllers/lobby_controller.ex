@@ -1,8 +1,8 @@
 defmodule InkFlierWeb.LobbyController do
   use InkFlierWeb, :controller
-  import TinyMaps
 
   alias InkFlier.RaceTrack
+  alias InkFlier.LobbyServer
 
   @tracks %{
       1 => RaceTrack.new(
@@ -26,15 +26,17 @@ defmodule InkFlierWeb.LobbyController do
       ),
     }
 
-  def home(conn, ~m{_create}) do
-    conn
-    |> assign(:tracks, @tracks)
-    |> render(:home, layout: false)
+  def home(conn, %{"create" => _track_id_string} = params) do
+    {:ok, _game_id} = LobbyServer.add_game(:fake_game)
+
+    home(conn, Map.delete(params, "create"))
   end
 
   def home(conn, _params) do
     conn
     |> assign(:tracks, @tracks)
+    |> assign(:games, LobbyServer.games)
+    # |> tap(& IO.inspect(&1.assigns))
     |> render(:home, layout: false)
   end
 end
