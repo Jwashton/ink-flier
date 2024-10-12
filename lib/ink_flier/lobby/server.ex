@@ -15,7 +15,7 @@ defmodule InkFlier.Lobby.Server do
   end
 
   @impl GenServer
-  def handle_call({:create_game, track}, _from, lobby) do
+  def handle_call({:create_game, _track}, _from, lobby) do
     {:reply, "hi", lobby}
   end
 

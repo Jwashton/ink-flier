@@ -1,6 +1,6 @@
 defmodule InkFlierWeb.LobbyController do
   use InkFlierWeb, :controller
-  import TinyMaps
+  # import TinyMaps
 
   alias InkFlier.RaceTrack
 
