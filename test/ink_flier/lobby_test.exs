@@ -19,5 +19,11 @@ defmodule InkFlierTest.Lobby do
 
     assert game_id in Server.games |> Map.keys
     assert Server.get(game_id) == :imaginary_game1
+
+    # TODO next, delete the above and try slightly different. Let's make game first then just track it in lobby. Don't have lobby try to make the game at the same time as assigning it an id. Simpler start
   end
+
+
+  # TODO note, the tests might bleed together since Lobby is a process, and it's started in the Application file. Possible the tests don't reset it for every test. Check later
+
 end
