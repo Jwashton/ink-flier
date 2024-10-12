@@ -1,4 +1,3 @@
-
 # 2024-10-11
 - Eventually make Lobby use a Registry (reread the Supervisor and Registry parts of the Elixir book)
 - For now we'll just store the games with an id counter we'll keep, and map that to the pids
@@ -6,6 +5,7 @@
 - @William
   - InkFlier.Lobby.Server vs InkFlier.Lobby. GenServer vs it's State. or InkFlier.LobbyServer. Or don't test the Lobby (state) at all and always go through genserver. Or vice versa. Or both. I'm supposed to split them up and keep the genserver thin I think, according to the Blackjack post. Altho the islands book doesn't do that, it mostly crams the GenServer AND the state for the genserver in the same module. The state is usually just getters and setters, but... sometimes more. Idl
   - And IF splitting it up, should one be sub to the other or both on the same level, name-wise. InkFlier.Lobby.State or InkFlier.Lobby.Server... etc
+  - And which one should most of the testing be. Probably the functional one. But it's weird because it feels like the main thing I want and started with was the genserver, and I only made the "state" part of it as an after thought...
 
 
 # 2024-10-01
