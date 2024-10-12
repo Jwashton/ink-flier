@@ -3,6 +3,8 @@ defmodule InkFlier.LobbyServer do
   alias InkFlier.Lobby
 
   def start_link(_), do: GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
+  def stop, do: GenServer.whereis(__MODULE__) && GenServer.stop(__MODULE__)
+
   def add_game(game), do: GenServer.call(__MODULE__, {:add_game, game})
   def games, do: GenServer.call(__MODULE__, :games)
 
