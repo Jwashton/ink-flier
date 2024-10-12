@@ -27,9 +27,10 @@ defmodule InkFlierWeb.LobbyController do
     }
 
   def home(conn, %{"create" => _track_id_string} = params) do
+    params = Map.delete(params, "create")
     {:ok, _game_id} = LobbyServer.add_game(:fake_game)
 
-    home(conn, Map.delete(params, "create"))
+    redirect(conn, to: ~p"/lobby?#{params}")
   end
 
   def home(conn, _params) do
