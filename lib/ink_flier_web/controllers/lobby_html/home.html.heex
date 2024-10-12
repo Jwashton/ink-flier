@@ -10,7 +10,10 @@
 Tracks:
 <div :for={{id, track} <- @tracks} style="display: grid; grid-template-columns: 3fr 1fr; border: 1px solid black; margin-left: 20px; margin-right: 40px;">
   <span style="font-size: 1.25rem; line-height: 1.75rem;">Track <%= id %></span>
-  <a href={~p"/lobby?create=#{id}"}>Create game</a>
+  <div style="display: flex; flex-direction: column;">
+    <a href={~p"/lobby?create=#{id}"}>Create game</a>
+    <a href={~p"/#"}>Create & Join</a>
+  </div>
   <div>
     <div :for={obstacle <- track.obstacles}>
       <%= obstacle.name %>:
