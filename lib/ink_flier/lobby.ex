@@ -13,11 +13,11 @@ defmodule InkFlier.Lobby do
 
   def new, do: struct!(__MODULE__)
 
-  def create_game(t, game) do
+  def add_game(t, game) do
     game_id = t.next_game_id
     t =
       t
-      |> add_game(game_id, game)
+      |> add_game_under_id(game_id, game)
       |> inc_next_game_id
 
     {t, game_id}
@@ -25,6 +25,7 @@ defmodule InkFlier.Lobby do
 
   def game(t, game_id), do: t.games[game_id]
 
-  def add_game(t, game_id, game), do: update_in(t.games, &Map.put(&1, game_id, game))
-  def inc_next_game_id(t), do: update_in(t.next_game_id, & &1 + 1)
+
+  defp add_game_under_id(t, game_id, game), do: update_in(t.games, &Map.put(&1, game_id, game))
+  defp inc_next_game_id(t), do: update_in(t.next_game_id, & &1 + 1)
 end
