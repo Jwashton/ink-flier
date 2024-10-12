@@ -13,9 +13,9 @@ defmodule InkFlier.LobbyServer do
   @impl GenServer
   def handle_call({:add_game, game}, _from, t) do
     {t, game_id} = Lobby.add_game(t, game)
-    {:reply, game_id, t}
+    {:reply, {:ok, game_id}, t}
   end
 
   @impl GenServer
-  def handle_call(:games, _from, lobby), do: {:reply, Lobby.games(t), t}
+  def handle_call(:games, _from, t), do: {:reply, Lobby.games(t), t}
 end
