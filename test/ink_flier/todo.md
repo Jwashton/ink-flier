@@ -21,14 +21,9 @@
     - Why aren't they both in one or the other, together?
     - And why doesn't the one in def controller need Layouts, :app. It jUST says .Layouts
 
-  - Can you help me figure out the 2 firefox console errors
+  - Can you help me figure out the firefox console error
       ```
       layout was forced before the page was fully loaded
-
-      and
-
-      Source map error: No sources are declared in this source map.
-      Resource URL: http://localhost:4000/assets/js/app.js
       ```
 
 # 2024-10-01
