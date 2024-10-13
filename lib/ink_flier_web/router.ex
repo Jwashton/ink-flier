@@ -19,12 +19,13 @@ defmodule InkFlierWeb.Router do
   end
 
   pipeline :user do
-    plug :put_root_layout, html: {InkFlierWeb.LobbyLayouts, :root}
     plug :put_layout, html: {InkFlierWeb.LobbyLayouts, :app}
     plug InkFlierWeb.Plugs.AssignUser
   end
 
   pipeline :login_required do
+    # Our root requires login (includes javascript sockete/channel connect that requires being logged in)
+    plug :put_root_layout, html: {InkFlierWeb.LobbyLayouts, :root}
     plug InkFlierWeb.Plugs.LoginRequired
   end
 
