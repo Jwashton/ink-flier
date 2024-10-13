@@ -10,10 +10,9 @@ defmodule InkFlierWeb.RoomChannel do
     end
   end
 
-  # Channels can be used in a request/response fashion
-  # by sending replies to requests from the client
   @impl true
-  def handle_in("ping", payload, socket) do
+  def handle_in("create_game", payload, socket) do
+    IO.puts "GOT IT"
     {:reply, {:ok, payload}, socket}
   end
 

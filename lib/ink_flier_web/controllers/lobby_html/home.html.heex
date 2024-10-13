@@ -12,8 +12,7 @@ Tracks:
   <span style="font-size: 1.25rem; line-height: 1.75rem;">Track <%= id %></span>
   <div style="display: flex; flex-direction: column;">
     <%# <a href={~p"/lobby?create=#{id}"}>Create game</a> %>
-    <a href onclick="sayHi('in html')">Create game</a>
-    <%= raise "NEXT ok, now I can write a function and include create=id in function call or whatever. Then do javascript/channel broadcasts pretty much moving all the code in CONTROLLER handle-create-param def block -- into the channel elixir code. No more need of page refresh, but if you DO refresh, it'll update. And in the meantime the channel will broadcast and tell everyone to append " %>
+    <button onclick={"create_game(#{id})"}>Create game</button>
     <%# button.create %>
     <a href={~p"/#"}>Create & Join</a>
   </div>
@@ -40,9 +39,3 @@ Games:
     </span>
   </div>
 </div>
-
-<script>
-  function sayHi(asd) {
-    console.log(asd)
-  }
-</script>
