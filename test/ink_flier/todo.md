@@ -14,6 +14,12 @@
         plug :put_root_layout, html: {InkFlierWeb.LobbyLayouts, :root}
         plug :put_layout, html: {InkFlierWeb.LobbyLayouts, :app}
       ```
+    - For example, inkFlierWeb (def controller) has JUST
+        layouts: [html: InkFlierWeb.Layouts]
+    - And router (top :browser level) has JUST
+        plug :put_root_layout, html: {InkFlierWeb.Layouts, :root}
+    - Why aren't they both in one or the other, together?
+    - And why doesn't the one in def controller need Layouts, :app. It jUST says .Layouts
 
 # 2024-10-01
 - @William
