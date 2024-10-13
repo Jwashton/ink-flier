@@ -1,16 +1,5 @@
-// NOTE: The contents of this file will only be executed if
-// you uncomment its entry in "assets/js/app.js".
-
-// Bring in Phoenix channels client library:
 import {Socket} from "phoenix"
 
-const url_string = window.location.href
-const url = new URL(url_string);
-const user_string = url.searchParams.get("user");
-console.log(`user_string: ${user_string}`)
-
-// And connect to the path in "lib/ink_flier_web/endpoint.ex". We pass the
-// token for authentication. Read below how it should be used.
 // let socket = new Socket("/socket", {params: {token: window.userToken}})
 let socket = new Socket("/socket", {params: {user: user_string}})
 
@@ -55,23 +44,19 @@ let socket = new Socket("/socket", {params: {user: user_string}})
 //           :error
 //       end
 //     end
-//
-// Finally, connect to the socket:
+
+
 socket.connect()
 
-// Now that you are connected, you can join channels with a topic.
 let channel = socket.channel("room:lobby", {})
 channel.join()
   .receive("ok", resp => { console.log("Joined successfully", resp) })
   .receive("error", resp => { console.log("Unable to join", resp) })
 
+// const clear_session_button = document.querySelector("#clear_session")
 
-
-
-const clear_session_button = document.querySelector("#clear_session")
-
-clear_session_button.onclick = function () {
-  console.log("Got in function")
-}
+// clear_session_button.onclick = function () {
+//   console.log("Got in function")
+// }
 
 export default socket

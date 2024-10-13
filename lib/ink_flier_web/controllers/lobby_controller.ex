@@ -39,7 +39,7 @@ defmodule InkFlierWeb.LobbyController do
     conn
     |> assign(:tracks, @tracks)
     |> assign_games
-    |> render(:home, layout: false)
+    |> render(:home)
   end
 
 
