@@ -27,6 +27,8 @@ defmodule InkFlierWeb.Router do
     plug :browser
     plug InkFlierWeb.Plugs.LoginRequired
     plug InkFlierWeb.Plugs.AssignUser
+    plug :put_root_layout, html: {InkFlierWeb.LobbyLayouts, :root}
+    plug :put_layout, html: {InkFlierWeb.LobbyLayouts, :app}
   end
 
 

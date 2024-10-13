@@ -59,4 +59,6 @@ channel.join()
 //   console.log("Got in function")
 // }
 
+console.log("Ok this loaded in root layout")
+
 export default socket
