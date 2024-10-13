@@ -25,6 +25,9 @@
       ```
       layout was forced before the page was fully loaded
       ```
+    - How do I move function from home.html.heex script tag into user_socket.js
+      - But still call it from `<a href onclick="sayHi('in html')">blablabla</a>`
+      - I tried a ton of export stuff but nothing I did seemed to let the html see function I declared in the .js fileI
 
 # 2024-10-01
 - @William
