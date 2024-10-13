@@ -19,23 +19,24 @@ defmodule InkFlierWeb.Router do
   end
 
   pipeline :user do
-    plug :browser
+    plug :put_root_layout, html: {InkFlierWeb.LobbyLayouts, :root}
+    plug :put_layout, html: {InkFlierWeb.LobbyLayouts, :app}
     plug InkFlierWeb.Plugs.AssignUser
   end
 
   pipeline :login_required do
-    plug :browser
     plug InkFlierWeb.Plugs.LoginRequired
-    plug InkFlierWeb.Plugs.AssignUser
-    plug :put_root_layout, html: {InkFlierWeb.LobbyLayouts, :root}
-    plug :put_layout, html: {InkFlierWeb.LobbyLayouts, :app}
   end
 
 
   scope "/", InkFlierWeb do
-    pipe_through :user
+    pipe_through [:browser]
 
     get "/", PageController, :home
+  end
+
+  scope "/", InkFlierWeb do
+    pipe_through [:browser, :user]
 
     get  "/login", LoginController, :new
     post "/login", LoginController, :create
@@ -43,7 +44,7 @@ defmodule InkFlierWeb.Router do
   end
 
   scope "/", InkFlierWeb do
-    pipe_through :login_required
+    pipe_through [:browser, :login_required, :user]
 
     get "/lobby", LobbyController, :home
   end
