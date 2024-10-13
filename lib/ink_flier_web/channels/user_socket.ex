@@ -1,12 +1,6 @@
 defmodule InkFlierWeb.UserSocket do
   use Phoenix.Socket
-
-  # A Socket handler
-  #
-  # It's possible to control the websocket connection and
-  # assign values that can be accessed by your channel topics.
-
-  ## Channels
+  import TinyMaps
 
   channel "room:*", InkFlierWeb.RoomChannel
 
@@ -25,11 +19,12 @@ defmodule InkFlierWeb.UserSocket do
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
   @impl true
-  def connect(params, socket, _connect_info) do
-    params
-    |> dbg(charlists: :as_lists)
-
-    {:ok, socket}
+  def connect(~m{token} = _params, socket, _connect_info) do
+    # max_age: 1209600 is equivalent to two weeks in seconds
+    case Phoenix.Token.verify(socket, "user socket", token, max_age: 1209600) do
+      {:ok, user_id} -> {:ok, assign(socket, :socket_user, user_id)}
+      {:error, _} = error -> error
+    end
   end
 
   # Socket IDs are topics that allow you to identify all sockets for a given user:
