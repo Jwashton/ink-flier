@@ -4,9 +4,16 @@
 
 - @William
   - InkFlier.Lobby.Server vs InkFlier.Lobby. GenServer vs it's State. or InkFlier.LobbyServer. Or don't test the Lobby (state) at all and always go through genserver. Or vice versa. Or both. I'm supposed to split them up and keep the genserver thin I think, according to the Blackjack post. Altho the islands book doesn't do that, it mostly crams the GenServer AND the state for the genserver in the same module. The state is usually just getters and setters, but... sometimes more. Idl
-  - And IF splitting it up, should one be sub to the other or both on the same level, name-wise. InkFlier.Lobby.State or InkFlier.Lobby.Server... etc
-  - And which one should most of the testing be. Probably the functional one. But it's weird because it feels like the main thing I want and started with was the genserver, and I only made the "state" part of it as an after thought...
+    - And IF splitting it up, should one be sub to the other or both on the same level, name-wise. InkFlier.Lobby.State or InkFlier.Lobby.Server... etc
+    - And which one should most of the testing be. Probably the functional one. But it's weird because it feels like the main thing I want and started with was the genserver, and I only made the "state" part of it as an after thought...
 
+  - Lobbyserver test intermittent fail: mix test --seed 160764
+
+  - Is there a better way to set both layouts at once? This seems unnatural, or like it isn't the way it would usually be done, but I'm not sure
+      ``` in router
+        plug :put_root_layout, html: {InkFlierWeb.LobbyLayouts, :root}
+        plug :put_layout, html: {InkFlierWeb.LobbyLayouts, :app}
+      ```
 
 # 2024-10-01
 - @William
@@ -281,3 +288,4 @@ with :ok <- check_legal_move(t, player, destination),
 - Nice next reads list:
   - https://hexdocs.pm/phoenix/channels.html
   - https://pragprog.com/titles/cdc-elixir/learn-functional-programming-with-elixir/
+
