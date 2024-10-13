@@ -1,5 +1,9 @@
 defmodule InkFlierWeb.RoomChannel do
   use InkFlierWeb, :channel
+  import TinyMaps
+
+  alias InkFlier.Game
+  alias InkFlier.LobbyServer
 
   @impl true
   def join("room:lobby", payload, socket) do
@@ -11,9 +15,13 @@ defmodule InkFlierWeb.RoomChannel do
   end
 
   @impl true
-  def handle_in("create_game", payload, socket) do
-    IO.puts "GOT IT"
-    {:reply, {:ok, payload}, socket}
+  def handle_in("create_game", _track_id, socket) do
+    user = socket.assigns.user
+    game = Game.new(user)
+    {:ok, game_id} = LobbyServer.add_game(game)
+
+    broadcast(socket, "game_created", ~M{game_id, user})
+    {:reply, :ok, socket}
   end
 
   # It is also common to receive messages from the client and

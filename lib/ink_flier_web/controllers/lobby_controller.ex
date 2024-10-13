@@ -3,7 +3,6 @@ defmodule InkFlierWeb.LobbyController do
 
   alias InkFlier.RaceTrack
   alias InkFlier.LobbyServer
-  alias InkFlier.Game
 
   @tracks %{
       1 => RaceTrack.new(
@@ -27,13 +26,13 @@ defmodule InkFlierWeb.LobbyController do
       ),
     }
 
-  def home(conn, %{"create" => _track_id_string} = params) do
-    params = Map.delete(params, "create")
-    game = Game.new(conn.assigns.user)
-    {:ok, _game_id} = LobbyServer.add_game(game)
+  # def home(conn, %{"create" => _track_id_string} = params) do
+  #   params = Map.delete(params, "create")
+  #   game = Game.new(conn.assigns.user)
+  #   {:ok, _game_id} = LobbyServer.add_game(game)
 
-    redirect(conn, to: ~p"/lobby?#{params}")
-  end
+  #   redirect(conn, to: ~p"/lobby?#{params}")
+  # end
 
   def home(conn, _params) do
     conn
