@@ -20,6 +20,21 @@ channel.on("game_created", payload => {
   gameContainer.prepend(gameItem)
 })
 
+let testTarget = document.querySelector("#test-target")
+setHtml(testTarget, 123, "Bobbb")
+
+function setHtml(element, gameId, gameCreator) {
+  element.innerHTML = `
+    <div class="games__game">
+      <span class="games__game-data">
+        Game number: ${gameId}
+      </span>
+      <span class="games__game-data">
+        Creator: ${gameCreator}
+      </span>
+    </div>
+    `
+}
 
 window.create_game = create_game
 export default socket
