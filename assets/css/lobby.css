@@ -6,7 +6,7 @@
   --1: #5603fc;
   --2: #C38A1Fff;
   --3: #872145ff;
-  --4: #551A6Eff;
+  --4: #7a12a6;
 
   --border-color: var(--2);
 
@@ -16,13 +16,28 @@
 }
 
 button {
-  --button-bg: var(--3);
+  --button-bg: var(--4);
   color: var(--w);
 
   background-color: var(--button-bg);
   border-color: var(--button-bg);
   border-radius: 8px;
+
+  /* /1* source: https://stackoverflow.com/a/1368286/1421642 *1/ */
+  /* background: none!important; */
+  /* padding: 0!important; */
+  /* border: none; */
+  /* color: var(--4); */
+  /* text-decoration: underline; */
+  /* cursor: pointer; */
+  /* text-align: left; */
+  /* font-size: 90%; */
 }
+
+a {
+  color: var(--4);
+}
+
 
 .games {
   border: 1px solid var(--border-color);
@@ -31,10 +46,12 @@ button {
 }
 
 .games__game {
+  --gap: 20px;
+
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  padding: 10px;
+  padding: var(--gap);
+  gap: var(--gap);
 
   &:not(:first-child) {
     border-top: 1px solid var(--border-color);
