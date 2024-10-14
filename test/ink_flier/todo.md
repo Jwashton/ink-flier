@@ -1,3 +1,5 @@
+- [ ] Get javascript to "draw games" function so it refreshes everyone's list on broadcast
+
 # 2024-10-13
 - After pulling the navbar into layouts/app.html, login.html now shows itself twice
   - Think about the router/layout grouping. Login is kind of wanting it's own layout at this point
