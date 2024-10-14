@@ -39,6 +39,20 @@ a {
 }
 
 
+.nav {
+}
+
+.nav__login {
+  border: 1px solid black;
+  padding: 20px;
+  width: 40%;
+}
+
+.nav__login-link {
+  margin-left: 30px;
+}
+
+
 .games {
   border: 1px solid var(--border-color);
   border-radius: 6px;
