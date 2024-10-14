@@ -1,4 +1,11 @@
 # 2024-10-13
+- After pulling the navbar into layouts/app.html, login.html now shows itself twice
+  - Think about the router/layout grouping. Login is kind of wanting it's own layout at this point
+    - Since I also have that javascript error with the channel trying to connect to non-logged-in-pages
+  - I need something like an "all my pages" css, and a "root with javascript", and "root without"...
+  - Seems like a lot of non-dry copying of the root... stuff
+  - It's fine for now, play with it later if I want
+
 - @William
   - There are ways for the 2 Game Lists (on the html browser) to get out of sync
     - If page1 refreshes after restarting server, it (correctly) shows blank Game List
