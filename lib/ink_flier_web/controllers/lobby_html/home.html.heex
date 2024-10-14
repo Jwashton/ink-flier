@@ -16,24 +16,22 @@ Tracks:
     <button onclick={""}>Create & Join</button>
     <button onclick={""}>Create & Join</button>
     <button onclick={""}>Create & Join</button>
-    <button onclick={""}>Create & Join</button>
-    <button onclick={""}>Create & Join</button>
-    <button onclick={""}>Create & Join</button>
-    <button onclick={""}>Create & Join</button>
   </div>
-  <div>
-    <div :for={obstacle <- track.obstacles}>
+  <div :for={obstacle <- track.obstacles}>
+    <span class="tracks__obstacle-title">
       <%= obstacle.name %>:
-      <div style="display: grid; grid-auto-flow: column; grid-template-rows: repeat(3, 1fr); grid-template-columns: auto; margin-left: 25px;">
-        <div :for={{a, b} <- obstacle.wall_lines}>
-          <%= "#{inspect a} #{inspect b}" %>
-        </div>
+    </span>
+    <div class="tracks__obstacle-coords">
+      <div :for={{a, b} <- obstacle.wall_lines}>
+        <%= "#{inspect a} #{inspect b}" %>
       </div>
     </div>
   </div>
 </div>
 
-Games:
+<div class="games__header">
+  Games:
+</div>
 <div id="game-list" class="games">
   <div :for={{game_id, game} <- @games} class="games__game">
     <span class="games__game-data">

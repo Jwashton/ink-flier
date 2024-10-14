@@ -41,8 +41,13 @@ a {
 
 .games {
   border: 1px solid var(--border-color);
+  border-radius: 6px;
   margin-left: 20px;
   margin-right: 40px;
+}
+
+.games__header {
+  margin-top: 30px;
 }
 
 .games__game {
@@ -67,6 +72,7 @@ a {
 
 .tracks {
   border: 1px solid var(--border-color);
+  border-radius: 6px;
   margin-left: 20px;
   margin-right: 40px;
 
@@ -84,6 +90,20 @@ a {
 
 .tracks__links {
   grid-area: links;
+
   display: flex;
   flex-direction: column;
+}
+
+.tracks__obstacle-title {
+  color: var(--1);
+}
+
+.tracks__obstacle-coords {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: auto;
+
+  margin-left: 25px;
 }
