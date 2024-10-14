@@ -71,7 +71,9 @@ a {
   margin-right: 40px;
 
   display: grid;
-  grid-template-columns: 3fr 1fr;
+  grid-template-areas:
+    "a links"
+    "b links";
 }
 
 .tracks__title {
@@ -81,6 +83,7 @@ a {
 }
 
 .tracks__links {
+  grid-area: links;
   display: flex;
   flex-direction: column;
 }
