@@ -14,14 +14,14 @@
   color: var(--t);
 }
 
-.list-container {
+.games {
   border: 1px solid var(--border-color);
   margin-left: 20px;
   margin-right: 40px;
 
 }
 
-.list-container__item {
+.games__game {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
@@ -32,17 +32,8 @@
   }
 }
 
-.list-container__item-data {
+.games__game-data {
   color: var(--w);
   background-color: var(--1);
   border-radius: 8px;
-}
-
-
-.tracks {
-  display: grid;
-  grid-template-columns: 3fr 1fr;
-  border: 1px solid black;
-  margin-left: 20px;
-  margin-right: 40px;
 }
