@@ -40,12 +40,14 @@ a {
 
 
 .nav {
+  display: flex;
+  flex-direction: row-reverse;
 }
 
 .nav__login {
-  border: 1px solid black;
-  padding: 20px;
-  width: 40%;
+  border: 1px solid var(--1);
+  border-radius: 10px;
+  padding: 10px;
 }
 
 .nav__login-link {
