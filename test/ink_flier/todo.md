@@ -1,4 +1,6 @@
-- [ ] Get javascript to "draw games" function so it refreshes everyone's list on broadcast
+- [x] Get javascript to "draw games" function so it refreshes everyone's list on broadcast
+- @William
+  - javascript drawGames, having the html in the javascript is painful. Is there any way to move the html more out of the js. In a template file. or make the javascript use phoenix's function components or something?
 
 # 2024-10-13
 - After pulling the navbar into layouts/app.html, login.html now shows itself twice
