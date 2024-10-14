@@ -84,9 +84,13 @@ a {
 }
 
 .games__game-data {
-  color: var(--w);
-  background-color: var(--1);
-  border-radius: 8px;
+  color: var(--3);
+  /* background-color: var(--1); */
+  /* border-radius: 8px; */
+
+  &:nth-child(even) {
+  color: var(--1);
+  }
 }
 
 

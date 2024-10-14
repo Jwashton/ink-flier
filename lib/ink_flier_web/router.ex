@@ -19,8 +19,8 @@ defmodule InkFlierWeb.Router do
   end
 
   pipeline :user do
-    plug :put_layout, html: {InkFlierWeb.LobbyLayouts, :app}
     plug :put_root_layout, html: {InkFlierWeb.LobbyLayouts, :root}
+    plug :put_layout, html: {InkFlierWeb.LobbyLayouts, :app}
     plug InkFlierWeb.Plugs.AssignUser
   end
 
