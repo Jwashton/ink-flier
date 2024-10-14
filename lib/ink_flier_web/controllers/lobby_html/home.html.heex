@@ -8,7 +8,7 @@
 <hr />
 
 Tracks:
-<div :for={{id, track} <- @tracks} style="display: grid; grid-template-columns: 3fr 1fr; border: 1px solid black; margin-left: 20px; margin-right: 40px;">
+<div :for={{id, track} <- @tracks} class="tracks">
   <span style="font-size: 1.25rem; line-height: 1.75rem;">Track <%= id %></span>
   <div style="display: flex; flex-direction: column;">
     <%# <a href={~p"/lobby?create=#{id}"}>Create game</a> %>
@@ -29,12 +29,12 @@ Tracks:
 </div>
 
 Games:
-<div id="game-list" class="games">
-  <div :for={{game_id, game} <- @games} class="games__game">
-    <span class="games__game-data">
+<div id="game-list" class="list-container">
+  <div :for={{game_id, game} <- @games} class="list-container__item">
+    <span class="list-container__item-data">
       Game number: <%= game_id %>
     </span>
-    <span class="games__game-data">
+    <span class="list-container__item-data">
       Creator: <%= Game.creator(game) %>
     </span>
   </div>
