@@ -5,7 +5,7 @@ function create_game(track_id) {
   channel.push("create_game", track_id)
 }
 
-
+let gameContainer = document.querySelector("#game_list")
 let socket = new Socket("/socket", {params: {token: window.userToken}})
 socket.connect()
 
@@ -16,8 +16,8 @@ channel.join()
 
 channel.on("game_created", payload => {
   let gameItem = document.createElement("div")
-  raise "here next to finish playing with the sweet javascript!
-  let gameItem.innerText = "..."
+  gameItem.innerText = "..."
+  gameContainer.prepend(gameItem)
 })
 
 
