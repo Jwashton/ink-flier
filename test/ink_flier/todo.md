@@ -13,20 +13,7 @@
       - I could also try to broadcast an "empty the list" event when the server restarts. I'm not sure if there's a channel function/callback for that though
         - And it still seems like it would be possible for page1 and page2 to get out of sync
 
-  - css nesting
-      ```
-      .games {
-        border: 1px solid black;
-
-        &__game {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          background-color: red;
-        }
-      }
-
-      ```
-      The & didn't work even though I thought that was a new css hotness
+  - Are my stupid css class names close to right? The nav__login-link feels sketchy. The stupid "block independant from other blocks" is hard. Login should be it's own "component", but also it lives in the navbar...
 
 # 2024-10-11
 - Eventually make Lobby use a Registry (reread the Supervisor and Registry parts of the Elixir book)
