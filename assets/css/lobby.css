@@ -6,6 +6,7 @@
   --1: #5603fc;
   --2: #C38A1Fff;
   --3: #872145ff;
+  --4: #551A6Eff;
 
   --border-color: var(--2);
 
@@ -14,11 +15,19 @@
   color: var(--t);
 }
 
+button {
+  --button-bg: var(--3);
+  color: var(--w);
+
+  background-color: var(--button-bg);
+  border-color: var(--button-bg);
+  border-radius: 8px;
+}
+
 .games {
   border: 1px solid var(--border-color);
   margin-left: 20px;
   margin-right: 40px;
-
 }
 
 .games__game {
@@ -36,4 +45,20 @@
   color: var(--w);
   background-color: var(--1);
   border-radius: 8px;
+}
+
+
+.tracks {
+  border: 1px solid var(--border-color);
+  margin-left: 20px;
+  margin-right: 40px;
+
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+}
+
+.tracks__title {
+  color: var(--3);
+  font-size: 1.25rem;
+  line-height: 1.75rem;
 }
