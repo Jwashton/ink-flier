@@ -1,3 +1,18 @@
+# 2024-10-13
+- @William
+  - There are ways for the 2 Game Lists (on the html browser) to get out of sync
+    - If page1 refreshes after restarting server, it (correctly) shows blank Game List
+    - But the page2 DIDN'T refresh. It still has an old game list showing.
+    - Now when page1 does the javascript ".prepend", it gets added to a (correct) blank Game List on page1
+      - But on page2 the new game DOES get broadcasted, but gets prepended onto an old out-of-date incorrectly full Game List
+
+    - One solution is to send out the entire current game list on broadcast instead of just the new game
+      - But that seems wasteful, sending the entire list when most of the time only the new single game was needed
+      - Worse, I have to have the javascript write a ton more html instead of just prepending 1 div
+
+      - I could also try to broadcast an "empty the list" event when the server restarts. I'm not sure if there's a channel function/callback for that though
+        - And it still seems like it would be possible for page1 and page2 to get out of sync
+
 # 2024-10-11
 - Eventually make Lobby use a Registry (reread the Supervisor and Registry parts of the Elixir book)
 - For now we'll just store the games with an id counter we'll keep, and map that to the pids
