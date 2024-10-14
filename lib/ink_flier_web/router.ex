@@ -25,8 +25,6 @@ defmodule InkFlierWeb.Router do
   end
 
   pipeline :login_required do
-    # Our root requires login (includes javascript sockete/channel connect that requires being logged in)
-    # update: I want the css on all of the pages tho so putting root_layout on all of User pages too. Do I really need 2 root_layout just so I can have channel js on one but not the other, everything else in the root_layout the same tho? :(
     plug InkFlierWeb.Plugs.LoginRequired
   end
 
