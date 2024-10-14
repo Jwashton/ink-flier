@@ -1,19 +1,21 @@
 :root {
   --b: #1B1C1Fff;
   --w: white;
+  --t: #21d5e1;
 
-  --1: #459DA3ff;
-  --2: #5603fc;
-  --2a: #7160CCff;
-  --3: #C38A1Fff;
-  --4: #872145ff;
+  --1: #5603fc;
+  --2: #C38A1Fff;
+  --3: #872145ff;
+
+  --border-color: var(--2);
+
 
   background-color: var(--b);
-  color: var(--1);
+  color: var(--t);
 }
 
 .games {
-  border: 1px solid var(--3);
+  border: 1px solid var(--border-color);
   margin-left: 20px;
   margin-right: 40px;
 
@@ -26,12 +28,12 @@
   padding: 10px;
 
   &:not(:first-child) {
-    border-top: 1px solid var(--3);
+    border-top: 1px solid var(--border-color);
   }
 }
 
 .games__game-data {
-  color: white;
-  background-color: var(--2);
+  color: var(--w);
+  background-color: var(--1);
   border-radius: 8px;
 }
