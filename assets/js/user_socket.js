@@ -5,7 +5,7 @@ function create_game(track_id) {
   channel.push("create_game", track_id)
 }
 
-let gameContainer = document.querySelector("#game_list")
+let gameContainer = document.querySelector("#game-list")
 let socket = new Socket("/socket", {params: {token: window.userToken}})
 socket.connect()
 

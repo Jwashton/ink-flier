@@ -29,8 +29,8 @@ Tracks:
 </div>
 
 Games:
-<div id="game_list" style="border: 1px solid black; margin-left: 20px; margin-right: 40px;">
-  <div :for={{game_id, game} <- @games} style="display: grid; grid-tenplate-columns: 1fr 1fr;">
+<div id="game-list" class="games">
+  <div :for={{game_id, game} <- @games} class="games__game">
     <span>
       Game number: <%= game_id %>
     </span>

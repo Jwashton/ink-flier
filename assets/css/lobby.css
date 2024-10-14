@@ -1,0 +1,15 @@
+.games {
+  border: 1px solid black;
+  margin-left: 20px;
+  margin-right: 40px;
+
+}
+
+.games__game {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  &:not(:first-child) {
+    border-top: 1px solid black;
+  }
+}
