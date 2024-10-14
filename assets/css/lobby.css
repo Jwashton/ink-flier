@@ -44,6 +44,10 @@ a {
   flex-direction: row-reverse;
 }
 
+.nav__hr {
+  margin-bottom: 25px;
+}
+
 .nav__login {
   border: 1px solid var(--1);
   border-radius: 10px;
