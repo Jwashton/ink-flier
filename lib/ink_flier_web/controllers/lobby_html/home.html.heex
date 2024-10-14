@@ -10,11 +10,9 @@
 Tracks:
 <div :for={{id, track} <- @tracks} class="tracks">
   <span class="tracks__title">Track <%= id %></span>
-  <div style="display: flex; flex-direction: column;">
-    <%# <a href={~p"/lobby?create=#{id}"}>Create game</a> %>
+  <div class="tracks__links">
     <button onclick={"create_game(#{id})"}>Create game</button>
-    <%# button.create %>
-    <a href={~p"/#"}>Create & Join</a>
+    <button onclick={""}>Create & Join</button>
   </div>
   <div>
     <div :for={obstacle <- track.obstacles}>

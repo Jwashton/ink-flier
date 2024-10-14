@@ -19,19 +19,19 @@ button {
   --button-bg: var(--4);
   color: var(--w);
 
-  background-color: var(--button-bg);
-  border-color: var(--button-bg);
-  border-radius: 8px;
+  /* background-color: var(--button-bg); */
+  /* border-color: var(--button-bg); */
+  /* border-radius: 8px; */
 
-  /* /1* source: https://stackoverflow.com/a/1368286/1421642 *1/ */
-  /* background: none!important; */
-  /* padding: 0!important; */
-  /* border: none; */
-  /* color: var(--4); */
-  /* text-decoration: underline; */
-  /* cursor: pointer; */
-  /* text-align: left; */
-  /* font-size: 90%; */
+  /* source: https://stackoverflow.com/a/1368286/1421642 */
+  background: none!important;
+  padding: 0!important;
+  border: none;
+  color: var(--4);
+  text-decoration: underline;
+  cursor: pointer;
+  text-align: left;
+  font-size: 90%;
 }
 
 a {
@@ -78,4 +78,9 @@ a {
   color: var(--3);
   font-size: 1.25rem;
   line-height: 1.75rem;
+}
+
+.tracks__links {
+  display: flex;
+  flex-direction: column;
 }
