@@ -11,8 +11,19 @@ socket.connect()
 
 let channel = socket.channel("room:lobby", {})
 channel.join()
-  .receive("ok", resp => { console.log("Joined successfully", resp) })
+  .receive("ok", games => {
+    drawGames(games)
+  })
   .receive("error", resp => { console.log("Unable to join", resp) })
+
+function drawGames(games) {
+  games.map((game) => {
+    let div = document.createElement("div")
+    setHtml(div, game.id, game.creator)
+    console.log(`Games: ${game.id}, ${game.creator}`)
+    gameContainer.appendChild(div)
+  })
+}
 
 channel.on("game_created", payload => {
   let gameItem = document.createElement("div")
@@ -24,16 +35,15 @@ let testTarget = document.querySelector("#test-target")
 setHtml(testTarget, 123, "Bobbb")
 
 function setHtml(element, gameId, gameCreator) {
+  element.classList.add("games__game")
   element.innerHTML = `
-    <div class="games__game">
-      <span class="games__game-data">
-        Game number: ${gameId}
-      </span>
-      <span class="games__game-data">
-        Creator: ${gameCreator}
-      </span>
-    </div>
-    `
+    <span class="games__game-data">
+      Game number: ${gameId}
+    </span>
+    <span class="games__game-data">
+      Creator: ${gameCreator}
+    </span>
+  `
 }
 
 window.create_game = create_game

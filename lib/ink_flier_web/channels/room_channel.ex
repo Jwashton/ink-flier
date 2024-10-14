@@ -8,7 +8,15 @@ defmodule InkFlierWeb.RoomChannel do
   @impl true
   def join("room:lobby", payload, socket) do
     if authorized?(payload) do
-      {:ok, socket}
+      games =
+        LobbyServer.games
+        |> Enum.sort_by(&elem(&1, 0), :desc)
+        |> Enum.map(fn {id, game} ->
+          %{id: id, creator: Game.creator(game)}
+        end)
+
+      {:ok, games, socket}
+      # {:ok, socket}
     else
       {:error, %{reason: "unauthorized"}}
     end
