@@ -27,9 +27,16 @@ function setHtml(element, gameId, gameCreator, new_game_id) {
       Creator: ${gameCreator}
     </span>
     <span>
-      <button onclick="delete(${gameId})">Delete</button>
+      <button onclick="delete_game(${gameId})">Delete</button>
     </span>
   `
+}
+
+function delete_game(gameId) {
+  channel.push("delete_game", gameId)
+    .receive("ok", games => {
+      console.log('Got reply ${reply}')
+    })
 }
 
 
@@ -50,4 +57,5 @@ channel.on("game_created", payload => {
 
 
 window.create_game = create_game
+window.delete_game = delete_game
 export default socket
