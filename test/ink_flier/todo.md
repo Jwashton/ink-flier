@@ -13,6 +13,9 @@
     - BUT, now adding 2 new games in a row wipes out the "fade in cause this is new" animation on the first of the two new games
     - But where does this leave me? Append lets them get out of sync, but redraw-all only lets me look at the VERY last one drawn, no matter how recently the -2 and -3 ones were also drawn
 
+  - Also, the drawGames (entire board refresh) has a lag when page first loads. Because js takes a while to load assumingly
+    - Wheras before the controller did the first "drawGames" and fed it right to nice easy-to-use heex. Not stinky js writing huge html blocks
+
 # 2024-10-13
 - After pulling the navbar into layouts/app.html, login.html now shows itself twice
   - Think about the router/layout grouping. Login is kind of wanting it's own layout at this point
