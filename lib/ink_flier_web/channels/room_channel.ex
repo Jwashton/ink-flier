@@ -43,9 +43,7 @@ defmodule InkFlierWeb.RoomChannel do
 
   @impl true
   def handle_in("delete_game", game_id, socket) do
-    "in code"
-    |> IO.inspect(charlists: :as_lists, label: "")
-    {:reply, :test_reply, socket}
+    {:reply, {:ok, :test_reply}, socket}
   end
 
   # It is also common to receive messages from the client and

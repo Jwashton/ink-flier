@@ -34,8 +34,8 @@ function setHtml(element, gameId, gameCreator, new_game_id) {
 
 function delete_game(gameId) {
   channel.push("delete_game", gameId)
-    .receive("ok", games => {
-      console.log('Got reply ${reply}')
+    .receive("ok", reply => {
+      console.log(`Got reply ${reply}`)
     })
 }
 
