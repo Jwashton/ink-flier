@@ -27,7 +27,7 @@ function setHtml(element, gameId, gameCreator, new_game_id) {
       Creator: ${gameCreator}
     </span>
     <span>
-      <button>Delete</button>
+      <button onclick="delete(${gameId})">Delete</button>
     </span>
   `
 }
