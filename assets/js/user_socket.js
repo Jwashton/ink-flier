@@ -5,18 +5,18 @@ function create_game(track_id) {
   channel.push("create_game", track_id)
 }
 
-function drawGames(games) {
+function drawGames(games, new_game_id = null) {
   gameContainer.innerHTML = ""
   games.map((game) => {
-    let new_game_row = document.createElement("div")
-    setHtml(new_game_row, game.id, game.creator)
-    gameContainer.appendChild(new_game_row)
+    let game_row = document.createElement("div")
+    setHtml(game_row, game.id, game.creator, new_game_id)
+    gameContainer.appendChild(game_row)
   })
 }
 
-function setHtml(element, gameId, gameCreator) {
+function setHtml(element, gameId, gameCreator, new_game_id) {
   element.classList.add("games__game")
-  if (gameId == 4) {
+  if (gameId == new_game_id) {
     element.classList.add("games__game--new")
   }
   element.innerHTML = `
@@ -42,9 +42,7 @@ channel.join()
   .receive("error", resp => { console.log("Unable to join", resp) })
 
 channel.on("game_created", payload => {
-  let gameItem = document.createElement("div")
-  gameItem.innerText = "..."
-  gameContainer.prepend(gameItem)
+  drawGames(payload.games, payload.new_game_id)
 })
 
 

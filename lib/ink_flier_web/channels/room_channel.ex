@@ -25,7 +25,7 @@ defmodule InkFlierWeb.RoomChannel do
   def handle_in("create_game", _track_id, socket) do
     user = socket.assigns.user
     game = Game.new(user)
-    {:ok, _game_id} = LobbyServer.add_game(game)
+    {:ok, game_id} = LobbyServer.add_game(game)
 
     # TODO dry
     games =
@@ -36,8 +36,8 @@ defmodule InkFlierWeb.RoomChannel do
       end)
 
 
-    # broadcast(socket, "game_created", ~M{game_id, user})
-    broadcast(socket, "game_created", games)
+    # broadcast(socket, "game_created", games)
+    broadcast(socket, "game_created", ~M{games, new_game_id: game_id})
     {:reply, :ok, socket}
   end
 
