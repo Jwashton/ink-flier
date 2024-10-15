@@ -43,7 +43,8 @@ defmodule InkFlierWeb.RoomChannel do
 
   @impl true
   def handle_in("delete_game", game_id, socket) do
-    {:reply, {:ok, :test_reply}, socket}
+    # TODO next do the actual delete then use broadcast and a channel.on
+    {:reply, :ok, socket}
   end
 
   # It is also common to receive messages from the client and
