@@ -93,22 +93,21 @@ a {
   &:not(:first-child) {
     border-top: 1px solid var(--border-color);
   }
+
+
+  & > * {
+    color: var(--3);
+
+    &:nth-child(even) {
+      color: var(--1);
+    }
+  }
 }
 
 .games__game--new {
   animation: fadeInAnimation ease 3s;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
-}
-
-.games__game-data {
-  color: var(--3);
-  /* background-color: var(--1); */
-  /* border-radius: 8px; */
-
-  &:nth-child(even) {
-  color: var(--1);
-  }
 }
 
 

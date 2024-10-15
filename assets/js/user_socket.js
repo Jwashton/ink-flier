@@ -20,14 +20,14 @@ function setHtml(element, gameId, gameCreator, new_game_id) {
     element.classList.add("games__game--new")
   }
   element.innerHTML = `
-    <span class="games__game-data">
+    <span>
       Game number: ${gameId}
     </span>
-    <span class="games__game-data">
+    <span>
       Creator: ${gameCreator}
     </span>
     <span>
-      <button">Delete</button>
+      <button>Delete</button>
     </span>
   `
 }
