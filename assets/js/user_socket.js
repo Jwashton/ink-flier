@@ -26,6 +26,9 @@ function setHtml(element, gameId, gameCreator, new_game_id) {
     <span class="games__game-data">
       Creator: ${gameCreator}
     </span>
+    <span>
+      <button">Delete</button>
+    </span>
   `
 }
 
