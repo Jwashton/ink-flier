@@ -4,6 +4,7 @@
 - Then, start letting players JOIN games
   - Which will, at first, just show in lobby
   - But also have new page for game. Again, at first, just make a genserver or whatever (supervised by lobby server?), and just show who's joined and left.
+- Refactor room_channel and user_socket.js a bit
 
 - @William
   - javascript drawGames, having the html in the javascript is painful. Is there any way to move the html more out of the js. In a template file. or make the javascript use phoenix's function components or something?
