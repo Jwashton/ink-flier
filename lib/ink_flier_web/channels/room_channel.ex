@@ -16,7 +16,6 @@ defmodule InkFlierWeb.RoomChannel do
         end)
 
       {:ok, games, socket}
-      # {:ok, socket}
     else
       {:error, %{reason: "unauthorized"}}
     end
@@ -26,9 +25,19 @@ defmodule InkFlierWeb.RoomChannel do
   def handle_in("create_game", _track_id, socket) do
     user = socket.assigns.user
     game = Game.new(user)
-    {:ok, game_id} = LobbyServer.add_game(game)
+    {:ok, _game_id} = LobbyServer.add_game(game)
 
-    broadcast(socket, "game_created", ~M{game_id, user})
+    # TODO dry
+    games =
+      LobbyServer.games
+      |> Enum.sort_by(&elem(&1, 0), :desc)
+      |> Enum.map(fn {id, game} ->
+        %{id: id, creator: Game.creator(game)}
+      end)
+
+
+    # broadcast(socket, "game_created", ~M{game_id, user})
+    broadcast(socket, "game_created", games)
     {:reply, :ok, socket}
   end
 
