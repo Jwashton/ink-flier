@@ -2,6 +2,10 @@
 - @William
   - javascript drawGames, having the html in the javascript is painful. Is there any way to move the html more out of the js. In a template file. or make the javascript use phoenix's function components or something?
 
+  - By redrawing the entire list with drawGames, they can't get out of sync anymore which is good
+    - BUT, now adding 2 new games in a row wipes out the "fade in cause this is new" animation on the first of the two new games
+    - But where does this leave me? Append lets them get out of sync, but redraw-all only lets me look at the VERY last one drawn, no matter how recently the -2 and -3 ones were also drawn
+
 # 2024-10-13
 - After pulling the navbar into layouts/app.html, login.html now shows itself twice
   - Think about the router/layout grouping. Login is kind of wanting it's own layout at this point
