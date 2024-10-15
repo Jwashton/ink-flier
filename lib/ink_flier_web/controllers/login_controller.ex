@@ -12,7 +12,7 @@ defmodule InkFlierWeb.LoginController do
 
   def new(conn, _params) do
     conn
-    |> render(:new, layout: false)
+    |> render(:new)
   end
 
   def create(conn, ~m{user_name, return_to}) do

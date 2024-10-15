@@ -1,0 +1,8 @@
+<div class="nav">
+  <InkFlierWeb.LoginHTML.new user={@user} return_to={~p"/lobby"} />
+</div>
+<hr class="nav__hr" />
+<main>
+  <.flash_group flash={@flash} />
+  <%= @inner_content %>
+</main>

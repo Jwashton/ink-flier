@@ -1,20 +1,44 @@
 defmodule InkFlierWeb.RoomChannel do
   use InkFlierWeb, :channel
+  import TinyMaps
+
+  alias InkFlier.Game
+  alias InkFlier.LobbyServer
 
   @impl true
   def join("room:lobby", payload, socket) do
     if authorized?(payload) do
-      {:ok, socket}
+      games =
+        LobbyServer.games
+        |> Enum.sort_by(&elem(&1, 0), :desc)
+        |> Enum.map(fn {id, game} ->
+          %{id: id, creator: Game.creator(game)}
+        end)
+
+      {:ok, games, socket}
     else
       {:error, %{reason: "unauthorized"}}
     end
   end
 
-  # Channels can be used in a request/response fashion
-  # by sending replies to requests from the client
   @impl true
-  def handle_in("ping", payload, socket) do
-    {:reply, {:ok, payload}, socket}
+  def handle_in("create_game", _track_id, socket) do
+    user = socket.assigns.user
+    game = Game.new(user)
+    {:ok, game_id} = LobbyServer.add_game(game)
+
+    # TODO dry
+    games =
+      LobbyServer.games
+      |> Enum.sort_by(&elem(&1, 0), :desc)
+      |> Enum.map(fn {id, game} ->
+        %{id: id, creator: Game.creator(game)}
+      end)
+
+
+    # broadcast(socket, "game_created", games)
+    broadcast(socket, "game_created", ~M{games, new_game_id: game_id})
+    {:reply, :ok, socket}
   end
 
   # It is also common to receive messages from the client and

@@ -1,0 +1,149 @@
+:root {
+  --b: #1B1C1Fff;
+  --w: white;
+  --t: #21d5e1;
+
+  --1: #5603fc;
+  --2: #C38A1Fff;
+  --3: #872145ff;
+  --4: #7a12a6;
+
+  --border-color: var(--2);
+
+
+  background-color: var(--b);
+  color: var(--t);
+}
+
+button {
+  --button-bg: var(--4);
+  color: var(--w);
+
+  /* background-color: var(--button-bg); */
+  /* border-color: var(--button-bg); */
+  /* border-radius: 8px; */
+
+  /* source: https://stackoverflow.com/a/1368286/1421642 */
+  background: none!important;
+  padding: 0!important;
+  border: none;
+  color: var(--4);
+  text-decoration: underline;
+  cursor: pointer;
+  text-align: left;
+  font-size: 90%;
+}
+
+a {
+  color: var(--4);
+}
+
+
+.nav {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.nav__hr {
+  margin-bottom: 25px;
+}
+
+.nav__login {
+  border: 1px solid var(--1);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.nav__login-link {
+  margin-left: 30px;
+}
+
+
+.games {
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  margin-left: 20px;
+  margin-right: 40px;
+}
+
+.games__header {
+  margin-top: 30px;
+}
+
+.games__game {
+  --gap: 20px;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: var(--gap);
+  gap: var(--gap);
+
+  &:not(:first-child) {
+    border-top: 1px solid var(--border-color);
+  }
+}
+
+.games__game--new {
+  animation: fadeInAnimation ease 3s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadeInAnimation {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.games__game-data {
+  color: var(--3);
+  /* background-color: var(--1); */
+  /* border-radius: 8px; */
+
+  &:nth-child(even) {
+  color: var(--1);
+  }
+}
+
+
+.tracks {
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  margin-left: 20px;
+  margin-right: 40px;
+
+  display: grid;
+  grid-template-areas:
+    "a links"
+    "b links";
+}
+
+.tracks__title {
+  color: var(--3);
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.tracks__links {
+  grid-area: links;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.tracks__obstacle-title {
+  color: var(--1);
+}
+
+.tracks__obstacle-coords {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: auto;
+
+  margin-left: 25px;
+}
