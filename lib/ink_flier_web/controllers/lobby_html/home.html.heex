@@ -2,10 +2,7 @@ Tracks:
 <div :for={{id, track} <- @tracks} class="tracks">
   <span class="tracks__title">Track <%= id %></span>
   <div class="tracks__links">
-    <button onclick={"create_game(#{id})"}>Create game</button>
-    <button onclick={""}>Create & Join</button>
-    <button onclick={""}>Create & Join</button>
-    <button onclick={""}>Create & Join</button>
+    <button #change this to id then javascript.AddEventListener onclick={"create_game(#{id})"}>Create game</button>
     <button onclick={""}>Create & Join</button>
   </div>
   <div :for={obstacle <- track.obstacles}>

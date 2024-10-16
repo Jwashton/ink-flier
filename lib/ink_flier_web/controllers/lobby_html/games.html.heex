@@ -12,3 +12,18 @@
   <%#   </span> %>
   <%# </div> %>
 </div>
+
+<template>
+  <%# <div id="game<%= game_id %1>" class="games__game"> %>
+  <div data-game-id="7" class="games__game">
+    <span>
+      Game number: <span class="gameId" />
+      </span>
+      <span>
+        Creator: ${gameCreator}
+      </span>
+      <span>
+        <button onclick="delete_game(${gameId})">Delete</button>
+      </span>
+  </div>
+</template>

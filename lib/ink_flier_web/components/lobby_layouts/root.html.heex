@@ -12,7 +12,7 @@
     <script>window.userToken = "<%= assigns[:user_token] %>";</script>
     <%# <script defer phx-track-static type="text/javascript" src={~p"/assets/js/app.js"}> %>
     <%# </script> %>
-    <script defer phx-track-static type="text/javascript" src={~p"/assets/js/user_socket.js"}>
+    <script :if={@user} defer phx-track-static type="text/javascript" src={~p"/assets/js/user_socket.js"}>
     </script>
   </head>
   <body class="bg-white">

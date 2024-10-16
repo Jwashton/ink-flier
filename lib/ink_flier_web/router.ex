@@ -28,12 +28,12 @@ defmodule InkFlierWeb.Router do
     plug InkFlierWeb.Plugs.LoginRequired
   end
 
-
   scope "/", InkFlierWeb do
     pipe_through [:browser]
 
     get "/", PageController, :home
   end
+
 
   scope "/", InkFlierWeb do
     pipe_through [:browser, :user]
@@ -48,6 +48,7 @@ defmodule InkFlierWeb.Router do
 
     get "/lobby", LobbyController, :home
   end
+
 
   scope "/game", InkFlierWeb do
     pipe_through [:browser, :game]
