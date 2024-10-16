@@ -6,13 +6,13 @@
 </div>
 
 <div :if={!@user} class="nav__login ">
-  <.form method="POST" action="/login">
-    <%# <input type="hidden" name="_csrf_token" value={Phoenix.Controller.get_csrf_token()}> %>
+  <form method="POST" action="/login">
+    <input type="hidden" name="_csrf_token" value={Phoenix.Controller.get_csrf_token()}>
     <input type="hidden" name="return_to" value={@return_to}>
 
     <label for="username">Username</label>
     <input id="username" name="user_name">
 
     <button>Log in</button>
-  </.form>
+  </form>
 </div>
