@@ -32,7 +32,7 @@ function makeGameRow(gameId, gameCreator, newGame) {
   }
 
   element.querySelector(".gameId").textContent = gameId
-  element.querySelector(".gameCreator").textContent = gameCreator
+  element.querySelector(".gameCreator").textContent = sanitize(gameCreator)
   element.querySelector(".deleteGame").addEventListener("click", payload => {
     delete_game(gameId)
   })
