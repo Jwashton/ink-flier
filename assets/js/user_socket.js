@@ -6,6 +6,10 @@ function create_game(track_id) {
   channel.push("create_game", track_id)
 }
 
+function delete_game(gameId) {
+  channel.push("delete_game", gameId)
+}
+
 function appendGame(gameWrapper) {
   let game_row = document.createElement("div")
   setHtml(game_row, gameWrapper.id, gameWrapper.creator, NEW_GAME)
@@ -41,10 +45,6 @@ function setHtml(element, gameId, gameCreator, newGame) {
       <button onclick="delete_game(${gameId})">Delete</button>
     </span>
   `
-}
-
-function delete_game(gameId) {
-  channel.push("delete_game", gameId)
 }
 
 function sanitize(string) {
