@@ -24,9 +24,7 @@ function drawGamesFromScratch(games) {
 }
 
 function makeGameRow(gameId, gameCreator, newGame) {
-  const template = document.getElementById("game-template")
-  const clone = template.content.cloneNode(true)
-  const element = clone.querySelector("div")
+  const element = document.getElementById("game-template").content.cloneNode(true).querySelector("div")
 
   element.dataset.gameId = gameId
   if (newGame) {
