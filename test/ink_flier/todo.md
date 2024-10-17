@@ -1,5 +1,6 @@
 # 2024-10-16
 - LobbyServer test intermitent fails, by changing the api using the link William sent (@name... etc)
+- Remove the onclick's in html and move them to being attached by javascript
 
 # 2024-10-15
 - [x] Get javascript to "draw games" function so it refreshes everyone's list on broadcast
