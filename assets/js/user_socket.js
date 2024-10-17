@@ -2,50 +2,39 @@ import {Socket} from "phoenix"
 
 const NEW_GAME = "NEW_GAME"
 
-function create_game(track_id) {
-  channel.push("create_game", track_id)
-}
 
-function delete_game(gameId) {
-  channel.push("delete_game", gameId)
-}
+function create_game(track_id) { channel.push("create_game", track_id) }
+
+function delete_game(gameId) { channel.push("delete_game", gameId) }
 
 function appendGame(gameWrapper) {
-  let game_row = document.createElement("div")
-  setHtml(game_row, gameWrapper.id, gameWrapper.creator, NEW_GAME)
+  const game_row = makeGameRow(gameWrapper.id, gameWrapper.creator, NEW_GAME)
   gameContainer.prepend(game_row)
 }
 
 function drawGamesFromScratch(games) {
-  drawGames(games, null)
-}
-
-function drawGames(games, new_game_id) {
   gameContainer.innerHTML = ""
   games.map((game) => {
-    let game_row = document.createElement("div")
-    setHtml(game_row, game.id, game.creator, new_game_id)
+    const game_row = makeGameRow(game.id, game.creator, null)
     gameContainer.appendChild(game_row)
   })
 }
 
-function setHtml(element, gameId, gameCreator, newGame) {
+function makeGameRow(gameId, gameCreator, newGame) {
+  const element = document.getElementById("game-template").content.cloneNode(true).querySelector("div")
+
   element.dataset.gameId = gameId
-  element.classList.add("games__game")
   if (newGame) {
     element.classList.add("games__game--new")
   }
-  element.innerHTML = `
-    <span>
-      Game number: ${gameId}
-    </span>
-    <span>
-      Creator: ${sanitize(gameCreator)}
-    </span>
-    <span>
-      <button onclick="delete_game(${gameId})">Delete</button>
-    </span>
-  `
+
+  element.querySelector(".gameId").textContent = gameId
+  element.querySelector(".gameCreator").textContent = sanitize(gameCreator)
+  element.querySelector(".deleteGame").addEventListener("click", payload => {
+    delete_game(gameId)
+  })
+
+  return element
 }
 
 function sanitize(string) {

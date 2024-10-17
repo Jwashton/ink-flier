@@ -4,12 +4,19 @@
 
 <div id="game-list" class="games">
   Loading...
-  <%# <div :for={{game_id, game} <- @games} class="games__game"> %>
-  <%#   <span class="games__game-data"> %>
-  <%#     Game number: <%= game_id %1> %>
-  <%#   </span> %>
-  <%#   <span class="games__game-data"> %>
-  <%#     Creator: <%= Game.creator(game) %1> %>
-  <%#   </span> %>
-  <%# </div> %>
 </div>
+
+
+<template id="game-template">
+  <div class="games__game">
+    <span>
+      Game number: <span class="gameId"></span>
+    </span>
+    <span>
+      Creator: <span class="gameCreator"></span>
+    </span>
+    <span>
+      <button class="deleteGame">Delete</button>
+    </span>
+  </div>
+</template>
