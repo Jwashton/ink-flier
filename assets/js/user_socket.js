@@ -1,5 +1,6 @@
 import {Socket} from "phoenix"
 
+const NEW_GAME = "NEW_GAME"
 
 function create_game(track_id) {
   channel.push("create_game", track_id)
@@ -7,7 +8,7 @@ function create_game(track_id) {
 
 function appendGame(gameWrapper) {
   let game_row = document.createElement("div")
-  setHtml(game_row, gameWrapper.id, gameWrapper.creator, gameWrapper.id)
+  setHtml(game_row, gameWrapper.id, gameWrapper.creator, NEW_GAME)
   gameContainer.prepend(game_row)
 }
 
@@ -24,9 +25,9 @@ function drawGames(games, new_game_id) {
   })
 }
 
-function setHtml(element, gameId, gameCreator, new_game_id) {
+function setHtml(element, gameId, gameCreator, newGame) {
   element.classList.add("games__game")
-  if (gameId == new_game_id) {
+  if (newGame) {
     element.classList.add("games__game--new")
   }
   element.innerHTML = `
