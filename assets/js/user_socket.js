@@ -30,7 +30,7 @@ function drawGames(games, new_game_id) {
 }
 
 function setHtml(element, gameId, gameCreator, newGame) {
-  element.dataset.game-id = gameId
+  element.dataset.gameId = gameId
   element.classList.add("games__game")
   if (newGame) {
     element.classList.add("games__game--new")
