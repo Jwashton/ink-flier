@@ -33,14 +33,9 @@ function makeGameRow(gameId, gameCreator, newGame) {
     element.classList.add("games__game--new")
   }
 
-  const gameIdSection = element.querySelector(".gameId")
-  gameIdSection.textContent = gameId
-
-  const gameCreatorSection = element.querySelector(".gameCreator")
-  gameCreatorSection.textContent = gameCreator
-
-  const deleteSection = element.querySelector(".deleteGame")
-  deleteSection.addEventListener("click", payload => {
+  element.querySelector(".gameId").textContent = gameId
+  element.querySelector(".gameCreator").textContent = gameCreator
+  element.querySelector(".deleteGame").addEventListener("click", payload => {
     delete_game(gameId)
   })
 
