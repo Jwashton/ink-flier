@@ -11,8 +11,7 @@ function delete_game(gameId) {
 }
 
 function appendGame(gameWrapper) {
-  let game_row = document.createElement("div")
-  setHtml(game_row, gameWrapper.id, gameWrapper.creator, NEW_GAME)
+  const game_row = makeGameRow(gameWrapper.id, gameWrapper.creator, NEW_GAME)
   gameContainer.prepend(game_row)
 }
 
@@ -23,13 +22,14 @@ function drawGamesFromScratch(games) {
 function drawGames(games, new_game_id) {
   gameContainer.innerHTML = ""
   games.map((game) => {
-    let game_row = document.createElement("div")
-    setHtml(game_row, game.id, game.creator, new_game_id)
+    const game_row = makeGameRow(game.id, game.creator, new_game_id)
     gameContainer.appendChild(game_row)
   })
 }
 
-function setHtml(element, gameId, gameCreator, newGame) {
+function makeGameRow(gameId, gameCreator, newGame) {
+  let element = document.createElement("div")
+
   element.dataset.gameId = gameId
   element.classList.add("games__game")
   if (newGame) {
@@ -46,6 +46,8 @@ function setHtml(element, gameId, gameCreator, newGame) {
       <button onclick="delete_game(${gameId})">Delete</button>
     </span>
   `
+
+  return element
 }
 
 function sanitize(string) {
