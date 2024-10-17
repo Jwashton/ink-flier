@@ -16,13 +16,9 @@ function appendGame(gameWrapper) {
 }
 
 function drawGamesFromScratch(games) {
-  drawGames(games, null)
-}
-
-function drawGames(games, new_game_id) {
   gameContainer.innerHTML = ""
   games.map((game) => {
-    const game_row = makeGameRow(game.id, game.creator, new_game_id)
+    const game_row = makeGameRow(game.id, game.creator, null)
     gameContainer.appendChild(game_row)
   })
 }
