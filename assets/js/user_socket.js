@@ -5,7 +5,17 @@ function create_game(track_id) {
   channel.push("create_game", track_id)
 }
 
-function drawGames(games, new_game_id = null) {
+function appendGame(gameWrapper) {
+  let game_row = document.createElement("div")
+  setHtml(game_row, gameWrapper.id, gameWrapper.creator, gameWrapper.id)
+  gameContainer.prepend(game_row)
+}
+
+function drawGamesFromScratch(games) {
+  drawGames(games, null)
+}
+
+function drawGames(games, new_game_id) {
   gameContainer.innerHTML = ""
   games.map((game) => {
     let game_row = document.createElement("div")
@@ -48,13 +58,12 @@ socket.connect()
 let channel = socket.channel("room:lobby", {})
 channel.join()
   .receive("ok", games => {
-    drawGames(games)
+    drawGamesFromScratch(games)
   })
   .receive("error", resp => { console.log("Unable to join", resp) })
 
-channel.on("game_created", payload => {
-  console.log(JSON.stringify(payload))
-  drawGames(payload.games, payload.new_game_id)
+channel.on("game_created", gameWrapper => {
+  appendGame(gameWrapper)
 })
 
 
