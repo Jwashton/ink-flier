@@ -6,6 +6,7 @@ defmodule InkFlier.LobbyServer do
   def stop, do: GenServer.whereis(__MODULE__) && GenServer.stop(__MODULE__)
 
   def add_game(game), do: GenServer.call(__MODULE__, {:add_game, game})
+  def delete_game(game_id), do: GenServer.call(__MODULE__, {:delete_game, game_id})
   def games, do: GenServer.call(__MODULE__, :games)
 
 
@@ -17,6 +18,9 @@ defmodule InkFlier.LobbyServer do
     {t, game_id} = Lobby.add_game(t, game)
     {:reply, {:ok, game_id}, t}
   end
+
+  @impl GenServer
+  def handle_call({:delete_game, game_id}, _from, t), do: {:reply, :ok, Lobby.delete_game(t, game_id)}
 
   @impl GenServer
   def handle_call(:games, _from, t), do: {:reply, Lobby.games(t), t}
