@@ -23,6 +23,8 @@ defmodule InkFlier.Lobby do
     {t, game_id}
   end
 
+  def delete_game(t, game_id), do: update_in(t.games, &Map.delete(&1, game_id))
+
   def games(t), do: t.games
   def game(t, game_id), do: t.games[game_id]
 

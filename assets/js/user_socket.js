@@ -1,11 +1,26 @@
 import {Socket} from "phoenix"
 
+const NEW_GAME = "NEW_GAME"
 
 function create_game(track_id) {
   channel.push("create_game", track_id)
 }
 
-function drawGames(games, new_game_id = null) {
+function delete_game(gameId) {
+  channel.push("delete_game", gameId)
+}
+
+function appendGame(gameWrapper) {
+  let game_row = document.createElement("div")
+  setHtml(game_row, gameWrapper.id, gameWrapper.creator, NEW_GAME)
+  gameContainer.prepend(game_row)
+}
+
+function drawGamesFromScratch(games) {
+  drawGames(games, null)
+}
+
+function drawGames(games, new_game_id) {
   gameContainer.innerHTML = ""
   games.map((game) => {
     let game_row = document.createElement("div")
@@ -14,19 +29,27 @@ function drawGames(games, new_game_id = null) {
   })
 }
 
-function setHtml(element, gameId, gameCreator, new_game_id) {
+function setHtml(element, gameId, gameCreator, newGame) {
+  element.dataset.game-id = gameId
   element.classList.add("games__game")
-  if (gameId == new_game_id) {
+  if (newGame) {
     element.classList.add("games__game--new")
   }
   element.innerHTML = `
-    <span class="games__game-data">
+    <span>
       Game number: ${gameId}
     </span>
-    <span class="games__game-data">
-      Creator: ${gameCreator}
+    <span>
+      Creator: ${sanitize(gameCreator)}
+    </span>
+    <span>
+      <button onclick="delete_game(${gameId})">Delete</button>
     </span>
   `
+}
+
+function sanitize(string) {
+  return string.replace(/</g,"&lt;")
 }
 
 
@@ -37,14 +60,20 @@ socket.connect()
 let channel = socket.channel("room:lobby", {})
 channel.join()
   .receive("ok", games => {
-    drawGames(games)
+    drawGamesFromScratch(games)
   })
   .receive("error", resp => { console.log("Unable to join", resp) })
 
-channel.on("game_created", payload => {
-  drawGames(payload.games, payload.new_game_id)
+channel.on("game_created", gameWrapper => {
+  appendGame(gameWrapper)
+})
+
+channel.on("game_deleted", payload => {
+  let target = document.querySelector(`[data-game-id="${payload.game_id}"]`)
+  target.remove()
 })
 
 
 window.create_game = create_game
+window.delete_game = delete_game
 export default socket

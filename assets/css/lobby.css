@@ -15,6 +15,16 @@
   color: var(--t);
 }
 
+@keyframes fadeInAnimation {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
 button {
   --button-bg: var(--4);
   color: var(--w);
@@ -73,13 +83,24 @@ a {
 .games__game {
   --gap: 20px;
 
+  /* display: flex; */
+  /* justify-content: space-between; */
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  padding: var(--gap);
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--gap);
+  padding: var(--gap);
 
   &:not(:first-child) {
     border-top: 1px solid var(--border-color);
+  }
+
+
+  & > * {
+    color: var(--3);
+
+    &:nth-child(even) {
+      color: var(--1);
+    }
   }
 }
 
@@ -87,26 +108,6 @@ a {
   animation: fadeInAnimation ease 3s;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
-}
-
-@keyframes fadeInAnimation {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
-.games__game-data {
-  color: var(--3);
-  /* background-color: var(--1); */
-  /* border-radius: 8px; */
-
-  &:nth-child(even) {
-  color: var(--1);
-  }
 }
 
 
