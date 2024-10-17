@@ -44,7 +44,7 @@ defmodule InkFlierWeb.RoomChannel do
   @impl true
   def handle_in("delete_game", game_id, socket) do
     :ok = LobbyServer.delete_game(game_id)
-    broadcast(socket, "game_deleted", game_id)
+    broadcast(socket, "game_deleted", ~M{game_id})
     {:reply, :ok, socket}
   end
 

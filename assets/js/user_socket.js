@@ -30,7 +30,7 @@ function drawGames(games, new_game_id) {
 }
 
 function setHtml(element, gameId, gameCreator, newGame) {
-  element.dataset.gameId = gameId
+  element.dataset.game-id = gameId
   element.classList.add("games__game")
   if (newGame) {
     element.classList.add("games__game--new")
@@ -68,9 +68,9 @@ channel.on("game_created", gameWrapper => {
   appendGame(gameWrapper)
 })
 
-channel.on("game_deleted", gameId => {
-  console.log(`Received game_delete: ${gameId}`)
-  document.querySelector(`[data-gameId="${gameId}"]`).remove()
+channel.on("game_deleted", payload => {
+  let target = document.querySelector(`[data-game-id="${payload.game_id}"]`)
+  target.remove()
 })
 
 
