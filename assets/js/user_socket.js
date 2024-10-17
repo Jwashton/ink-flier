@@ -2,13 +2,10 @@ import {Socket} from "phoenix"
 
 const NEW_GAME = "NEW_GAME"
 
-function create_game(track_id) {
-  channel.push("create_game", track_id)
-}
 
-function delete_game(gameId) {
-  channel.push("delete_game", gameId)
-}
+function create_game(track_id) { channel.push("create_game", track_id) }
+
+function delete_game(gameId) { channel.push("delete_game", gameId) }
 
 function appendGame(gameWrapper) {
   const game_row = makeGameRow(gameWrapper.id, gameWrapper.creator, NEW_GAME)
