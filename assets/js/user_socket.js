@@ -24,7 +24,7 @@ function setHtml(element, gameId, gameCreator, new_game_id) {
       Game number: ${gameId}
     </span>
     <span>
-      Creator: ${gameCreator}
+      Creator: ${sanitize(gameCreator)}
     </span>
     <span>
       <button onclick="delete_game(${gameId})">Delete</button>
@@ -34,6 +34,10 @@ function setHtml(element, gameId, gameCreator, new_game_id) {
 
 function delete_game(gameId) {
   channel.push("delete_game", gameId)
+}
+
+function sanitize(string) {
+  return string.replace(/</g,"&lt;")
 }
 
 
@@ -49,6 +53,7 @@ channel.join()
   .receive("error", resp => { console.log("Unable to join", resp) })
 
 channel.on("game_created", payload => {
+  console.log(JSON.stringify(payload))
   drawGames(payload.games, payload.new_game_id)
 })
 
