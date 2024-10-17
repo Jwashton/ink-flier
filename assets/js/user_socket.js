@@ -24,24 +24,25 @@ function drawGamesFromScratch(games) {
 }
 
 function makeGameRow(gameId, gameCreator, newGame) {
-  let element = document.createElement("div")
+  const template = document.getElementById("game-template")
+  const clone = template.content.cloneNode(true)
+  const element = clone.querySelector("div")
 
   element.dataset.gameId = gameId
-  element.classList.add("games__game")
   if (newGame) {
     element.classList.add("games__game--new")
   }
-  element.innerHTML = `
-    <span>
-      Game number: ${gameId}
-    </span>
-    <span>
-      Creator: ${sanitize(gameCreator)}
-    </span>
-    <span>
-      <button onclick="delete_game(${gameId})">Delete</button>
-    </span>
-  `
+
+  const gameIdSection = element.querySelector(".gameId")
+  gameIdSection.textContent = gameId
+
+  const gameCreatorSection = element.querySelector(".gameCreator")
+  gameCreatorSection.textContent = gameCreator
+
+  const deleteSection = element.querySelector(".deleteGame")
+  deleteSection.addEventListener("click", payload => {
+    delete_game(gameId)
+  })
 
   return element
 }
