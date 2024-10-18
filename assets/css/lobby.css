@@ -129,6 +129,11 @@ a {
   border-top: 1px solid var(--border-color);
 }
 
+.games__game-buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
 
 .tracks {
   border: 1px solid var(--border-color);
