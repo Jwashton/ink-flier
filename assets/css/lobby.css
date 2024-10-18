@@ -117,10 +117,16 @@ a {
 
   font-size: 85%;
   margin-left: 20px;
-  width: 70%;
-  display: flex;
-  justify-content: space-between;
-  /* border: 1px solid var(--border-color); */
+  width: 90%;
+
+  /* display: flex; */
+  /* justify-content: space-between; */
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  row-gap: 14px;
+
+  border-top: 1px solid var(--border-color);
 }
 
 
