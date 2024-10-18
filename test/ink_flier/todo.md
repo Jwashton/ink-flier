@@ -1,3 +1,8 @@
+# 2024-10-18
+- Maybe try to store game stuff in lobby like I'm doing
+  - But after JoinGame is working, THEN move it to game genservers that notify lobby when joined or something?
+    - Think more on this one. I can do it with channel broadcasts, but is it possible to do it more directly on engine code with the Lobby and Game servers?
+
 # 2024-10-16
 - LobbyServer test intermitent fails, by changing the api using the link William sent (@name... etc)
 - Remove the onclick's in html and move them to being attached by javascript
