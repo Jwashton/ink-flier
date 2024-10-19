@@ -1,3 +1,20 @@
+# 2024-10-19
+- Ok, for next, just work on only single game page
+  - Figure out connection to Lobby and stuff laer
+  - Just make a Game page that has a creator, an id (in the url at least), and logged in player can click join or leave
+
+- LobbyGameController- Confirm game is a currently running GameServer
+
+- @William
+  - Just general question on the layout of the supervisor, the registry, the games... the lobby makes an id, just 1, 2, 3 inc. I use that instead of the creating player's name to name a game process, since a player might create multiple games
+
+  - Messages between servers. Location. GenServer "engine" vs channels
+    - Was going to test that game messages send notify to the lobby server that spawned them (when player joins game for example)
+    - To test that was going to put it in engine layer
+    - But then remembered I did the broadcasts for "game created" at the "top" channels layer
+    - But lobby IS a genserver. Should it have handled it's own broadcasts in the genserver engine instead of the channel code?
+    - This might answer itself after I try the 2nd way... (I did the channels broadcast for "lobby create game". Going to try the opposite and do genserver broadcast/send_info/etc for "game joined but lobby needs notify")
+
 # 2024-10-18
 - Maybe try to store game stuff in lobby like I'm doing
   - But after JoinGame is working, THEN move it to game genservers that notify lobby when joined or something?
