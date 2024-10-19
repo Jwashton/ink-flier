@@ -1,2 +1,15 @@
-aasd
-Game id: <%= @game_id %>
+<p>
+  Game id: <%= @game_id %>
+</p>
+<p>
+  Creator: <%= @creator %>
+</p>
+<p>
+  Players: <%= @players %>
+</p>
+<p>
+  <%# TODO switch to button %>
+  <a href={@path <> "?join=true"}>Join</a>
+  <%# <button>Join</button> %>
+</p>
+path: <%= @path %>
