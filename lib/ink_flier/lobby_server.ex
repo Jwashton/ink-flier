@@ -2,12 +2,17 @@ defmodule InkFlier.LobbyServer do
   use GenServer
   alias InkFlier.Lobby
 
-  def start_link(_), do: GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
-  def stop, do: GenServer.whereis(__MODULE__) && GenServer.stop(__MODULE__)
+  @name __MODULE__
 
-  def add_game(game), do: GenServer.call(__MODULE__, {:add_game, game})
-  def delete_game(game_id), do: GenServer.call(__MODULE__, {:delete_game, game_id})
-  def games, do: GenServer.call(__MODULE__, :games)
+  def start_link(opts \\ []) do
+    opts = Keyword.put_new(opts, :name, @name)
+    GenServer.start_link(__MODULE__, :ok, opts)
+  end
+  def stop, do: GenServer.whereis(@name) && GenServer.stop(@name)
+
+  def add_game(name \\ @name, game), do: GenServer.call(name, {:add_game, game})
+  def delete_game(name \\ @name, game_id), do: GenServer.call(name, {:delete_game, game_id})
+  def games(name \\ @name), do: GenServer.call(name, :games)
 
 
   @impl GenServer
