@@ -48,7 +48,7 @@ defmodule InkFlierWeb do
       unquote(verified_routes())
 
       # Give myself the assign/2 that Socket/liveview has, instead of only assign/3 that Conn gets
-      defp assign(conn, assigns) when is_list(assigns) do
+      defp assign(conn, assigns) do
         Enum.reduce(assigns, conn, fn {k, v}, conn ->
           assign(conn, k, v)
         end)
