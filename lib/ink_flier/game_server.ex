@@ -1,16 +1,18 @@
 defmodule InkFlier.GameServer do
   use GenServer
 
-  def start_link({id, _creator}), do: GenServer.start_link(__MODULE__, :ok, name: via(id))
-  def creator(_id) do
-    # TODO hc
-    "Robin"
+  alias InkFlier.Game
+
+  def start_link({id, creator}), do: GenServer.start_link(__MODULE__, creator, name: via(id))
+  def creator(id), do: GenServer.call(via(id), :creator)
+
+  @impl GenServer
+  def init(creator) do
+    {:ok, Game.new(creator)}
   end
 
   @impl GenServer
-  def init(:ok) do
-    {:ok, []}
-  end
+  def handle_call(:creator, _, t), do: {:reply, Game.creator(t), t}
 
 
   defp via(id), do: {:via, Registry, {Registry.Game, id}}
