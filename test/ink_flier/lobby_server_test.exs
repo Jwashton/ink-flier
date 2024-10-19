@@ -2,6 +2,7 @@ defmodule InkFlierTest.LobbyServer do
   use ExUnit.Case
 
   alias InkFlier.LobbyServer
+  alias InkFlier.GameServer
 
   test "Confirm server starts in application" do
     # DON'T call with Testlobby name, we're checking if global application LobbyServer started here
@@ -23,6 +24,13 @@ defmodule InkFlierTest.LobbyServer do
     test "Confirm tests don't bleed" do
       assert LobbyServer.games(TestLobby) == %{}
     end
+
+    # test "Start a supervised Game process" do
+    #   # TODO add_game should prob turn into create_game to do these together?
+
+    #   {:ok, game_id} = LobbyServer.create_game(TestLobby, "CreatorBatman")
+    #   assert GameServer.creator(game_id) == "CreatorBatman"
+    # end
 
     # test "TODO" do
     #   game =
