@@ -1,15 +1,17 @@
 defmodule InkFlier.GameServer do
-  use Agent
+  use GenServer
 
-  def start_link(initial_value) do
-    Agent.start_link(fn -> initial_value end)
+  def start_link({id, _creator}), do: GenServer.start_link(__MODULE__, :ok, name: via(id))
+  def creator(_id) do
+    # TODO hc
+    "Robin"
   end
 
-  def value(pid) do
-    Agent.get(pid, & &1)
+  @impl GenServer
+  def init(:ok) do
+    {:ok, []}
   end
 
-  def increment(pid) do
-    Agent.update(pid, &(&1 + 1))
-  end
+
+  defp via(id), do: {:via, Registry, {Registry.Game, id}}
 end
