@@ -15,7 +15,7 @@ defmodule InkFlierTest.Lobby do
   test "Delte game" do
     t = Lobby.new
     {t, game_id1} = Lobby.add_game(t, :fake_game1)
-    {t, game_id2} = Lobby.add_game(t, :fake_game2)
+    {t, _game_id2} = Lobby.add_game(t, :fake_game2)
     t = Lobby.delete_game(t, game_id1)
 
     games = Lobby.games(t) |> Map.values
