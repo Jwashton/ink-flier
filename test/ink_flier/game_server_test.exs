@@ -12,4 +12,12 @@ defmodule InkFlierTest.GameServer do
     {:ok, _pid} = GameServer.start_link({123, "Batman"})
     assert %{creator: "Batman", players: []} = GameServer.starting_info(123)
   end
+
+  test "A player can join" do
+    {:ok, _pid} = GameServer.start_link({123, "Batman"})
+    :ok = GameServer.join(123, "Robin")
+    :ok = GameServer.join(123, "Bruce")
+
+    assert GameServer.players(123) == ["Robin", "Bruce"]
+  end
 end

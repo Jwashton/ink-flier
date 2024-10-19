@@ -4,7 +4,9 @@ defmodule InkFlier.GameServer do
   alias InkFlier.Game
 
   def start_link({id, creator}), do: GenServer.start_link(__MODULE__, creator, name: via(id))
+  def join(id, player), do: GenServer.call(via(id), {:join, player})
   def creator(id), do: GenServer.call(via(id), :creator)
+  def players(id), do: GenServer.call(via(id), :players)
   def starting_info(id), do: GenServer.call(via(id), :starting_info)
 
 
@@ -14,7 +16,13 @@ defmodule InkFlier.GameServer do
   end
 
   @impl GenServer
+  def handle_call({:join, player}, _, t), do: {:reply, :ok, Game.add_player(t, player)}
+
+  @impl GenServer
   def handle_call(:creator, _, t), do: {:reply, Game.creator(t), t}
+
+  @impl GenServer
+  def handle_call(:players, _, t), do: {:reply, Game.players(t), t}
 
   @impl GenServer
   def handle_call(:starting_info, _, t), do: {:reply, Game.starting_info(t), t}
