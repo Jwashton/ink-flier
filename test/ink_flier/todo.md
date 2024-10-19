@@ -1,4 +1,12 @@
 # 2024-10-19
+- LobbyGameController working good progress! Next todos:
+  - no double-joins by same player
+  - And leave game
+  - And format the player list or make prettier css
+  - And have lobby create and start game servers (not just start 1 manually in Application)
+  - and finally send notification back to Lobby channel somehow to refresh it's player list
+    - And also that those lobby games should point at gameservers (which will CHECK those updated player lists) instead of hardcoded :fakeGames or something like at present
+
 - Ok, for next, just work on only single game page
   - Figure out connection to Lobby and stuff laer
   - Just make a Game page that has a creator, an id (in the url at least), and logged in player can click join or leave
