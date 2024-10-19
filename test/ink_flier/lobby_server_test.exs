@@ -2,7 +2,7 @@ defmodule InkFlierTest.LobbyServer do
   use ExUnit.Case
 
   alias InkFlier.LobbyServer
-  alias InkFlier.GameServer
+  # alias InkFlier.GameServer
 
   test "Confirm server starts in application" do
     # DON'T call with Testlobby name, we're checking if global application LobbyServer started here
