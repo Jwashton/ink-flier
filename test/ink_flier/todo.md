@@ -4,6 +4,8 @@
   - Just make a Game page that has a creator, an id (in the url at least), and logged in player can click join or leave
 
 - LobbyGameController- Confirm game is a currently running GameServer
+- Maybe handle and return error msgs for some edge cases for GameServer (and Game. ) .join
+  - same player tries to join? Just ignore, prob actually send msg "Already in game"
 
 - @William
   - Just general question on the layout of the supervisor, the registry, the games... the lobby makes an id, just 1, 2, 3 inc. I use that instead of the creating player's name to name a game process, since a player might create multiple games
