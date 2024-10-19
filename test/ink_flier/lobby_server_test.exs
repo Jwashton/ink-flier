@@ -29,7 +29,8 @@ defmodule InkFlierTest.LobbyServer do
   # so they don't "bleed" into eachother
   defp restart_server(_) do
     LobbyServer.stop
-    LobbyServer.start_link(nil)
+    :timer.sleep(200)
+    LobbyServer.start_link([])
     :ok
   end
 end
