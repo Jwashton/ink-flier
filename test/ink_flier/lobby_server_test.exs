@@ -23,6 +23,15 @@ defmodule InkFlierTest.LobbyServer do
     test "Confirm tests don't bleed" do
       assert LobbyServer.games(TestLobby) == %{}
     end
+
+    test "TODO" do
+      game =
+        Game.new("Batman")
+        |> Game.add_player("Robin")
+      raise "Not quite. Maybe just make Game into a server right now, then make Lobby into a Supervisor / Register, THEN test for Game.add_player does a send_info or whatever notify to Lobby?"
+
+      :ok = LobbyServer.add_game(TestLobby, game)
+    end
   end
 
 
