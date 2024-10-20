@@ -1,3 +1,6 @@
+<script defer phx-track-static type="text/javascript" src={~p"/assets/js/game_socket.js"}></script>
+<%= raise "next, make a gameSocket.js similar to userSocket.js and do a little #player_list load etc, so I can finish doing the channel push update etc" %>
+
 <p>
   Game id: <%= @game_id %>
 </p>
@@ -5,7 +8,10 @@
   Creator: <%= @creator %>
 </p>
 <p>
-  Players: <%= @players %>
+  Players:
+  <span id="player_list">
+    ...Loading
+  </span>
 </p>
 <p>
   <%# TODO switch to button %>
