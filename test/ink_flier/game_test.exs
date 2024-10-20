@@ -5,11 +5,9 @@ defmodule InkFlierTest.Game do
 
   test "Player can join a game" do
     creator = "Batman"
-    game =
-      creator
-      |> Game.new
-      |> Game.add_player("James")
-      |> Game.add_player("Batman")
+    game = Game.new(creator)
+    {:ok, game} = Game.add_player(game, "James")
+    {:ok, game} = Game.add_player(game, "Batman")
     assert game |> Game.players == ["James", "Batman"]
   end
 end
