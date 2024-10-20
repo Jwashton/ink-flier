@@ -5,8 +5,11 @@ defmodule InkFlierWeb.LobbyGameController do
   alias InkFlier.GameServer
 
   def home(conn, ~m{game_id, _join}) do
-    :ok = GameServer.join(game_id, conn.assigns.user)
-    home(conn, ~m{game_id})
+    case GameServer.join(game_id, conn.assigns.user) do
+      :ok -> conn
+      {:error, _} = error -> put_flash(conn, :error, inspect(error))
+    end
+    |> home(~m{game_id})
   end
 
   def home(conn, ~m{game_id}) do
