@@ -26,10 +26,4 @@ defmodule InkFlierWeb.LobbyGameController do
     |> assign(~M{creator, players, game_id})
     |> render
   end
-
-  # def home(conn, _) do
-  #   conn
-  #   |> put_flash(:error, "Missing game id in url, eg. lobby/game/28")
-  #   |> redirect(to: ~p"/lobby")
-  # end
 end
