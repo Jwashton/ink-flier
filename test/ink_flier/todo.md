@@ -1,4 +1,10 @@
 # 2024-10-19
+- Move scropt out of heex templates, and back into root.html using assigns for different ones
+  - [Similar example](https://elixirforum.com/t/add-page-specific-js-files-on-phoenix-1-7/54900/6)
+- Rename user_socket.js to more specifc to page. page_socket or page_js or something
+
+- Maybe solve some of the RoundTest problems (pipeline with {} returns) with a bang! api option in the Round module (One that returns the usual {}, but another def that returns just the one thing, not the full {}
+
 - LobbyGameController working good progress! Next todos:
   - no double-joins by same player
   - And leave game
