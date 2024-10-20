@@ -8,8 +8,15 @@ defmodule InkFlierTest.Game do
     game =
       creator
       |> Game.new
-      |> Game.add_player("James")
-      |> Game.add_player("Batman")
+      |> Game.add_player!("James")
+      |> Game.add_player!("Batman")
     assert game |> Game.players == ["James", "Batman"]
+  end
+
+  test "Same player can't join twice" do
+    game = Game.new("Creator")
+    {:ok, game} = Game.add_player(game, "James")
+    {:ok, game} = Game.add_player(game, "Batman")
+    assert {:error, :player_already_in_game} == Game.add_player(game, "James")
   end
 end
