@@ -24,7 +24,6 @@ defmodule InkFlierWeb.LobbyGameController do
 
     conn
     |> assign(~M{creator, players, game_id})
-    |> assign(path: current_path(conn, %{}))
     |> render
   end
 
