@@ -3,6 +3,7 @@ defmodule InkFlierWeb.UserSocket do
   import TinyMaps
 
   channel "room:*", InkFlierWeb.RoomChannel
+  channel "lobby_game:*", InkFlierWeb.LobbyGameChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
