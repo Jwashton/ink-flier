@@ -1,0 +1,26 @@
+<script defer phx-track-static type="text/javascript" src={~p"/assets/js/game_socket.js"}></script>
+<template id="app"
+    data-game-id = {@game_id}
+></template>
+
+<p>
+  Game id: <%= @game_id %>
+</p>
+<p>
+  Creator: <%= @creator %>
+</p>
+<p>
+  <%# <a href={@current_path <> "?join=true"}>Join</a> %>
+  <button id="join-button">Join</button>
+</p>
+<p>
+  Players:
+  <ul id="player-list">
+    ...Loading
+  </ul>
+</p>
+path: <%= @current_path %>
+
+<template id="player-template">
+  <li class="player_name"></li>
+</template>

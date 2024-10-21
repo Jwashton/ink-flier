@@ -14,6 +14,10 @@ defmodule InkFlier.LobbyServer do
   def delete_game(name \\ @name, game_id), do: GenServer.call(name, {:delete_game, game_id})
   def games(name \\ @name), do: GenServer.call(name, :games)
 
+#   def create_game(name \\ @name, creator) do
+#     add_game(name, game)
+#   end
+
 
   @impl GenServer
   def init(:ok), do: {:ok, Lobby.new}

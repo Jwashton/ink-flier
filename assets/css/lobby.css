@@ -81,26 +81,28 @@ a {
 }
 
 .games__game {
-  --gap: 20px;
-
-  /* display: flex; */
-  /* justify-content: space-between; */
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--gap);
-  padding: var(--gap);
+  grid-template-areas:
+    "number  creator links"
+    "players players players"
+  ;
+
+  row-gap: 7px;
+  --gap: 11px;
+  padding: var(--gap) 0 var(--gap) var(--gap);
 
   &:not(:first-child) {
     border-top: 1px solid var(--border-color);
   }
 
 
-  & > * {
+  /* Color children */
+  & > :nth-child(1) {
     color: var(--3);
+  }
 
-    &:nth-child(even) {
-      color: var(--1);
-    }
+  & > :nth-child(2) {
+    color: var(--1);
   }
 }
 
@@ -108,6 +110,28 @@ a {
   animation: fadeInAnimation ease 3s;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
+}
+
+.games__game-players {
+  grid-area: players;
+
+  font-size: 85%;
+  margin-left: 20px;
+  width: 90%;
+
+  /* display: flex; */
+  /* justify-content: space-between; */
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  row-gap: 14px;
+
+  border-top: 1px solid var(--border-color);
+}
+
+.games__game-buttons {
+  display: flex;
+  justify-content: space-around;
 }
 
 
@@ -120,7 +144,8 @@ a {
   display: grid;
   grid-template-areas:
     "a links"
-    "b links";
+    "b links"
+  ;
 }
 
 .tracks__title {

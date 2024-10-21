@@ -43,10 +43,11 @@ defmodule InkFlierWeb.Router do
     get  "/logout", LoginController, :delete
   end
 
-  scope "/", InkFlierWeb do
+  scope "/lobby", InkFlierWeb do
     pipe_through [:browser, :login_required, :user]
 
-    get "/lobby", LobbyController, :home
+    get "/", LobbyController, :home
+    get "/game/:game_id", LobbyGameController, :home
   end
 
   scope "/game", InkFlierWeb do

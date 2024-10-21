@@ -13,3 +13,7 @@
 // import "./user_socket.js"
 
 // console.log('Hello!');
+
+export function sanitize(string) {
+  return string.replace(/</g,"&lt;")
+}
