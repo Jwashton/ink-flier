@@ -12,7 +12,7 @@ channel.join()
   .receive("ok", resp => { drawPlayers(resp.players) })
   .receive("error", resp => { console.log("Unable to join", resp) })
 
-channel.on("player_joined", resp => { drawPlayers(resp.players); console.log("got broadcast") })
+channel.on("player_joined", resp => { drawPlayers(resp.players) })
 
 
 document.getElementById("join-button").addEventListener("click", (resp) => {
