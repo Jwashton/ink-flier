@@ -12,6 +12,7 @@
 <p>
   <%# <a href={@current_path <> "?join=true"}>Join</a> %>
   <button id="join-button">Join</button>
+  <button id="leave-button">Leave</button>
 </p>
 <p>
   Players:
@@ -19,7 +20,7 @@
     ...Loading
   </ul>
 </p>
-path: <%= @current_path %>
+
 
 <template id="player-template">
   <li class="player_name"></li>

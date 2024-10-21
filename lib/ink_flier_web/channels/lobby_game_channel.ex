@@ -31,6 +31,11 @@ defmodule InkFlierWeb.LobbyGameChannel do
     {:reply, :ok, socket}
   end
 
+  @impl Phoenix.Channel
+  def handle_in("leave", _params, socket) do
+    {:reply, :ok, socket}
+  end
+
 
   defp authorized?(_payload) do
     true

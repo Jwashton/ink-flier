@@ -19,4 +19,7 @@ defmodule InkFlierTest.Game do
     {:ok, game} = Game.add_player(game, "Batman")
     assert {:error, :player_already_in_game} == Game.add_player(game, "James")
   end
+
+  test "Player can leave game" do
+  end
 end

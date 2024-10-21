@@ -15,9 +15,8 @@ channel.join()
 channel.on("player_joined", resp => { drawPlayers(resp.players) })
 
 
-document.getElementById("join-button").addEventListener("click", (resp) => {
-  channel.push("join")
-})
+document.getElementById("join-button").addEventListener("click", (resp) => { channel.push("join") })
+document.getElementById("leave-button").addEventListener("click", (resp) => { channel.push("leave") })
 
 
 function drawPlayers(players) {
