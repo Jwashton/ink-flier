@@ -21,5 +21,6 @@ defmodule InkFlierTest.Game do
   end
 
   test "Player can leave game" do
+    raise "Here next"
   end
 end
