@@ -23,13 +23,8 @@ defmodule InkFlierWeb.LobbyGameController do
     ~M{creator, players} = GameServer.starting_info(game_id)
 
     conn
+    # TODO don't think we're sending down players here anymore. Which means we might not need GameServer.starting_info... keep it for now is fine tho
     |> assign(~M{creator, players, game_id})
     |> render
   end
-
-  # def home(conn, _) do
-  #   conn
-  #   |> put_flash(:error, "Missing game id in url, eg. lobby/game/28")
-  #   |> redirect(to: ~p"/lobby")
-  # end
 end
