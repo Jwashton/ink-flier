@@ -14,14 +14,14 @@ function appendGame(gameWrapper) {
 
 function drawGamesFromScratch(games) {
   gameContainer.innerHTML = ""
-  games.map((game) => {
+  games.map( (game) => {
     const game_row = makeGameRow(game.id, game.creator, null)
     gameContainer.appendChild(game_row)
   })
 }
 
 function makeGameRow(gameId, gameCreator, newGame) {
-  const element = document.getElementById("game-template").content.cloneNode(true).querySelector("div")
+  const element = document.getElementById("game-template").content.cloneNode(true).firstElementChild
 
   element.dataset.gameId = gameId
   if (newGame) {
@@ -35,10 +35,6 @@ function makeGameRow(gameId, gameCreator, newGame) {
   })
 
   return element
-}
-
-function sanitize(string) {
-  return string.replace(/</g,"&lt;")
 }
 
 
@@ -62,6 +58,10 @@ channel.on("game_deleted", payload => {
   target.remove()
 })
 
+
+function sanitize(string) {
+  return string.replace(/</g,"&lt;")
+}
 
 window.create_game = create_game
 window.delete_game = delete_game
