@@ -21,6 +21,11 @@ defmodule InkFlierTest.Game do
   end
 
   test "Player can leave game" do
-    raise "Here next"
+    game =
+      Game.new("Creator")
+      |> Game.add_player!("James")
+      |> Game.add_player!("Batman")
+      |> Game.remove_player("James")
+    assert game |> Game.players == ["Batman"]
   end
 end
