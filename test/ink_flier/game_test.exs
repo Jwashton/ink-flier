@@ -25,7 +25,10 @@ defmodule InkFlierTest.Game do
       Game.new("Creator")
       |> Game.add_player!("James")
       |> Game.add_player!("Batman")
-      |> Game.remove_player("James")
+      |> Game.remove_player!("James")
     assert game |> Game.players == ["Batman"]
+  end
+
+  test "Remove player returns success/fail" do
   end
 end

@@ -5,6 +5,7 @@ defmodule InkFlier.GameServer do
 
   def start_link({id, creator}), do: GenServer.start_link(__MODULE__, creator, name: via(id))
   def join(id, player), do: GenServer.call(via(id), {:join, player})
+  def remove(id, player), do: GenServer.call(via(id), {:remove, player})
   def creator(id), do: GenServer.call(via(id), :creator)
   def players(id), do: GenServer.call(via(id), :players)
   def starting_info(id), do: GenServer.call(via(id), :starting_info)
@@ -22,6 +23,9 @@ defmodule InkFlier.GameServer do
       {:error, _} = error -> {:reply, error, t}
     end
   end
+
+  # @impl GenServer
+  # def handle_call({:remove, player}, _, t), do: {:reply, :ok, Game.remove_player(t, player)}
 
   @impl GenServer
   def handle_call(:creator, _, t), do: {:reply, Game.creator(t), t}
