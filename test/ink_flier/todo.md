@@ -6,7 +6,7 @@
 - Maybe solve some of the RoundTest problems (pipeline with {} returns) with a bang! api option in the Round module (One that returns the usual {}, but another def that returns just the one thing, not the full {}
 
 - LobbyGameController working good progress! Next todos:
-  - no double-joins by same player
+  - [X] no double-joins by same player
   - And leave game
   - And format the player list or make prettier css
   - And have lobby create and start game servers (not just start 1 manually in Application)
@@ -30,6 +30,10 @@
     - But then remembered I did the broadcasts for "game created" at the "top" channels layer
     - But lobby IS a genserver. Should it have handled it's own broadcasts in the genserver engine instead of the channel code?
     - This might answer itself after I try the 2nd way... (I did the channels broadcast for "lobby create game". Going to try the opposite and do genserver broadcast/send_info/etc for "game joined but lobby needs notify")
+
+  - "Loading..." THEN the javascript adds. Should I have the controller fill it in AND javascript. Maybe using the tmplate since I do have that. idk. It's weird to have it in both but maybe the loading is annoying
+
+  - Lobby, dynamicsupervisor, but needs a tiny bit of state, the increment/gameId #. genserver just for that? Nameing. Lobby or gamesupervisor or something, then the genserver. Or maybe it's agent in same module, but then it's cluttered
 
 # 2024-10-18
 - Maybe try to store game stuff in lobby like I'm doing
