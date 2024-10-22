@@ -1,3 +1,5 @@
+- Finish making bang and non-bang version of remove_player, then use that in gameserver, then use THAT in channel to only do a broadcast on :ok and do nothing on :error, no such player to remove
+
 # 2024-10-19
 - Move scropt out of heex templates, and back into root.html using assigns for different ones
   - [Similar example](https://elixirforum.com/t/add-page-specific-js-files-on-phoenix-1-7/54900/6)
