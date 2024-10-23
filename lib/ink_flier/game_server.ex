@@ -17,20 +17,10 @@ defmodule InkFlier.GameServer do
   end
 
   @impl GenServer
-  def handle_call({:join, player}, _, t) do
-    case Game.add_player(t, player) do
-      {:ok, t} -> {:reply, :ok, t}
-      {:error, _} = error -> {:reply, error, t}
-    end
-  end
+  def handle_call({:join, player}, _, t), do: reply_with_ok_or_error(t, Game.add_player(t, player))
 
   @impl GenServer
-  def handle_call({:remove, player}, _, t) do
-    case Game.remove_player(t, player) do
-      {:ok, t} -> {:reply, :ok, t}
-      {:error, _} = error -> {:reply, error, t}
-    end
-  end
+  def handle_call({:remove, player}, _, t), do: reply_with_ok_or_error(t, Game.remove_player(t, player))
 
   @impl GenServer
   def handle_call(:creator, _, t), do: {:reply, Game.creator(t), t}
@@ -43,4 +33,11 @@ defmodule InkFlier.GameServer do
 
 
   defp via(id), do: {:via, Registry, {Registry.Game, id}}
+
+  defp reply_with_ok_or_error(t, reply) do
+    case reply do
+      {:ok, t} -> {:reply, :ok, t}
+      {:error, _} = error -> {:reply, error, t}
+    end
+  end
 end
