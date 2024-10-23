@@ -1,3 +1,9 @@
+# 2024-10-23
+- [ ] Lobby sees game joins/leaves
+  - All the awesome genserver stuff did with william
+  - (Remember GameServer can just call regular client api functions in LobbyServer (like "Player added" or something)
+    - (So don't need a handle-info/send() or anything there)
+
 # 2024-10-22
 - lobby_game_html: use:
     <input type="hidden" id="findHidden" value={@game_id}>
