@@ -13,6 +13,7 @@ channel.join()
   .receive("error", resp => { console.log("Unable to join", resp) })
 
 channel.on("player_joined", resp => { drawPlayers(resp.players) })
+channel.on("player_left", resp => { drawPlayers(resp.players) })
 
 
 document.getElementById("join-button").addEventListener("click", (resp) => { channel.push("join") })
@@ -25,9 +26,7 @@ function drawPlayers(players) {
   players.map( (player) => {
     const playerRow = document.getElementById("player-template").content.cloneNode(true).firstElementChild
 
-    // playerRow.querySelector("
     playerRow.textContent = sanitize(player)
-    // playerRow.textContent = player
 
     playerListElement.appendChild(playerRow)
   })
