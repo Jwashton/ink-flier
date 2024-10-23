@@ -1,6 +1,7 @@
 <script defer phx-track-static type="text/javascript" src={~p"/assets/js/game_socket.js"}></script>
 <template id="app"
     data-game-id = {@game_id}
+    data-user = {@user}
 ></template>
 
 <p>
@@ -10,7 +11,6 @@
   Creator: <%= @creator %>
 </p>
 <p>
-  <%# <a href={@current_path <> "?join=true"}>Join</a> %>
   <button id="join-button">Join</button>
   <button id="leave-button">Leave</button>
 </p>
@@ -23,5 +23,8 @@
 
 
 <template id="player-template">
-  <li class="player_name"></li>
+  <li>
+    <span class="player_name"></span>
+    <button id="remove_button">x</button>
+  </li>
 </template>

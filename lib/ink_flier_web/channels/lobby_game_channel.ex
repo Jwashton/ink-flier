@@ -32,15 +32,16 @@ defmodule InkFlierWeb.LobbyGameChannel do
   end
 
   @impl Phoenix.Channel
-  def handle_in("leave", _params, socket) do
-    ~M{user, game_id} = socket.assigns
+  def handle_in("leave", params, socket) do
+    target = Map.get(params, "target", socket.assigns.user)
+    ~M{game_id} = socket.assigns
 
-    case GameServer.remove(game_id, user) do
+    case GameServer.remove(game_id, target) do
       :ok ->
         players = GameServer.players(game_id)
         broadcast(socket, "player_left", ~M{players})
 
-      _already_joined -> nil
+      _no_such_player -> nil
     end
 
     {:reply, :ok, socket}
