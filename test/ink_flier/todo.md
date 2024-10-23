@@ -25,8 +25,6 @@
 - Maybe solve some of the RoundTest problems (pipeline with {} returns) with a bang! api option in the Round module (One that returns the usual {}, but another def that returns just the one thing, not the full {}
 
 - LobbyGameController working good progress! Next todos:
-  - [X] no double-joins by same player
-  - And leave game
   - And format the player list or make prettier css
   - And have lobby create and start game servers (not just start 1 manually in Application)
   - and finally send notification back to Lobby channel somehow to refresh it's player list
