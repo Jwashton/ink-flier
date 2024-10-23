@@ -23,6 +23,40 @@
     ```
 - Finish making bang and non-bang version of remove_player, then use that in gameserver, then use THAT in channel to only do a broadcast on :ok and do nothing on :error, no such player to remove
 
+# 2024-10-20
+- @William
+  - New .js file for each channel-connected page?
+    - Is it ok that the build.mjs entryPoints file will start to get kind of long?
+  - One channel per new web page is right? Not supposed to keep the socket between different pages or anything?
+  - I need to pass value to .js before connecting to channel, or at all
+    - For example, game channel needs to connect with game:123 where 123 = game's id
+      - (Since there's only one game controller/html for ALL games. They get that gameId passed and change based on that)
+      - So there's only game_socket.js
+      - So it needs the channel to know that gameId to only get msgs for the right game
+    - I found SOME online post that said:
+        ```game.html.heex
+        <template id="app"
+                  data-game-id = {@game_id}
+        ></template>
+        ```
+        ```game_socket.js
+        const gameId = document.getElementById("app").dataset.gameId
+        ```
+    - That actually worked, pretty proud of that. Now I can
+        ```
+        let channel = socket.channel(`lobby_game:{$gameId}`, {})
+        ```
+    - Is there a more standard way to pass stuff from the html to the .js file that loads it? In the script tag or with window.variable? (I tried those and couldn't get it to work but maybe I did it wrong)
+
+  - I couldn't get `import { sanitize } from "./app.js"` to work so I could make a DRY sanitize function in one file
+
+  - Is this "...Loading" and wait for the javascript to fill-in right?
+    - Originally I did everything with controller. Refresh page with params to do a thing, that changes @assigns and reloads the page
+      - But, no OTHER browsers looking at that same page get updated
+    - SO, time for channels
+      - I tear out the controller way of doing it, attach a js function to the button that used to send a up to the controller, and now it'll all be done in js
+      - But that makes the ...Loading flash, and there's no like, option to do EITHER the controller OR the js. Should I care about that?
+
 # 2024-10-19
 - Move scropt out of heex templates, and back into root.html using assigns for different ones
   - [Similar example](https://elixirforum.com/t/add-page-specific-js-files-on-phoenix-1-7/54900/6)
