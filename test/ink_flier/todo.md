@@ -1,3 +1,20 @@
+# 2024-10-22
+- lobby_game_html: use:
+    <input type="hidden" id="findHidden" value={@game_id}>
+  instead of
+    <template id="app"
+        data-game-id = {@game_id}
+    ></template>
+
+- shared_code.js (instead of in app.js)
+  - And this to do the import:
+      import { sanitize } from "./app.mjs"
+
+- Switch from +integer for GameId (made by lobby) to this
+    ```
+    token = :crypto.strong_rand_bytes(32)
+    Base.url_encode64(token, padding: false)
+    ```
 - Finish making bang and non-bang version of remove_player, then use that in gameserver, then use THAT in channel to only do a broadcast on :ok and do nothing on :error, no such player to remove
 
 # 2024-10-19
