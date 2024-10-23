@@ -20,17 +20,28 @@ defmodule InkFlierWeb.LobbyGameChannel do
   def handle_in("join", _params, socket) do
     ~M{user, game_id} = socket.assigns
 
-    case GameServer.join(game_id, user) do
-      :ok ->
-        players = GameServer.players(game_id)
-        broadcast(socket, "player_joined", ~M{players})
-
-      _already_joined -> nil
-    end
-
+    broadcast_on_success(socket, game_id, user, &GameServer.join/2, "player_joined")
     {:reply, :ok, socket}
   end
 
+  @impl Phoenix.Channel
+  def handle_in("leave", params, socket) do
+    target = Map.get(params, "target", socket.assigns.user)
+    ~M{game_id} = socket.assigns
+
+    broadcast_on_success(socket, game_id, target, &GameServer.remove/2, "player_left")
+    {:reply, :ok, socket}
+  end
+
+
+  defp broadcast_on_success(socket, game_id, target, server_command, success_msg) do
+    case server_command.(game_id, target) do
+      :ok ->
+        players = GameServer.players(game_id)
+        broadcast(socket, success_msg, ~M{players})
+      _no_state_change -> nil
+    end
+  end
 
   defp authorized?(_payload) do
     true

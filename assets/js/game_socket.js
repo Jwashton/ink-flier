@@ -1,6 +1,7 @@
 import {Socket} from "phoenix"
 
 const gameId = document.getElementById("app").dataset.gameId
+const user = document.getElementById("app").dataset.user
 const playerListElement = document.getElementById("player-list")
 
 
@@ -13,11 +14,11 @@ channel.join()
   .receive("error", resp => { console.log("Unable to join", resp) })
 
 channel.on("player_joined", resp => { drawPlayers(resp.players) })
+channel.on("player_left", resp => { drawPlayers(resp.players) })
 
 
-document.getElementById("join-button").addEventListener("click", (resp) => {
-  channel.push("join")
-})
+document.getElementById("join-button").addEventListener("click", (resp) => { channel.push("join") })
+document.getElementById("leave-button").addEventListener("click", (resp) => { channel.push("leave") })
 
 
 function drawPlayers(players) {
@@ -26,9 +27,15 @@ function drawPlayers(players) {
   players.map( (player) => {
     const playerRow = document.getElementById("player-template").content.cloneNode(true).firstElementChild
 
-    // playerRow.querySelector("
-    playerRow.textContent = sanitize(player)
-    // playerRow.textContent = player
+    playerRow.querySelector(".player_name").innerHTML = sanitize(player)
+
+    if (player == user) {
+      playerRow.querySelector("#remove_button")
+      .remove()
+    } else {
+      playerRow.querySelector("#remove_button")
+      .addEventListener("click", (_resp) => { channel.push("leave", {target: player}) })
+    }
 
     playerListElement.appendChild(playerRow)
   })
