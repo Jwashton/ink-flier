@@ -24,8 +24,13 @@ defmodule InkFlier.GameServer do
     end
   end
 
-  # @impl GenServer
-  # def handle_call({:remove, player}, _, t), do: {:reply, :ok, Game.remove_player(t, player)}
+  @impl GenServer
+  def handle_call({:remove, player}, _, t) do
+    case Game.remove_player(t, player) do
+      {:ok, t} -> {:reply, :ok, t}
+      {:error, _} = error -> {:reply, error, t}
+    end
+  end
 
   @impl GenServer
   def handle_call(:creator, _, t), do: {:reply, Game.creator(t), t}

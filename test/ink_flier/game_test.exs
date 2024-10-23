@@ -20,7 +20,7 @@ defmodule InkFlierTest.Game do
     assert {:error, :player_already_in_game} == Game.add_player(game, "James")
   end
 
-  test "Player can leave game" do
+  test "remove_player!/2" do
     game =
       Game.new("Creator")
       |> Game.add_player!("James")
@@ -29,6 +29,15 @@ defmodule InkFlierTest.Game do
     assert game |> Game.players == ["Batman"]
   end
 
-  test "Remove player returns success/fail" do
+  test "remove_player/2" do
+    game =
+      Game.new("Creator")
+      |> Game.add_player!("James")
+      |> Game.add_player!("Batman")
+
+    {:ok, game} = Game.remove_player(game, "James")
+    assert game |> Game.players == ["Batman"]
+
+    {:error, :no_such_player_to_remove} = Game.remove_player(game, "James")
   end
 end

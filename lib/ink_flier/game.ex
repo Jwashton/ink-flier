@@ -24,8 +24,13 @@ defmodule InkFlier.Game do
   end
   def add_player!(t, player_id), do: update_in(t.players, &[player_id | &1])
 
-  # def remove_player(t, player_id) do
-  # end
+  def remove_player(t, player_id) do
+    if player_id in t.players do
+      {:ok, remove_player!(t, player_id)}
+    else
+      {:error, :no_such_player_to_remove}
+    end
+  end
   def remove_player!(t, player_id), do: update_in(t.players, &List.delete(&1, player_id))
 
   def starting_info(t), do: %{creator: t.creator, players: t.players}

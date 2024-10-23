@@ -20,4 +20,14 @@ defmodule InkFlierTest.GameServer do
 
     assert GameServer.players(123) == ["Robin", "Bruce"]
   end
+
+  test "remove player" do
+    {:ok, _pid} = GameServer.start_link({123, "Batman"})
+    :ok = GameServer.join(123, "Bruce")
+
+    :ok = GameServer.remove(123, "Bruce")
+    assert GameServer.players(123) == []
+
+    assert {:error, _no_such_player} = GameServer.remove(123, "Badplayer")
+  end
 end
