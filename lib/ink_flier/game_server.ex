@@ -1,9 +1,17 @@
 defmodule InkFlier.GameServer do
   use GenServer
+  import TinyMaps
 
   alias InkFlier.Game
 
-  def start_link({id, creator}), do: GenServer.start_link(__MODULE__, creator, name: via(id))
+  def start_link(~M{id, creator} = _opts) do
+    GenServer.start_link(__MODULE__, creator, name: via(id))
+  end
+  def start_link({id, creator}), do: start_link(~M{id, creator})
+  def start_link(_) do
+    {:error, "Opts must include atleast an id and creator"}
+  end
+
   def join(id, player), do: GenServer.call(via(id), {:join, player})
   def remove(id, player), do: GenServer.call(via(id), {:remove, player})
   def creator(id), do: GenServer.call(via(id), :creator)
