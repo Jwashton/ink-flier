@@ -10,9 +10,7 @@ defmodule InkFlier.GameSupervisor do
     DynamicSupervisor.start_link(__MODULE__, :ok, opts)
   end
 
-  def start_game(name \\ @name, game_id) do
-    DynamicSupervisor.start_child(name, {GameServer, game_id})
-  end
+  def start_game(name \\ @name, game_opts), do: DynamicSupervisor.start_child(name, {GameServer, game_opts})
 
 
   @impl DynamicSupervisor
