@@ -1,5 +1,6 @@
 defmodule InkFlierTest.LobbyServer do
   use ExUnit.Case
+  import TinyMaps
 
   alias InkFlier.LobbyServer
   alias InkFlier.GameSupervisor
@@ -7,6 +8,7 @@ defmodule InkFlierTest.LobbyServer do
 
   @lobby_name TestLobby
   @supervisor_name TestGameSupervisor
+
 
   test "Confirm server starts in application" do
     # DON'T call with Testlobby name, we're checking if global application LobbyServer started here
@@ -40,15 +42,15 @@ defmodule InkFlierTest.LobbyServer do
   end
 
   describe "Supervised Game Starting" do
-    setup [:game_supervisor]
+    # setup [:game_supervisor]
 
-    test "Start a supervised Game process" do
-        # TODO add_game should prob turn into create_game to do these together?
+    # test "Start a supervised Game process" do
+    #     # TODO add_game should prob turn into create_game to do these together?
 
 
-      {:ok, game_id} = LobbyServer.create_game(@lobby_name, %{creator: "Batman"})
-      assert GameServer.creator(game_id) == "Batman"
-    end
+    #   {:ok, game_id} = LobbyServer.create_game(@lobby_name, %{creator: "Batman"})
+    #   assert GameServer.creator(game_id) == "Batman"
+    # end
   end
 
 

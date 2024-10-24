@@ -18,9 +18,8 @@ defmodule InkFlier.LobbyServer do
 
 
   @impl GenServer
-  def init(~M{game_supervisor_name}) do
-    {:ok, _pid} = GameSupervisor.start_link(name: game_supervisor_name)
-    raise "This is close, but I need to store the name of WHICH GameSupervisor I'm using. Prob in Lobby.new. But if I'm using the default application one... AH, don't start it in Application. ALWAYS start it here, with a default or override. But THIS is the only guy who needs to start in Application, and then I'M responsible for starting the game supervisor"
+  def init(~M{_game_supervisor_name}) do
+    # {:ok, _pid} = GameSupervisor.start_link(name: game_supervisor_name)
     {:ok, Lobby.new}
   end
   def init(:ok), do: {:ok, Lobby.new}
