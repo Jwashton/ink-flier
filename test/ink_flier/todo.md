@@ -1,5 +1,13 @@
+# 2024-10-24
+- Let's delete LobbyServer/test and Lobby/test (mostly) and start from scratch.
+  - Start with field :games List (instead of map)
+    - (can mapset them and sort them by create date or something later)
+    - Tempting to not track the children in a seperate list, but I think yes for now. Don't depend on whereis_children or whatever
+  - Test that LobbyServer also starts GameSupervisor
+  - Rebuild which functions I need by staring at the Webpage :)
+
 # 2024-10-23
-- [ ] Lobby sees game joins/leaves
+- Lobby sees game joins/leaves
   - All the awesome genserver stuff did with william
   - (Remember GameServer can just call regular client api functions in LobbyServer (like "Player added" or something)
     - (So don't need a handle-info/send() or anything there)
