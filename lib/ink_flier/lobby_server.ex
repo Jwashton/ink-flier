@@ -6,7 +6,7 @@ defmodule InkFlier.LobbyServer do
 
   def start_link(opts \\ []) do
     opts = Keyword.put_new(opts, :name, @name)
-    GenServer.start_link(__MODULE__, :ok, opts)
+    GenServer.start_link(__MODULE__, Map.get(opts, :game_supervisor_name), opts)
   end
   def stop, do: GenServer.whereis(@name) && GenServer.stop(@name)
 
@@ -14,16 +14,29 @@ defmodule InkFlier.LobbyServer do
   def delete_game(name \\ @name, game_id), do: GenServer.call(name, {:delete_game, game_id})
   def games(name \\ @name), do: GenServer.call(name, :games)
 
-#   def create_game(name \\ @name, creator) do
-#     add_game(name, game)
-#   end
+  def create_game(name \\ @name, game_opts), do: GenServer.call(name, {:create_game, game_opts})
 
 
   @impl GenServer
+  def init(~M{game_supervisor_name}) do
+    {:ok, _pid} = GameSupervisor.start_link(name: game_supervisor_name)
+    raise "This is close, but I need to store the name of WHICH GameSupervisor I'm using. Prob in Lobby.new. But if I'm using the default application one... AH, don't start it in Application. ALWAYS start it here, with a default or override. But THIS is the only guy who needs to start in Application, and then I'M responsible for starting the game supervisor"
+    {:ok, Lobby.new}
+  end
   def init(:ok), do: {:ok, Lobby.new}
 
   @impl GenServer
   def handle_call({:add_game, game}, _from, t) do
+    # NOTE Keeping the game_id list in our Lobby state is kind of retdundant, since we could just ask GameSupervisor
+    # to list it's children
+    # Doc says that can be slow tho, so this can be used like a cache for now
+    {t, game_id} = Lobby.add_game(t, game)
+
+    {:reply, {:ok, game_id}, t}
+  end
+
+  @impl GenServer
+  def handle_call({:create_game, game_opts}, _from, t) do
     {t, game_id} = Lobby.add_game(t, game)
     {:reply, {:ok, game_id}, t}
   end
