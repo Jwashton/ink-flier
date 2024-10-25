@@ -1,3 +1,9 @@
+# 2024-10-24b
+- Oof. Ok, new branch from main (supervised games). Let's try this again, smaller piece at a time. Keep web page working each step
+  - compare to prev branch and pull in a few good pieces, Like the dynamicsupervisor
+    - And GameServer can take multiple optional opts (Creator, Track #, etc) (default to nill in the state). Maybe only id required
+      - Use keyword for those when they come in from params, maps the rest of the time
+
 # 2024-10-24
 - Let's delete LobbyServer/test and Lobby/test (mostly) and start from scratch.
   - Start with field :games List (instead of map)
