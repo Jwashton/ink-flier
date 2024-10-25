@@ -1,4 +1,24 @@
 # 2024-10-24b
+-Just look at web page and see what next small needed thing is
+Try not to get pulled into theory so much
+
+Just look at what's not right about lobby page
+I need a list of game processes, nothing else super special 
+And i can get that! 
+
+They're manually started right now but i can get that list and get useful info from games
+
+-Then i can right away play with lobby-<game process notifies i was excited about
+
+-Or look at what's missing in current game server
+(Track #, at the very least) 
+--can use that to add what gameserver needs
+
+-or i can work on create game
+--which is where i guy overcomplicated and stuck currently
+---so ignore it and do one if the other two, or keep eye on web page and try to only small add what i need
+***
+
 - Oof. Ok, new branch from main (supervised games). Let's try this again, smaller piece at a time. Keep web page working each step
   - compare to prev branch and pull in a few good pieces, Like the dynamicsupervisor
     - And GameServer can take multiple optional opts (Creator, Track #, etc) (default to nill in the state). Maybe only id required
