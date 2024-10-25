@@ -3,6 +3,32 @@
   - compare to prev branch and pull in a few good pieces, Like the dynamicsupervisor
     - And GameServer can take multiple optional opts (Creator, Track #, etc) (default to nill in the state). Maybe only id required
       - Use keyword for those when they come in from params, maps the rest of the time
+        
+- maybe @William
+Maybe instead of a) deleting everything from scratch
+Or b) working inside big mess 
+
+- keep mess but make new modules
+Name is hard but whatever
+Then slowly switch over one func at a time
+
+***
+
+And remember try to do smaller slices. Just spawn games with game supervisor?
+In baby level tests but can it go higher? 
+I have to decide if lobby needs to stay a genserver or exist at all
+
+For now let's try just using gamesupervisor
+To spawn and list and retrieve games? 
+
+Try it without lobby at all
+
+Then once that's working maybe add lobby back in
+
+Or maybe keep Libby but just def delegate everything
+But later I can make it a cache if I want? 
+
+
 
 # 2024-10-24
 - Let's delete LobbyServer/test and Lobby/test (mostly) and start from scratch.
