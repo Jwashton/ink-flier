@@ -4,6 +4,7 @@ defmodule InkFlier.Game do
 
   typedstruct do
     field :creator, player_id
+    field :track_id, InkFlier.RaceTrack.id
     field :players, players, default: []
   end
 
@@ -15,8 +16,8 @@ defmodule InkFlier.Game do
 
   def new(opts \\ []) do
     creator = Keyword.get(opts, :creator)
-    # creator = Keyword.get(opts, :creator)
-    struct!(__MODULE__, ~M{creator})
+    track_id = Keyword.get(opts, :track_id)
+    struct!(__MODULE__, ~M{creator, track_id})
   end
 
   def add_player(t, player_id) do
@@ -40,4 +41,5 @@ defmodule InkFlier.Game do
   def starting_info(t), do: %{creator: t.creator, players: t.players}
   def creator(t), do: t.creator
   def players(t), do: t.players |> Enum.reverse
+  def track_id(t), do: t.track_id
 end

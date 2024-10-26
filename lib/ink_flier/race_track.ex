@@ -33,6 +33,8 @@ defmodule InkFlier.RaceTrack do
   @type collision_reply :: :ok | collision_notification
   @type collision_notification :: {:collision, Obstacle.name_set}
 
+  @type id :: any
+
   typedstruct enforce: true do
     field :start, start
     field :check1, check

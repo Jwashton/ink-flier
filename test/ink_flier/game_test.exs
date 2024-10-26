@@ -44,8 +44,8 @@ defmodule InkFlierTest.Game do
     assert game |> Game.creator == nil
   end
 
-  # test "Games can optionally be started with a Track id" do
-  #   game = Game.new(track_id: 123)
-  #   assert game |> Game.track == 123
-  # end
+  test "Games can optionally be started with a Track id" do
+    game = Game.new(track_id: 123)
+    assert game |> Game.track_id == 123
+  end
 end
