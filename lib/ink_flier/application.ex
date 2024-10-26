@@ -19,7 +19,7 @@ defmodule InkFlier.Application do
       # Start to serve requests, typically the last entry
       {Registry, keys: :unique, name: Registry.Game},
       InkFlier.LobbyServer,
-      {InkFlier.GameServer, {"321", "Robin"}},
+      {InkFlier.GameServer, id: "321", creator: "Robin"},
       InkFlierWeb.Endpoint
     ]
 

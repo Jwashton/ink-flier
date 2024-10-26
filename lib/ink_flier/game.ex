@@ -13,7 +13,10 @@ defmodule InkFlier.Game do
   @type player_id :: any
   @type players :: [player_id]
 
-  def new(creator), do: struct!(__MODULE__, ~M{creator})
+  def new(opts) do
+    creator = Keyword.fetch!(opts, :creator)
+    struct!(__MODULE__, ~M{creator})
+  end
 
   def add_player(t, player_id) do
     unless player_id in t.players do
