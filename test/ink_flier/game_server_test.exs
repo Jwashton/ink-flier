@@ -31,8 +31,9 @@ defmodule InkFlierTest.GameServer do
     assert {:error, _no_such_player} = GameServer.remove(123, "Badplayer")
   end
 
-  test "start_link can take some extra options" do
-    opts = [id: 123, creator: "Bob", track: :some_track]
+  test "start_link can take track_id" do
+    opts = [id: 123, creator: "Bob", track_id: :some_track]
     {:ok, _pid} = GameServer.start_link(opts)
+    assert %{track_id: :some_track} = GameServer.starting_info(123)
   end
 end
