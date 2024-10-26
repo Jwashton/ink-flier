@@ -22,6 +22,7 @@ defmodule InkFlier.LobbyServer2 do
   @impl GenServer
   def handle_call({:start_game, game_opts}, _, t) do
     game_id = Lobby2.generate_id
+    raise "here next"
     # TODO (next test) :ok = started gameserver...
 
     {:reply, {:ok, game_id}, Lobby2.track_game_id(t, game_id)}
