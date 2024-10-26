@@ -3,50 +3,51 @@
 Try not to get pulled into theory so much
 
 Just look at what's not right about lobby page
-I need a list of game processes, nothing else super special 
-And i can get that! 
+I need a list of game processes, nothing else super special
+And i can get that!
 
 They're manually started right now but i can get that list and get useful info from games
 
--Then i can right away play with lobby-<game process notifies i was excited about
+-Then i can right away play with lobby-<>game process notifies i was excited about
 
 -Or look at what's missing in current game server
-(Track #, at the very least) 
+(Track #, at the very least)
 --can use that to add what gameserver needs
 
 -or i can work on create game
 --which is where i guy overcomplicated and stuck currently
 ---so ignore it and do one if the other two, or keep eye on web page and try to only small add what i need
-***
 
 - Oof. Ok, new branch from main (supervised games). Let's try this again, smaller piece at a time. Keep web page working each step
   - compare to prev branch and pull in a few good pieces, Like the dynamicsupervisor
     - And GameServer can take multiple optional opts (Creator, Track #, etc) (default to nill in the state). Maybe only id required
       - Use keyword for those when they come in from params, maps the rest of the time
-        
+
+---
+
 - maybe @William
 Maybe instead of a) deleting everything from scratch
-Or b) working inside big mess 
+Or b) working inside big mess
 
-- keep mess but make new modules
+- **keep mess but make new modules**
 Name is hard but whatever
 Then slowly switch over one func at a time
 
-***
+---
 
 And remember try to do smaller slices. Just spawn games with game supervisor?
-In baby level tests but can it go higher? 
+In baby level tests but can it go higher?
 I have to decide if lobby needs to stay a genserver or exist at all
 
 For now let's try just using gamesupervisor
-To spawn and list and retrieve games? 
+To spawn and list and retrieve games?
 
 Try it without lobby at all
 
 Then once that's working maybe add lobby back in
 
 Or maybe keep Libby but just def delegate everything
-But later I can make it a cache if I want? 
+But later I can make it a cache if I want?
 
 
 
