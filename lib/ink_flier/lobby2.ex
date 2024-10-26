@@ -16,4 +16,8 @@ defmodule InkFlier.Lobby2 do
     :crypto.strong_rand_bytes(8)
     |> Base.url_encode64(padding: false)
   end
+
+  def games(t), do: t.games |> Enum.reverse
+
+  def track_game_id(t, id), do: update_in(t.games, &[id | &1])
 end
