@@ -38,4 +38,14 @@ defmodule InkFlierTest.Game do
 
     {:error, :no_such_player_to_remove} = Game.remove_player(game, "James")
   end
+
+  test "Creator is optional" do
+    game = Game.new
+    assert game |> Game.creator == nil
+  end
+
+  # test "Games can optionally be started with a Track id" do
+  #   game = Game.new(track_id: 123)
+  #   assert game |> Game.track == 123
+  # end
 end

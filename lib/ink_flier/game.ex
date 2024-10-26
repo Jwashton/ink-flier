@@ -2,7 +2,7 @@ defmodule InkFlier.Game do
   use TypedStruct
   import TinyMaps
 
-  typedstruct enforce: true do
+  typedstruct do
     field :creator, player_id
     field :players, players, default: []
   end
@@ -13,8 +13,9 @@ defmodule InkFlier.Game do
   @type player_id :: any
   @type players :: [player_id]
 
-  def new(opts) do
-    creator = Keyword.fetch!(opts, :creator)
+  def new(opts \\ []) do
+    creator = Keyword.get(opts, :creator)
+    # creator = Keyword.get(opts, :creator)
     struct!(__MODULE__, ~M{creator})
   end
 
