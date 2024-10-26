@@ -1,3 +1,7 @@
+# 2024-10-26
+- Lobby2 tracks ids of started games
+- When done, Delete Lobby(1) and replace it with Lobby2
+
 # 2024-10-24b
 -Just look at web page and see what next small needed thing is
 Try not to get pulled into theory so much
