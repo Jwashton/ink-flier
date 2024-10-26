@@ -8,10 +8,21 @@ defmodule InkFlier.LobbyServer2 do
   def start_link(opts) do
     opts = Keyword.put_new(opts, :name, @name)
     game_supervisor = Keyword.fetch!(opts, :game_supervisor)
+
     GenServer.start_link(__MODULE__, game_supervisor, opts)
   end
+
+  def start_game(name \\ @name, game_opts \\ []), do: GenServer.call(name, {:start_game, game_opts})
 
 
   @impl GenServer
   def init(game_supervisor), do: {:ok, Lobby2.new(game_supervisor)}
+
+  @impl GenServer
+  def handle_call({:start_game, game_opts}, _, t) do
+    game_id = Lobby2.generate_id
+
+    # TODO (next test) :ok = started gameserver...
+    # {:reply, :ok, Lobby2.track_game_id( # TODO next
+  end
 end
