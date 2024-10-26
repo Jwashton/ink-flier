@@ -1,6 +1,10 @@
 # 2024-10-26
 - Lobby2 tracks ids of started games
 - When done, Delete Lobby(1) and replace it with Lobby2
+- @William
+  - Is the layering a problem? LobbyServer (Lobby state) -> GameSupervisor -> GameServer(Game state)
+    - If I go very slow (Like new route) it works fine. It seems like a lot of moving parts and easy to screw up.
+    - If it's right that's great and fine, I'll get used to it. But worried I'm making it more complicated than I'm supposed to and easy to break
 
 # 2024-10-24b
 -Just look at web page and see what next small needed thing is
