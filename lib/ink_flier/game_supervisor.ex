@@ -3,6 +3,9 @@ defmodule InkFlier.GameSupervisor do
 
   alias InkFlier.GameServer
 
+  @typedoc "Unique global name the single GameSupervisor"
+  @type name :: module
+
   @name __MODULE__
 
   def start_link(opts) do
