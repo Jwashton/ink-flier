@@ -23,7 +23,11 @@ defmodule InkFlier.LobbyServer2 do
   @impl GenServer
   def handle_call({:start_game, game_opts}, _, t) do
     game_id = Lobby2.generate_id
-    {:ok, _pid} = GameSupervisor.start_game(Lobby2.game_supervisor(t), Keyword.put(game_opts, :id, game_id))
+    game_opts = Keyword.put(game_opts, :id, game_id)
+    {:ok, _pid} =
+      t
+      |> Lobby2.game_supervisor
+      |> GameSupervisor.start_game(game_opts)
 
     {:reply, {:ok, game_id}, Lobby2.track_game_id(t, game_id)}
   end
