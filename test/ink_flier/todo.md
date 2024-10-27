@@ -1,6 +1,9 @@
 # 2024-10-26
 - Lobby2 tracks ids of started games
 - When done, Delete Lobby(1) and replace it with Lobby2
+- Check other \*Server tests and use start_supervised! in any setups
+- When moving to frontend level, remember to start the new LobbyServer and GameSupervisor etc in application so everything will work
+
 - @William
   - Is the layering a problem? LobbyServer (Lobby state) -> GameSupervisor -> GameServer(Game state)
     - If I go very slow (Like new route) it works fine. It seems like a lot of moving parts and easy to screw up.
