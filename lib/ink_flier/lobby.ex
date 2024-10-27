@@ -1,4 +1,4 @@
-defmodule InkFlier.Lobby2 do
+defmodule InkFlier.Lobby do
   use TypedStruct
   import TinyMaps
 

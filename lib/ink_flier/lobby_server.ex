@@ -1,7 +1,7 @@
-defmodule InkFlier.LobbyServer2 do
+defmodule InkFlier.LobbyServer do
   use GenServer
 
-  alias InkFlier.Lobby2
+  alias InkFlier.Lobby
   alias InkFlier.GameSupervisor
   alias InkFlier.GameServer
 
@@ -20,27 +20,27 @@ defmodule InkFlier.LobbyServer2 do
 
 
   @impl GenServer
-  def init(game_supervisor), do: {:ok, Lobby2.new(game_supervisor)}
+  def init(game_supervisor), do: {:ok, Lobby.new(game_supervisor)}
 
   @impl GenServer
   def handle_call({:start_game, game_opts}, _, t) do
-    game_id = Lobby2.generate_id
+    game_id = Lobby.generate_id
     game_opts = Keyword.put(game_opts, :id, game_id)
 
     t
-    |> Lobby2.game_supervisor
+    |> Lobby.game_supervisor
     |> GameSupervisor.start_game!(game_opts)
 
-    {:reply, {:ok, game_id}, Lobby2.track_game_id(t, game_id)}
+    {:reply, {:ok, game_id}, Lobby.track_game_id(t, game_id)}
   end
 
   @impl GenServer
-  def handle_call(:games, _, t), do: {:reply, Lobby2.games(t), t}
+  def handle_call(:games, _, t), do: {:reply, Lobby.games(t), t}
 
   @impl GenServer
   def handle_call(:games_info, _, t) do
     t
-    |> Lobby2.games
+    |> Lobby.games
     |> Enum.map(&game_info_tuple/1)
     |> reply(t)
   end
