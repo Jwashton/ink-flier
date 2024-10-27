@@ -4,7 +4,7 @@ defmodule InkFlier.GameServer do
   alias InkFlier.Game
 
   def start_link(opts) do
-    {id, opts} = Keyword.pop(opts, :id)
+    {id, opts} = Keyword.pop!(opts, :id)
     GenServer.start_link(__MODULE__, opts, name: via(id))
   end
 

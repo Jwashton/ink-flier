@@ -18,6 +18,7 @@ defmodule InkFlier.Lobby2 do
   end
 
   def games(t), do: t.games |> Enum.reverse
+  def game_supervisor(t), do: t.game_supervisor
 
   def track_game_id(t, id), do: update_in(t.games, &[id | &1])
 end

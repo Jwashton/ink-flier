@@ -3,6 +3,7 @@ defmodule InkFlierTest.LobbyServer2 do
 
   alias InkFlier.LobbyServer2
   alias InkFlier.GameSupervisor
+  alias InkFlier.GameServer
 
   @lobby TestLobbyServer2
   @game_starter TestGameSupervisor
@@ -20,6 +21,8 @@ defmodule InkFlierTest.LobbyServer2 do
     assert LobbyServer2.games(@lobby) == [game_id1, game_id2]
   end
 
-  # test "Get data from running games by their game_id" do
-  # end
+  test "Get data from running games by their game_id" do
+    {:ok, game_id} = LobbyServer2.start_game(@lobby, creator: "Bob")
+    assert GameServer.creator(game_id) == "Bob"
+  end
 end

@@ -2,6 +2,7 @@ defmodule InkFlier.LobbyServer2 do
   use GenServer
 
   alias InkFlier.Lobby2
+  alias InkFlier.GameSupervisor
 
   @name __MODULE__
 
@@ -22,8 +23,7 @@ defmodule InkFlier.LobbyServer2 do
   @impl GenServer
   def handle_call({:start_game, game_opts}, _, t) do
     game_id = Lobby2.generate_id
-    raise "here next"
-    # TODO (next test) :ok = started gameserver...
+    {:ok, _pid} = GameSupervisor.start_game(Lobby2.game_supervisor(t), Keyword.put(game_opts, :id, game_id))
 
     {:reply, {:ok, game_id}, Lobby2.track_game_id(t, game_id)}
   end
