@@ -1,4 +1,11 @@
 # 2024-10-26
+- [ ] I think have everything I need to 'see so-far-started' games list in frontend
+  - REMEMBER to add the 1 or 2 extra bits to Application
+- Delete LobbyServer1 (maybe with tmp branch or tag)
+  - Rename \*2 to JUST LobbyServer & Lobby
+  - Only thing #1 version has that we don't is delete, which is easy to add when we get to it later
+- Check webpage for other missing stuff, create (actually that's already done I think) and Lobby.delete_game
+
 - Lobby2 tracks ids of started games
 - When done, Delete Lobby(1) and replace it with Lobby2
 - Check other \*Server tests and use start_supervised! in any setups
