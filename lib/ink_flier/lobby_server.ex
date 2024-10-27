@@ -7,9 +7,13 @@ defmodule InkFlier.LobbyServer do
 
   @name __MODULE__
 
+  @doc """
+  On start, LobbyServer needs to know the Name of the GameSupervisor he's using.
+  That can be overridden (in tests, for example), but otherwise will just use GameSupervisor's system default
+  """
   def start_link(opts) do
     opts = Keyword.put_new(opts, :name, @name)
-    game_supervisor = Keyword.fetch!(opts, :game_supervisor)
+    game_supervisor = Keyword.get(opts, :game_supervisor, GameSupervisor.default_name)
 
     GenServer.start_link(__MODULE__, game_supervisor, opts)
   end

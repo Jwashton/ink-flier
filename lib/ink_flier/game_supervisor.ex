@@ -16,6 +16,8 @@ defmodule InkFlier.GameSupervisor do
   def start_game(name \\ @name, game_opts), do: DynamicSupervisor.start_child(name, {GameServer, game_opts})
   def start_game!(name \\ @name, game_opts), do: {:ok, _pid} = start_game(name, game_opts)
 
+  def default_name, do: @name
+
 
   @impl DynamicSupervisor
   def init(:ok), do: DynamicSupervisor.init(strategy: :one_for_one)
