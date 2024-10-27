@@ -9,8 +9,8 @@ defmodule InkFlierTest.LobbyServer2 do
   @game_starter TestGameSupervisor
 
   setup do
-    {:ok, _} = GameSupervisor.start_link(name: @game_starter)
-    {:ok, _} = LobbyServer2.start_link(name: @lobby, game_supervisor: @game_starter)
+    start_supervised!({GameSupervisor, name: @game_starter})
+    start_supervised!({LobbyServer2, name: @lobby, game_supervisor: @game_starter})
     :ok
   end
 
@@ -24,5 +24,14 @@ defmodule InkFlierTest.LobbyServer2 do
   test "Get data from running games by their game_id" do
     {:ok, game_id} = LobbyServer2.start_game(@lobby, creator: "Bob")
     assert GameServer.creator(game_id) == "Bob"
+  end
+
+  test "List all games and their starting_info" do
+    {:ok, game_id1} = LobbyServer2.start_game(@lobby)
+    {:ok, game_id2} = LobbyServer2.start_game(@lobby, creator: "Bob")
+
+    assert [{^game_id1, info1}, {^game_id2, info2}] = LobbyServer2.games_info(@lobby)
+    assert %{creator: nil} = info1
+    assert %{creator: "Bob"} = info2
   end
 end
