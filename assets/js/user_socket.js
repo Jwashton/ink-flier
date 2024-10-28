@@ -28,6 +28,7 @@ function makeGameRow(gameId, gameCreator, newGame) {
     element.classList.add("games__game--new")
   }
 
+  element.querySelector(".gameLink").href = `/lobby/game/${gameId}`
   element.querySelector(".gameId").innerHTML = gameId
   element.querySelector(".gameCreator").innerHTML = sanitize(gameCreator)
   element.querySelector(".deleteGame").addEventListener("click", payload => {

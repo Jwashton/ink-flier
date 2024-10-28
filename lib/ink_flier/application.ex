@@ -20,7 +20,6 @@ defmodule InkFlier.Application do
       {Registry, keys: :unique, name: Registry.Game},
       InkFlier.GameSupervisor,
       InkFlier.LobbyServer,
-      {InkFlier.GameServer, id: "321", creator: "Robin"},
       InkFlierWeb.Endpoint
     ]
 

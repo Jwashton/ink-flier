@@ -50,8 +50,8 @@ a {
 
 
 .nav {
-  display: flex;
-  flex-direction: row-reverse;
+  display: grid;
+  grid-template-columns: 2fr 1fr
 }
 
 .nav__hr {
