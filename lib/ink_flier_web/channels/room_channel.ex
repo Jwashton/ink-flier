@@ -20,25 +20,15 @@ defmodule InkFlierWeb.RoomChannel do
     end
   end
 
-  # @impl true
-  # def handle_in("create_game", _track_id, socket) do
-  #   user = socket.assigns.user
-  #   game = Game.new(user)
-  #   {:ok, game_id} = LobbyServer.add_game(game)
+  @impl true
+  def handle_in("create_game", _track_id, socket) do
+    user = socket.assigns.user
+    {:ok, game_id} = LobbyServer.start_game(creator: user)
+    game_wrapper = %{id: game_id, creator: user}
 
-  #   # # TODO dry
-  #   # games =
-  #   #   LobbyServer.games
-  #   #   |> Enum.sort_by(&elem(&1, 0), :desc)
-  #   #   |> Enum.map(fn {id, game} ->
-  #   #     %{id: id, creator: Game.creator(game)}
-  #   #   end)
-
-  #   game_wrapper = %{id: game_id, creator: Game.creator(game)}
-
-  #   broadcast(socket, "game_created", game_wrapper)
-  #   {:reply, :ok, socket}
-  # end
+    broadcast(socket, "game_created", game_wrapper)
+    {:reply, :ok, socket}
+  end
 
   # @impl true
   # def handle_in("delete_game", game_id, socket) do
