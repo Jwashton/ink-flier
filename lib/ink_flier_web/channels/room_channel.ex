@@ -10,6 +10,7 @@ defmodule InkFlierWeb.RoomChannel do
     if authorized?(payload) do
       games =
         LobbyServer.games_info
+        |> Enum.reverse
         |> Enum.map(fn {id, game_info} ->
           %{id: id, creator: game_info.creator}
         end)
