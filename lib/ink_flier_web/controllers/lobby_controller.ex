@@ -2,7 +2,7 @@ defmodule InkFlierWeb.LobbyController do
   use InkFlierWeb, :controller
 
   alias InkFlier.RaceTrack
-  alias InkFlier.LobbyServer
+  # alias InkFlier.LobbyServer
 
   @tracks %{
       1 => RaceTrack.new(

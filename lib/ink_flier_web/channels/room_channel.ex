@@ -1,8 +1,7 @@
 defmodule InkFlierWeb.RoomChannel do
   use InkFlierWeb, :channel
-  import TinyMaps
+  # import TinyMaps
 
-  alias InkFlier.Game
   alias InkFlier.LobbyServer
 
   @impl true
