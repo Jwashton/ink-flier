@@ -3,7 +3,11 @@ defmodule InkFlier.GameServer do
 
   alias InkFlier.Game
 
-  def start_link({id, creator}), do: GenServer.start_link(__MODULE__, creator, name: via(id))
+  def start_link(opts) do
+    {id, opts} = Keyword.pop!(opts, :id)
+    GenServer.start_link(__MODULE__, opts, name: via(id))
+  end
+
   def join(id, player), do: GenServer.call(via(id), {:join, player})
   def remove(id, player), do: GenServer.call(via(id), {:remove, player})
   def creator(id), do: GenServer.call(via(id), :creator)
@@ -12,8 +16,8 @@ defmodule InkFlier.GameServer do
 
 
   @impl GenServer
-  def init(creator) do
-    {:ok, Game.new(creator)}
+  def init(opts) do
+    {:ok, Game.new(opts)}
   end
 
   @impl GenServer

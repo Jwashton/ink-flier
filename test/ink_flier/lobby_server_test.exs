@@ -2,51 +2,36 @@ defmodule InkFlierTest.LobbyServer do
   use ExUnit.Case
 
   alias InkFlier.LobbyServer
-  # alias InkFlier.GameServer
+  alias InkFlier.GameSupervisor
+  alias InkFlier.GameServer
 
-  test "Confirm server starts in application" do
-    # DON'T call with Testlobby name, we're checking if global application LobbyServer started here
-    assert LobbyServer.games == %{}
-  end
+  @lobby TestLobbyServer
+  @game_starter TestGameSupervisor
 
-  describe "Restart server between tests" do
-    setup [:restart_server]
-
-    test "Add game" do
-      {:ok, game_id1} = LobbyServer.add_game(TestLobby, :fake_game1)
-      {:ok, game_id2} = LobbyServer.add_game(TestLobby, :fake_game2)
-      games = LobbyServer.games(TestLobby)
-
-      assert games[game_id1] == :fake_game1
-      assert games[game_id2] == :fake_game2
-    end
-
-    test "Confirm tests don't bleed" do
-      assert LobbyServer.games(TestLobby) == %{}
-    end
-
-    # test "Start a supervised Game process" do
-    #   # TODO add_game should prob turn into create_game to do these together?
-
-    #   {:ok, game_id} = LobbyServer.create_game(TestLobby, "CreatorBatman")
-    #   assert GameServer.creator(game_id) == "CreatorBatman"
-    # end
-
-    # test "TODO" do
-    #   game =
-    #     Game.new("Batman")
-    #     |> Game.add_player("Robin")
-    #   raise "Not quite. Maybe just make Game into a server right now, then make Lobby into a Supervisor / Register, THEN test for Game.add_player does a send_info or whatever notify to Lobby?"
-
-    #   :ok = LobbyServer.add_game(TestLobby, game)
-    # end
-  end
-
-
-  # Application auto-starts this Server. Let's manually restart a non-application one
-  # between each test so they don't "bleed" into eachother
-  defp restart_server(_) do
-    LobbyServer.start_link([name: TestLobby])
+  setup do
+    start_supervised!({GameSupervisor, name: @game_starter})
+    start_supervised!({LobbyServer, name: @lobby, game_supervisor: @game_starter})
     :ok
+  end
+
+
+  test "Keeps track of started games" do
+    {:ok, game_id1} = LobbyServer.start_game(@lobby, [])
+    {:ok, game_id2} = LobbyServer.start_game(@lobby, creator: "Bob")
+    assert LobbyServer.games(@lobby) == [game_id1, game_id2]
+  end
+
+  test "Get data from running games by their game_id" do
+    {:ok, game_id} = LobbyServer.start_game(@lobby, creator: "Bob")
+    assert GameServer.creator(game_id) == "Bob"
+  end
+
+  test "List all games and their starting_info" do
+    {:ok, game_id1} = LobbyServer.start_game(@lobby, [])
+    {:ok, game_id2} = LobbyServer.start_game(@lobby, creator: "Bob")
+
+    assert [{^game_id1, info1}, {^game_id2, info2}] = LobbyServer.games_info(@lobby)
+    assert %{creator: nil} = info1
+    assert %{creator: "Bob"} = info2
   end
 end
