@@ -11,7 +11,7 @@ defmodule InkFlierTest.LobbyServerApplicationStarted do
   alias InkFlier.GameServer
 
 
-  test "Confirm server starts in application" do
+  test "Only test- Application correctly starts LobbyServer (and his required GameSupervisor)" do
     assert LobbyServer.games == []
     {:ok, game_id} = LobbyServer.start_game(creator: "Robin")
     assert GameServer.creator(game_id) == "Robin"
