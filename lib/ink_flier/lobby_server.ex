@@ -18,7 +18,7 @@ defmodule InkFlier.LobbyServer do
     GenServer.start_link(__MODULE__, game_supervisor, opts)
   end
 
-  def start_game(name \\ @name, game_opts \\ []), do: GenServer.call(name, {:start_game, game_opts})
+  def start_game(name \\ @name, game_opts), do: GenServer.call(name, {:start_game, game_opts})
   def games(name \\ @name), do: GenServer.call(name, :games)
   def games_info(name \\ @name), do: GenServer.call(name, :games_info)
 
