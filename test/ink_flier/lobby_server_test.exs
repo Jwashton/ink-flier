@@ -15,18 +15,18 @@ defmodule InkFlierTest.LobbyServer do
   end
 
 
-  test "Keeps track of started games" do
+  test "games" do
     {:ok, game_id1} = LobbyServer.start_game(@lobby, [])
     {:ok, game_id2} = LobbyServer.start_game(@lobby, creator: "Bob")
     assert LobbyServer.games(@lobby) == [game_id1, game_id2]
   end
 
-  test "Get data from running games by their game_id" do
+  test "Can retrieve data from games by using their game_id" do
     {:ok, game_id} = LobbyServer.start_game(@lobby, creator: "Bob")
     assert GameServer.creator(game_id) == "Bob"
   end
 
-  test "List all games and their starting_info" do
+  test "games_info" do
     {:ok, game_id1} = LobbyServer.start_game(@lobby, [])
     {:ok, game_id2} = LobbyServer.start_game(@lobby, creator: "Bob")
 
