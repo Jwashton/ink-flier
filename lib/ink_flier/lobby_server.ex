@@ -45,9 +45,9 @@ defmodule InkFlier.LobbyServer do
   @impl GenServer
   def handle_call({:delete_game, game_id}, _, t) do
     t = Lobby.untrack_game_id(t, game_id)
-    # t
-    # |> Lobby.game_supervisor
-    # |> GameSupervisor.start_game!(game_opts)
+    t
+    |> Lobby.game_supervisor
+    |> GameSupervisor.delete_game(whereis(game_id))
 
     {:reply, :ok, t}
   end
