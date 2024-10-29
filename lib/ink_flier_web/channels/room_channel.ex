@@ -11,7 +11,7 @@ defmodule InkFlierWeb.RoomChannel do
         LobbyServer.games_info
         |> Enum.reverse
         |> Enum.map(fn {id, game_info} ->
-          %{id: id, creator: game_info.creator}
+          ~M{id, players: game_info.players, creator: game_info.creator}
         end)
 
       {:ok, games, socket}
@@ -24,7 +24,7 @@ defmodule InkFlierWeb.RoomChannel do
   def handle_in("create_game", _track_id, socket) do
     user = socket.assigns.user
     {:ok, game_id} = LobbyServer.start_game(creator: user)
-    game_wrapper = %{id: game_id, creator: user}
+    game_wrapper = %{id: game_id, creator: user, players: []}
 
     broadcast(socket, "game_created", game_wrapper)
     {:reply, :ok, socket}
