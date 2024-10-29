@@ -8,19 +8,22 @@ function create_game(track_id) { channel.push("create_game", track_id) }
 function delete_game(gameId) { channel.push("delete_game", gameId) }
 
 function appendGame(gameWrapper) {
-  const game_row = makeGameRow(gameWrapper.id, gameWrapper.creator, NEW_GAME)
+  const game_row = makeGameRow(gameWrapper, NEW_GAME)
   gameContainer.prepend(game_row)
 }
 
 function drawGamesFromScratch(games) {
   gameContainer.innerHTML = ""
-  games.map( (game) => {
-    const game_row = makeGameRow(game.id, game.creator, null)
+  games.map( (gameWrapper) => {
+    const game_row = makeGameRow(gameWrapper, null)
     gameContainer.appendChild(game_row)
   })
 }
 
-function makeGameRow(gameId, gameCreator, newGame) {
+function makeGameRow(gameWrapper, newGame) {
+  const gameId = gameWrapper.id
+  const gameCreator = gameWrapper.creator
+
   const element = document.getElementById("game-template").content.cloneNode(true).firstElementChild
 
   element.dataset.gameId = gameId
