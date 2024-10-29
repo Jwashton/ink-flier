@@ -23,6 +23,7 @@ function drawGamesFromScratch(games) {
 function makeGameRow(gameWrapper, newGame) {
   const gameId = gameWrapper.id
   const gameCreator = gameWrapper.creator
+  const gamePlayers = gameWrapper.players
 
   const element = document.getElementById("game-template").content.cloneNode(true).firstElementChild
 
@@ -37,6 +38,20 @@ function makeGameRow(gameWrapper, newGame) {
   element.querySelector(".deleteGame").addEventListener("click", payload => {
     delete_game(gameId)
   })
+
+  // NOTE switch this to another template/clone if it gets more complicated than <span>Player1</span>
+  element.querySelector(".gamePlayers").innerHTML = ""
+  if (gamePlayers.length == 0) {
+    const span = document.createElement("span")
+    span.innerHTML = "..."
+    element.querySelector(".gamePlayers").appendChild(span)
+  } else {
+    gamePlayers.map( (player) => {
+      const span = document.createElement("span")
+      span.innerHTML = sanitize(player)
+      element.querySelector(".gamePlayers").appendChild(span)
+    })
+  }
 
   return element
 }
