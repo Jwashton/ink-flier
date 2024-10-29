@@ -16,6 +16,9 @@ defmodule InkFlier.GameSupervisor do
   def start_game(name \\ @name, game_opts), do: DynamicSupervisor.start_child(name, {GameServer, game_opts})
   def start_game!(name \\ @name, game_opts), do: {:ok, _pid} = start_game(name, game_opts)
 
+  def delete_game(name \\ @name, pid), do: DynamicSupervisor.terminate_child(name, pid)
+  def delete_game!(name \\ @name, pid), do: :ok = delete_game(name, pid)
+
   def default_name, do: @name
 
 

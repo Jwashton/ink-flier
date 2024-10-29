@@ -34,4 +34,15 @@ defmodule InkFlierTest.LobbyServer do
     assert %{creator: nil} = info1
     assert %{creator: "Bob"} = info2
   end
+
+  test "delete_game" do
+    {:ok, game_id1} = LobbyServer.start_game(@lobby, [])
+    {:ok, game_id2} = LobbyServer.start_game(@lobby, creator: "Bob")
+
+    :ok = LobbyServer.delete_game(@lobby, game_id1)
+    assert LobbyServer.games(@lobby) == [game_id2]
+
+    assert LobbyServer.whereis(game_id2)
+    refute LobbyServer.whereis(game_id1)
+  end
 end

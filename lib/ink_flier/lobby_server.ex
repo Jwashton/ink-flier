@@ -19,8 +19,11 @@ defmodule InkFlier.LobbyServer do
   end
 
   def start_game(name \\ @name, game_opts), do: GenServer.call(name, {:start_game, game_opts})
+  def delete_game(name \\ @name, game_id), do: GenServer.call(name, {:delete_game, game_id})
   def games(name \\ @name), do: GenServer.call(name, :games)
   def games_info(name \\ @name), do: GenServer.call(name, :games_info)
+
+  def whereis(game_id), do: game_id |> GameServer.via |> GenServer.whereis
 
 
   @impl GenServer
@@ -31,11 +34,22 @@ defmodule InkFlier.LobbyServer do
     game_id = Lobby.generate_id
     game_opts = Keyword.put(game_opts, :id, game_id)
 
+    t = Lobby.track_game_id(t, game_id)
     t
     |> Lobby.game_supervisor
     |> GameSupervisor.start_game!(game_opts)
 
-    {:reply, {:ok, game_id}, Lobby.track_game_id(t, game_id)}
+    {:reply, {:ok, game_id}, t}
+  end
+
+  @impl GenServer
+  def handle_call({:delete_game, game_id}, _, t) do
+    t = Lobby.untrack_game_id(t, game_id)
+    # t
+    # |> Lobby.game_supervisor
+    # |> GameSupervisor.start_game!(game_opts)
+
+    {:reply, :ok, t}
   end
 
   @impl GenServer
