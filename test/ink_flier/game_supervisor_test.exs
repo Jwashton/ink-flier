@@ -6,14 +6,13 @@ defmodule InkFlierTest.GameSupervisor do
   @name TestGameSupervisor
 
   setup do
-    start_supervised!(GameSupervisor, name: @name)
+    start_supervised!({GameSupervisor, name: @name})
     :ok
   end
 
-  test "Start supervised games" do
-    {:ok, _pid} = GameSupervisor.start_link(name: @name)
-    {:ok, _pid} = GameSupervisor.start_game(@name, id: 3211, creator: "Bob")
 
+  test "Start supervised games" do
+    {:ok, _pid} = GameSupervisor.start_game(@name, id: 3211, creator: "Bob")
     assert DynamicSupervisor.count_children(@name).active == 1
   end
 
