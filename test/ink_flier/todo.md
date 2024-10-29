@@ -6,12 +6,32 @@
   - https://hexdocs.pm/ex_unit/1.12.3/ExUnit.Assertions.html#assert_receive/3
     - (or assert_received)
   - Just subscribe to the PubSub topic in my testcode.
+- Depending on q below, remove the `name \\ @name` from GameSupervisor, who doesn't need it if we're starting everything through LobbyServer like we should?
 
 # 2024-10-26
 - @William
   - Is the layering a problem? LobbyServer (Lobby state) -> GameSupervisor -> GameServer(Game state)
     - If I go very slow (Like new route) it works fine. It seems like a lot of moving parts and easy to screw up.
     - If it's right that's great and fine, I'll get used to it. But worried I'm making it more complicated than I'm supposed to and easy to break
+  - A LITTLE confused about when I need "seperate per-test process" and when, even in tests, I can get away with using the global one
+      ```lobby_server_test.exs
+      setup do
+        # NOTE Aparently I don't need unique GameSupervisor for tests to not collide? I can just use
+        # the Application-started one
+
+        # start_supervised!({GameSupervisor, name: @game_starter})
+        # start_supervised!({LobbyServer, name: @lobby, game_supervisor: @game_starter})
+        start_supervised!({LobbyServer, name: @lobby})
+      end
+      ```
+    - It KIND of makes sense. Lobby process restarting between tests stops "which games are and aren't started" bleeding into results of other tests
+    - Except they're all linked to GameSupervisor. Doesn't HE need to be shut down between tests
+      - Except they're ALL calling start_link. So maybe just killing one of them, particularly the Lobby one that called at the top (Altho LOBBY didn't call GameSupervisor.startlink. Application did that. But, Lobby calls GameSupervisor.startGame, which does Supervisor.startChild, and the GameServer func THAT calls is a start_link... which links not to GameSupervisor who's function called Supervisor.startChild, but instead to Lobby, who called GameSupervisor.startGame which delegates to Supervisor.startChild?
+
+    - Depending on answer, should I remove the `name \\ @name` from GameSupervisor, who doesn't need it if we're starting everything through LobbyServer like we should?
+  - As of lobby_server.ex getting `@topic "room:lobby"`, that string is getting repeated in a lot of places now.
+    - Here, the connecting .js, and the socket "router" & channel controller: user_socket.ex and room_channel.ex
+    - Should/can I dry this at all some central place?
 
 # 2024-10-24b
 -Just look at web page and see what next small needed thing is
