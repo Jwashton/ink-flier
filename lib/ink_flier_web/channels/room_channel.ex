@@ -1,6 +1,6 @@
 defmodule InkFlierWeb.RoomChannel do
   use InkFlierWeb, :channel
-  # import TinyMaps
+  import TinyMaps
 
   alias InkFlier.LobbyServer
 
@@ -30,12 +30,12 @@ defmodule InkFlierWeb.RoomChannel do
     {:reply, :ok, socket}
   end
 
-  # @impl true
-  # def handle_in("delete_game", game_id, socket) do
-  #   :ok = LobbyServer.delete_game(game_id)
-  #   broadcast(socket, "game_deleted", ~M{game_id})
-  #   {:reply, :ok, socket}
-  # end
+  @impl true
+  def handle_in("delete_game", game_id, socket) do
+    :ok = LobbyServer.delete_game(game_id)
+    broadcast(socket, "game_deleted", ~M{game_id})
+    {:reply, :ok, socket}
+  end
 
 
   # Add authorization logic here as required.

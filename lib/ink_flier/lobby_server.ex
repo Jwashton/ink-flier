@@ -1,4 +1,20 @@
 defmodule InkFlier.LobbyServer do
+  @moduledoc """
+  Process for managing Games (GameServer processes)
+
+  LobbyServer (this) and GameSupervisor are started in Application. LobbyServer tells GameSupervisor when
+  to start & stop games. It also keeps a cache list of those Game processes' names
+
+    -Note the 2 things being maintained in parallel:
+      - The actual GameServer processes (supervised by GameSupervisor)
+      - The list of the via-names of those processes (kept in the state of *this* process)
+
+  Also responsible for sending pubsub notifications to lobby subscribers for events like "game #237
+  had a player join" or "game #930 ended"
+
+  May control a "General lobby chat" later
+  """
+
   use GenServer
 
   alias InkFlier.Lobby
@@ -19,8 +35,11 @@ defmodule InkFlier.LobbyServer do
   end
 
   def start_game(name \\ @name, game_opts), do: GenServer.call(name, {:start_game, game_opts})
+  def delete_game(name \\ @name, game_id), do: GenServer.call(name, {:delete_game, game_id})
   def games(name \\ @name), do: GenServer.call(name, :games)
   def games_info(name \\ @name), do: GenServer.call(name, :games_info)
+
+  def whereis(game_id), do: game_id |> GameServer.via |> GenServer.whereis
 
 
   @impl GenServer
@@ -31,11 +50,22 @@ defmodule InkFlier.LobbyServer do
     game_id = Lobby.generate_id
     game_opts = Keyword.put(game_opts, :id, game_id)
 
+    t = Lobby.track_game_id(t, game_id)
     t
     |> Lobby.game_supervisor
     |> GameSupervisor.start_game!(game_opts)
 
-    {:reply, {:ok, game_id}, Lobby.track_game_id(t, game_id)}
+    {:reply, {:ok, game_id}, t}
+  end
+
+  @impl GenServer
+  def handle_call({:delete_game, game_id}, _, t) do
+    t = Lobby.untrack_game_id(t, game_id)
+    t
+    |> Lobby.game_supervisor
+    |> GameSupervisor.delete_game(whereis(game_id))
+
+    {:reply, :ok, t}
   end
 
   @impl GenServer
