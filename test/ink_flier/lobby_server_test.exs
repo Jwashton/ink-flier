@@ -5,8 +5,8 @@ defmodule InkFlierTest.LobbyServer do
   alias InkFlier.GameSupervisor
   alias InkFlier.GameServer
 
-  @lobby TestLobbyServer
-  @game_starter TestGameSupervisor
+  @lobby __MODULE__.LobbyServer
+  @game_starter __MODULE__.GameSupervisor
 
   setup do
     start_supervised!({GameSupervisor, name: @game_starter})
