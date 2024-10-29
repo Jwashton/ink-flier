@@ -23,5 +23,8 @@ defmodule InkFlierTest.LobbyServerAndGameServer do
 
     # Process.info(self(), :messages)
     # |> dbg(charlists: :as_lists)
+
+    raise "Next, start a game with lobby, then add player with game.addPlayer(thatGame..., then use exunit assert_received"
+    # {:ok, game_id} = LobbyServer.start_game(@lobby, [])
   end
 end
