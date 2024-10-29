@@ -1,3 +1,21 @@
+# 2024-10-28
+- Remember, I got stuck/frustrated/lostMomentum the first time through LobbyServer-controlls-real-game-processes
+  - Instead of a) nuking everything and rebuilding ALL from scratch, or b) Trying to jam fixes into the fully broken bits
+    - I went in the middle of the spectrum
+    - Made a Lobby2 from scratch, but KEPT Lobby1 doing it's wrong-but-working-and-lookAtAble stuff
+    - Built everything I needed in the nice clean Lobby2
+    - Until eventually lobby1 was redundant, I could kill and replace it with #2
+    - Then I found the few lingering broken things where the api had changed slightly (all the functions/processes take keyword lists, instead of sometimes tuples and sometimes maps, etc), and made the small fix to reconnect outside api-calling users, basically the channels
+
+- Got all the LobbyServer (Lobby state) -> GameSupervisor -> GameServer(Game state) working together! :)
+
+- Lobby can delete games again
+  - Note that these are now REAL game processes whose pages you could actually go and interact with, not the dummy placeholder game atoms that lobby worked with before
+
+- Show the actual player list of each game in Lobby
+  - Updating it on change in the game will be the next fun big thing, the cross-process messages stuff
+  - But for now just on normal page refresh I am able to at least get the current player list
+
 # 2024-10-26
 - (solved!)(1) Intermitently failing GenServer/process tests, because I think it's taking an extra second to stop in the background and not finished before next test runs (or something?)
       ```

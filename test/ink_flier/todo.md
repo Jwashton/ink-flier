@@ -1,16 +1,13 @@
+# 2024-10-28
+- [ ] The fun LobbyServer and GameServer sending updates between themselves part!
+  - When finished, will be: Cross genserver messages, used for javascript live screen updates for events cause on OTHER pages =)
+
+  - https://hexdocs.pm/phoenix_pubsub/Phoenix.PubSub.html
+  - https://hexdocs.pm/ex_unit/1.12.3/ExUnit.Assertions.html#assert_receive/3
+    - (or assert_received)
+  - Just subscribe to the PubSub topic in my testcode.
+
 # 2024-10-26
-- [ ] I think have everything I need to 'see so-far-started' games list in frontend
-  - REMEMBER to add the 1 or 2 extra bits to Application
-- Delete LobbyServer1 (maybe with tmp branch or tag)
-  - Rename \*2 to JUST LobbyServer & Lobby
-  - Only thing #1 version has that we don't is delete, which is easy to add when we get to it later
-- Check webpage for other missing stuff, create (actually that's already done I think) and Lobby.delete_game
-
-- Lobby2 tracks ids of started games
-- When done, Delete Lobby(1) and replace it with Lobby2
-- Check other \*Server tests and use start_supervised! in any setups
-- When moving to frontend level, remember to start the new LobbyServer and GameSupervisor etc in application so everything will work
-
 - @William
   - Is the layering a problem? LobbyServer (Lobby state) -> GameSupervisor -> GameServer(Game state)
     - If I go very slow (Like new route) it works fine. It seems like a lot of moving parts and easy to screw up.
