@@ -1,3 +1,14 @@
+# 2024-10-29
+- Supervisor of supervisor's (GameSystem or something for name) is fine. Something to start GameSupervisor and GameStore (mini version of LobbyServer's current cache simple list keeping of via-names
+  - And LobbyServer retired as a process, but still have a Lobby with some useful helper functions that the channel can call, like loop through and build the maps to pass down or whatever
+  - The one_for_rest or w/e strategy will be interesting
+    - But basically GameStore (GameNameStore or w/e), on startup, instead of starting with an empty lists, asks whereis_children on GameSupervisor. Which WILL usually BE an empty list. But, if GameStore is restarting itself from a crash, can now rebuild it's list
+      - GameServer's will need to store their own name, so the whereis (list of pids) can ask each one their name
+      - Prob also store it's start time, so the whereis/GameStore can sort by that
+- Lobby (or maybe the toplevel GameSystem supervisor) acts like a context, that has a start_game, and HE calls out to GameStore and GameSupervisor (and a db call and w/e else)
+- `{id, opts} = Keyword.pop!(opts, :id)`
+  - For requireing certain keywords and wanting prettier errors, maybe use With statement for those
+
 # 2024-10-28
 - [ ] The fun LobbyServer and GameServer sending updates between themselves part!
   - When finished, will be: Cross genserver messages, used for javascript live screen updates for events cause on OTHER pages =)
