@@ -1,4 +1,26 @@
+# 2024-10-30
+- [ ] Game joins update Lobby! Next, make Game leave's do the same
+
+- Right now roomChannel is manually putting game_id into the "game_wrapper" maps it's sending down to the js
+  - It did that because LobbyServer had the only list of gameIds
+  - But Games now hold their own id's in their state
+  - I can include it in GameServer.startingInfo's return
+
+  - But note, LobbyServer is mostly going to get rewritten into a state/server 'less Context-style module
+    - So a lot of this "little bit of extra logic" starting to creep into roomChannel will get extracted to that Lobby context instead
+
+- Delete GameServer.replyWithOkOrError and maybe re-extract/dry later
+  - This will happen after we do GameServer.remove's broadcast stuff
+    - And doing that will make sure we don't send "someone was removed from game" broadcasts from lobby every time it's clicked, just when it actually removed someone
+
+- GameServer's `Game.notify_module.broadcast` calls, especially nested inside a `if Game.notifyModule != nil`, look a little funky
+  - Prob extract this to a defp or something
+
+- userSocket.js, `channel.on("game_updated"...`:
+  - don't call makeGameRow with `newGame` but instead `updatedGame` and tweak makeGameRow's code to add a different css class (--updated) instead
+
 # 2024-10-29
+- with @William notes
 - Supervisor of supervisor's (GameSystem or something for name) is fine. Something to start GameSupervisor and GameStore (mini version of LobbyServer's current cache simple list keeping of via-names
   - And LobbyServer retired as a process, but still have a Lobby with some useful helper functions that the channel can call, like loop through and build the maps to pass down or whatever
   - The one_for_rest or w/e strategy will be interesting

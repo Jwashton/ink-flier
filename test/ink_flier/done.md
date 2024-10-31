@@ -1,3 +1,6 @@
+# 2024-10-30
+- Player joining from the game page sends a live javascript update even to people on the lobby page, refreshing it's game for just that row!
+
 # 2024-10-28
 - Remember, I got stuck/frustrated/lostMomentum the first time through LobbyServer-controlls-real-game-processes
   - Instead of a) nuking everything and rebuilding ALL from scratch, or b) Trying to jam fixes into the fully broken bits
