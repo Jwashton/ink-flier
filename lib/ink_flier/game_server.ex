@@ -5,6 +5,7 @@ defmodule InkFlier.GameServer do
 
   def start_link(opts) do
     {id, opts} = Keyword.pop!(opts, :id)
+    opts = Keyword.put(opts, :name, id)
     GenServer.start_link(__MODULE__, opts, name: via(id))
   end
 

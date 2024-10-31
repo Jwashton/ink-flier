@@ -12,6 +12,7 @@ defmodule InkFlier.Lobby do
 
   def new(game_supervisor), do: struct!(__MODULE__, ~M{game_supervisor})
 
+  @spec generate_id :: game_id
   def generate_id do
     :crypto.strong_rand_bytes(8)
     |> Base.url_encode64(padding: false)
