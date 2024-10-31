@@ -20,6 +20,7 @@ defmodule InkFlier.LobbyServer do
   alias InkFlier.Lobby
   alias InkFlier.GameSupervisor
   alias InkFlier.GameServer
+  alias Phoenix.PubSub
 
   @name __MODULE__
   @topic "room:lobby"
@@ -45,6 +46,11 @@ defmodule InkFlier.LobbyServer do
 
   def whereis(game_id), do: game_id |> GameServer.via |> GenServer.whereis
   def topic, do: @topic
+
+  def broadcast({:player_joined, _game_id, _player_id} = msg) do
+    PubSub.broadcast(InkFlier.PubSub, @topic, msg)
+  end
+
 
   @impl GenServer
   def init(game_supervisor), do: {:ok, Lobby.new(game_supervisor)}

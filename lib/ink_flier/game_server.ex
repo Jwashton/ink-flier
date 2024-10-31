@@ -25,7 +25,12 @@ defmodule InkFlier.GameServer do
   end
 
   @impl GenServer
-  def handle_call({:join, player}, _, t), do: reply_with_ok_or_error(t, Game.add_player(t, player))
+  def handle_call({:join, player}, _, t) do
+    if Game.notify_module(t) do
+      Game.notify_module(t).broadcast({:player_joined, Game.name(t), player})
+    end
+    reply_with_ok_or_error(t, Game.add_player(t, player))
+  end
 
   @impl GenServer
   def handle_call({:remove, player}, _, t), do: reply_with_ok_or_error(t, Game.remove_player(t, player))
