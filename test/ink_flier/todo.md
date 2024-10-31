@@ -19,6 +19,23 @@
 - userSocket.js, `channel.on("game_updated"...`:
   - don't call makeGameRow with `newGame` but instead `updatedGame` and tweak makeGameRow's code to add a different css class (--updated) instead
 
+- @William
+  - Right now GameServer's joins/leaves call a function in some saved module (Lobby) that's responsible for sending a PubSub broadcast
+    - Are we sure it wouldn't be better for a Lobby (or some other) process to exist who's only job is to subscribe to all game topics (`game:123`, etc) and listen to them doing broadcasts?...
+    - I have to pay attention to WHO's sending msg's. The channel/js certainly.
+      - But I started having the ENGINE genserver processes handle this between-eachother notification
+      - It added the `Game.notify_module(t).broadcast({:player_joined, Game.name(t), player})` stuff in GameServer.ex
+
+    - I kind of liked the engine genserver code handleing that, easier/better to write tests down there. And seemed cleaner at the time
+    - But the CHANNELS are sending out those broadcast-player-joined/left messages on a game:123 topic anyways
+    - Do I just want to make a Lobby'ish process who's job is to spy on those broadcasts all the the channels. They were sending those broadcasts to just their own pages's javascript, but the lobby spy could listen in on them and do his own "broadcast such and such game did an update"
+
+    - In fact, maybe that's the job of LobbyChannel directly? He has handle_in's for HIS page's push's, but he could also subscribe to every game and listen to their traffic for certain messages...
+
+    - I'm pretty sure I want to be talked out of this idea, and talked into that our current version being the right call: "Let the engine genserver's handle at least this much of the pubsub'y messaging"
+  "even though, yes, channels are responsible for a lot of messaging. generally just for their own page's js but maybe for many other page's channel broadcasts also?"
+
+
 # 2024-10-29
 - with @William notes
 - Supervisor of supervisor's (GameSystem or something for name) is fine. Something to start GameSupervisor and GameStore (mini version of LobbyServer's current cache simple list keeping of via-names
