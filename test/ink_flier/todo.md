@@ -35,6 +35,15 @@
     - I'm pretty sure I want to be talked out of this idea, and talked into that our current version being the right call: "Let the engine genserver's handle at least this much of the pubsub'y messaging"
   "even though, yes, channels are responsible for a lot of messaging. generally just for their own page's js but maybe for many other page's channel broadcasts also?"
 
+    - or maybe game channel just endpoint.broadcasts to lobby topic
+      - on player join clucked, it updates the engine code (which maybe i just start using for simple state persistence like a mini db), then sends msgs to people that need to know to do a live update: which is those two channel topics
+    - does the engine need to be responsible suddenly only because it's cross-pages? he already did his state update and just send out a current version whenever asked, aka page refresh
+    - only JavaScript guys need to do an instant live update?
+
+    - it let's the ending genservers start simple and just be in charge of keeping state
+    - and let's the channels be in charge of messages that are only used to make live updates on SOME web page, even if it's not their own
+    - BUT, it makes more code in the top level channels
+    - but actually, probably not that much more. UNLIKE doing it with the engine genservers, doing it through the channels sending to each other's topics won't take much more code at all than what we already have, i don't think
 
 # 2024-10-29
 - with @William notes
