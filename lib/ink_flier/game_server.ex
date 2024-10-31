@@ -26,10 +26,15 @@ defmodule InkFlier.GameServer do
 
   @impl GenServer
   def handle_call({:join, player}, _, t) do
-    if Game.notify_module(t) do
-      Game.notify_module(t).broadcast({:player_joined, Game.name(t), player})
+    case Game.add_player(t, player) do
+      {:ok, t} ->
+        if Game.notify_module(t) do
+          Game.notify_module(t).broadcast({:player_joined, Game.name(t), player})
+        end
+        {:reply, :ok, t}
+
+      {:error, _} = error -> {:reply, error, t}
     end
-    reply_with_ok_or_error(t, Game.add_player(t, player))
   end
 
   @impl GenServer
@@ -45,6 +50,7 @@ defmodule InkFlier.GameServer do
   def handle_call(:starting_info, _, t), do: {:reply, Game.starting_info(t), t}
 
 
+  # TODO note already exists, this is getting deleted and/or re-extract/dry'd a little later
   defp reply_with_ok_or_error(t, reply) do
     case reply do
       {:ok, t} -> {:reply, :ok, t}
