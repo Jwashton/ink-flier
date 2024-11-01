@@ -19,4 +19,10 @@ defmodule InkFlierTest.LobbyServerAndGameServer do
     :ok = GameServer.join(game_id, "Robin")
     assert_received {:player_joined, _game_id, "Robin"}
   end
+
+  test "Lobby sends a pubsub notification when games delete player" do
+    {:ok, game_id} = LobbyServer.start_game(@lobby, players: ["Bruce", "Wayne"])
+    :ok = GameServer.remove(game_id, "Bruce")
+    assert_received {:player_left, _game_id, "Bruce"}
+  end
 end

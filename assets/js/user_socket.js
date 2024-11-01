@@ -73,7 +73,7 @@ channel.on("game_created", gameWrapper => {
 })
 
 channel.on("game_updated", gameWrapper => {
-  const gameRow = makeGameRow(gameWrapper, NEW_GAME)
+  const gameRow = makeGameRow(gameWrapper, null)
   document.querySelector(`[data-game-id="${gameWrapper.id}"]`).replaceWith(gameRow)
 })
 

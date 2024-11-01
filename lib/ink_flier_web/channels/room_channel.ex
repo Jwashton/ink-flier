@@ -39,7 +39,7 @@ defmodule InkFlierWeb.RoomChannel do
   end
 
   @impl Phoenix.Channel
-  def handle_info({:player_joined, game_id, _player_id}, socket) do
+  def handle_info({msg, game_id, _player_id}, socket) when msg in [:player_joined, :player_left] do
     game_wrapper =
       game_id
       |> GameServer.starting_info
@@ -48,6 +48,7 @@ defmodule InkFlierWeb.RoomChannel do
     broadcast(socket, "game_updated", game_wrapper)
     {:noreply, socket}
   end
+
 
   # Add authorization logic here as required.
   defp authorized?(_payload) do

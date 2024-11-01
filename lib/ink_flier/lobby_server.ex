@@ -44,9 +44,7 @@ defmodule InkFlier.LobbyServer do
   def whereis(game_id), do: game_id |> GameServer.via |> GenServer.whereis
   def topic, do: @topic
 
-  def broadcast({:player_joined, _game_id, _player_id} = msg) do
-    PubSub.broadcast(InkFlier.PubSub, @topic, msg)
-  end
+  def broadcast(msg), do: PubSub.broadcast(InkFlier.PubSub, @topic, msg)
 
 
   @impl GenServer
