@@ -38,7 +38,11 @@ defmodule InkFlierWeb.LobbyGameChannel do
     case server_command.(game_id, target) do
       :ok ->
         players = GameServer.players(game_id)
+
+        # two broadcasts, one to this page's topic and another to different page's topic: Lobby (who
+        # also wants to live-js-update the page on player-change)
         broadcast(socket, success_msg, ~M{players})
+        Endpoint.broadcast(RoomChannel.main_topic, ...)
       _no_state_change -> nil
     end
   end
