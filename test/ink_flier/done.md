@@ -19,6 +19,15 @@
   - Updating it on change in the game will be the next fun big thing, the cross-process messages stuff
   - But for now just on normal page refresh I am able to at least get the current player list
 
+# 2024-10-27
+- Got Lobby creating games sucessfully
+  - Managed the heirchy of: LobbyServer (Lobby) -> GameSupervisor -> GameServer (Game)
+  - DIDN'T delete all my everything and start from scratch when I got frustrated
+  - Made a "Lobby2" second module, soft-restarted in there, got it working IN PARALLEL with the old one which did still partially work and I did want to look at it's running pages for reference while working on #2
+  - Once #2 did everything I needed, I killed #1, renamed #2, and then rehooked the frontend pieces (channel) whose api calls down to lobby had changed slightly
+  - Managed to do it in small pieces at a time and got my momentum back up nicely! <3
+- Lobby actually starts and tracks new game processes, and sure enough those can do their own calls of "add and remove player". It's actually working, this is very very cool :)
+
 # 2024-10-26
 - (solved!)(1) Intermitently failing GenServer/process tests, because I think it's taking an extra second to stop in the background and not finished before next test runs (or something?)
       ```
