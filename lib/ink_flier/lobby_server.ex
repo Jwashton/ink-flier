@@ -20,8 +20,10 @@ defmodule InkFlier.LobbyServer do
   alias InkFlier.Lobby
   alias InkFlier.GameSupervisor
   alias InkFlier.GameServer
+  alias Phoenix.PubSub
 
   @name __MODULE__
+  @topic "room:lobby"
 
   @doc """
   On start, LobbyServer needs to know the Name of the GameSupervisor he's using.
@@ -40,6 +42,9 @@ defmodule InkFlier.LobbyServer do
   def games_info(name \\ @name), do: GenServer.call(name, :games_info)
 
   def whereis(game_id), do: game_id |> GameServer.via |> GenServer.whereis
+  def topic, do: @topic
+
+  def broadcast(msg), do: PubSub.broadcast(InkFlier.PubSub, @topic, msg)
 
 
   @impl GenServer

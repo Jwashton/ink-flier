@@ -3,8 +3,9 @@ defmodule InkFlierWeb.RoomChannel do
   import TinyMaps
 
   alias InkFlier.LobbyServer
+  alias InkFlier.GameServer
 
-  @impl true
+  @impl Phoenix.Channel
   def join("room:lobby", payload, socket) do
     if authorized?(payload) do
       games =
@@ -20,7 +21,7 @@ defmodule InkFlierWeb.RoomChannel do
     end
   end
 
-  @impl true
+  @impl Phoenix.Channel
   def handle_in("create_game", _track_id, socket) do
     user = socket.assigns.user
     {:ok, game_id} = LobbyServer.start_game(creator: user)
@@ -30,11 +31,22 @@ defmodule InkFlierWeb.RoomChannel do
     {:reply, :ok, socket}
   end
 
-  @impl true
+  @impl Phoenix.Channel
   def handle_in("delete_game", game_id, socket) do
     :ok = LobbyServer.delete_game(game_id)
     broadcast(socket, "game_deleted", ~M{game_id})
     {:reply, :ok, socket}
+  end
+
+  @impl Phoenix.Channel
+  def handle_info({msg, game_id, _player_id}, socket) when msg in [:player_joined, :player_left] do
+    game_wrapper =
+      game_id
+      |> GameServer.starting_info
+      |> Map.put(:id, game_id)
+
+    broadcast(socket, "game_updated", game_wrapper)
+    {:noreply, socket}
   end
 
 

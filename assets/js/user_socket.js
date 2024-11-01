@@ -72,6 +72,11 @@ channel.on("game_created", gameWrapper => {
   appendGame(gameWrapper)
 })
 
+channel.on("game_updated", gameWrapper => {
+  const gameRow = makeGameRow(gameWrapper, null)
+  document.querySelector(`[data-game-id="${gameWrapper.id}"]`).replaceWith(gameRow)
+})
+
 channel.on("game_deleted", payload => {
   let target = document.querySelector(`[data-game-id="${payload.game_id}"]`)
   target.remove()

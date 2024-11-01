@@ -2,9 +2,11 @@ defmodule InkFlier.GameServer do
   use GenServer
 
   alias InkFlier.Game
+  alias InkFlier.LobbyServer
 
   def start_link(opts) do
     {id, opts} = Keyword.pop!(opts, :id)
+    opts = Keyword.put(opts, :name, id)
     GenServer.start_link(__MODULE__, opts, name: via(id))
   end
 
@@ -24,10 +26,25 @@ defmodule InkFlier.GameServer do
   end
 
   @impl GenServer
-  def handle_call({:join, player}, _, t), do: reply_with_ok_or_error(t, Game.add_player(t, player))
+  def handle_call({:join, player}, _, t) do
+    case Game.add_player(t, player) do
+      {:ok, t} ->
+        LobbyServer.broadcast({:player_joined, Game.name(t), player})
+        {:reply, :ok, t}
+
+      {:error, _} = error -> {:reply, error, t}
+    end
+  end
 
   @impl GenServer
-  def handle_call({:remove, player}, _, t), do: reply_with_ok_or_error(t, Game.remove_player(t, player))
+  def handle_call({:remove, player}, _, t) do
+    case Game.remove_player(t, player) do
+      {:ok, t} ->
+        LobbyServer.broadcast({:player_left, Game.name(t), player})
+        {:reply, :ok, t}
+      {:error, _} = error -> {:reply, error, t}
+    end
+  end
 
   @impl GenServer
   def handle_call(:creator, _, t), do: {:reply, Game.creator(t), t}
@@ -39,10 +56,11 @@ defmodule InkFlier.GameServer do
   def handle_call(:starting_info, _, t), do: {:reply, Game.starting_info(t), t}
 
 
-  defp reply_with_ok_or_error(t, reply) do
-    case reply do
-      {:ok, t} -> {:reply, :ok, t}
-      {:error, _} = error -> {:reply, error, t}
-    end
-  end
+  # # TODO note already exists, this is getting deleted and/or re-extract/dry'd a little later
+  # defp reply_with_ok_or_error(t, reply) do
+  #   case reply do
+  #     {:ok, t} -> {:reply, :ok, t}
+  #     {:error, _} = error -> {:reply, error, t}
+  #   end
+  # end
 end
