@@ -1,3 +1,12 @@
+# 2024-11-01
+- @William/me
+  - On broadcast from channel or engine
+    - Maybe YES from engine? I might/will be doing player-join events from different pages
+    - Dont wanna repeat the broadcast to multiple topics code for every button on every pg that fires the event
+    - Maybe it is fine to handle cross-page broadcast responsibility in the engine and easier same-page broadcasts from their own channel?
+    - Or SHOULD I keep all the broadcasts handled in channel code
+      - I cam DRY a central broadcast-to-appropriate-topics game-meta-info-updated event
+
 # 2024-10-31
 - Re the @William question bellow, I think I'm going to move all the broadcasts into channel
   - I'll at least be able to compare the two versions and see how looks. I'm pretty sure I'll like that soulution better tho
