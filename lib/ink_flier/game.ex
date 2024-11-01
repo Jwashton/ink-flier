@@ -2,11 +2,10 @@ defmodule InkFlier.Game do
   use TypedStruct
 
   typedstruct do
+    field :name, InkFlier.Lobby.game_id, required: true
     field :creator, player_id
     field :track_id, InkFlier.RaceTrack.id
     field :players, players, default: []
-    field :notify_module, module
-    field :name, InkFlier.Lobby.game_id, required: true
   end
 
   @type observer_id :: any
@@ -17,7 +16,7 @@ defmodule InkFlier.Game do
 
   def new(opts \\ []) do
     fields = Keyword.filter(opts, fn {k,_v} ->
-      k in [:creator, :track_id, :players, :notify_module, :name]
+      k in [:creator, :track_id, :players, :name]
     end)
     struct!(__MODULE__, fields)
   end

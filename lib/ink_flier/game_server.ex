@@ -2,6 +2,7 @@ defmodule InkFlier.GameServer do
   use GenServer
 
   alias InkFlier.Game
+  alias InkFlier.LobbyServer
 
   def start_link(opts) do
     {id, opts} = Keyword.pop!(opts, :id)
@@ -28,9 +29,7 @@ defmodule InkFlier.GameServer do
   def handle_call({:join, player}, _, t) do
     case Game.add_player(t, player) do
       {:ok, t} ->
-        if Game.notify_module(t) do
-          Game.notify_module(t).broadcast({:player_joined, Game.name(t), player})
-        end
+        LobbyServer.broadcast({:player_joined, Game.name(t), player})
         {:reply, :ok, t}
 
       {:error, _} = error -> {:reply, error, t}
