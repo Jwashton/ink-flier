@@ -1,0 +1,29 @@
+<div class="games__header">
+  Games:
+</div>
+
+<div id="game-list" class="games">
+  Loading...
+</div>
+
+
+<template id="game-template">
+  <div class="games__game">
+    <a class="gameLink">
+      Game: <span class="gameId"></span>
+    </a>
+    <span>
+      Creator: <span class="gameCreator"></span>
+    </span>
+    <span class="games__game-buttons">
+      <button class="joinGame">Join</button>
+      <button class="deleteGame">Delete</button>
+      <%# <button class="leaveGame">Leave</button> %>
+    </span>
+    <div class="gamePlayers games__game-players">
+      <span>
+        Loading...
+      </span>
+    </div>
+  </div>
+</template>

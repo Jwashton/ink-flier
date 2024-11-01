@@ -1,0 +1,18 @@
+<div :if={@user} class="nav__login">
+  User: <%= @user %>
+  <span class="nav__login-link">
+    <a href={~p"/logout?return_to=#{@return_to}"}>Logout</a>
+  </span>
+</div>
+
+<div :if={!@user} class="nav__login ">
+  <form method="POST" action="/login">
+    <input type="hidden" name="_csrf_token" value={Phoenix.Controller.get_csrf_token()}>
+    <input type="hidden" name="return_to" value={@return_to}>
+
+    <label for="username">Username</label>
+    <input id="username" name="user_name">
+
+    <button>Log in</button>
+  </form>
+</div>

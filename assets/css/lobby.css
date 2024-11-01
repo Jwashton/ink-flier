@@ -1,0 +1,175 @@
+:root {
+  --b: #1B1C1Fff;
+  --w: white;
+  --t: #21d5e1;
+
+  --1: #5603fc;
+  --2: #C38A1Fff;
+  --3: #872145ff;
+  --4: #7a12a6;
+
+  --border-color: var(--2);
+
+
+  background-color: var(--b);
+  color: var(--t);
+}
+
+@keyframes fadeInAnimation {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+button {
+  --button-bg: var(--4);
+  color: var(--w);
+
+  /* background-color: var(--button-bg); */
+  /* border-color: var(--button-bg); */
+  /* border-radius: 8px; */
+
+  /* source: https://stackoverflow.com/a/1368286/1421642 */
+  background: none!important;
+  padding: 0!important;
+  border: none;
+  color: var(--4);
+  text-decoration: underline;
+  cursor: pointer;
+  text-align: left;
+  font-size: 90%;
+}
+
+a {
+  color: var(--4);
+}
+
+
+.nav {
+  display: grid;
+  grid-template-columns: 2fr 1fr
+}
+
+.nav__hr {
+  margin-bottom: 25px;
+}
+
+.nav__login {
+  border: 1px solid var(--1);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.nav__login-link {
+  margin-left: 30px;
+}
+
+
+.games {
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  margin-left: 20px;
+  margin-right: 40px;
+}
+
+.games__header {
+  margin-top: 30px;
+}
+
+.games__game {
+  display: grid;
+  grid-template-areas:
+    "number  creator links"
+    "players players players"
+  ;
+
+  row-gap: 7px;
+  --gap: 11px;
+  padding: var(--gap) 0 var(--gap) var(--gap);
+
+  &:not(:first-child) {
+    border-top: 1px solid var(--border-color);
+  }
+
+
+  /* Color children */
+  & > :nth-child(1) {
+    color: var(--3);
+  }
+
+  & > :nth-child(2) {
+    color: var(--1);
+  }
+}
+
+.games__game--new {
+  animation: fadeInAnimation ease 3s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+.games__game-players {
+  grid-area: players;
+
+  font-size: 85%;
+  margin-left: 20px;
+  width: 90%;
+
+  /* display: flex; */
+  /* justify-content: space-between; */
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  row-gap: 14px;
+
+  border-top: 1px solid var(--border-color);
+}
+
+.games__game-buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
+
+.tracks {
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  margin-left: 20px;
+  margin-right: 40px;
+
+  display: grid;
+  grid-template-areas:
+    "a links"
+    "b links"
+  ;
+}
+
+.tracks__title {
+  color: var(--3);
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.tracks__links {
+  grid-area: links;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.tracks__obstacle-title {
+  color: var(--1);
+}
+
+.tracks__obstacle-coords {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: auto;
+
+  margin-left: 25px;
+}

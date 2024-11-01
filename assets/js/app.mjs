@@ -10,4 +10,10 @@
 // into your javascript bundle:
 // * deps/phoenix_live_view/priv/static/phoenix_live_view.js
 
-console.log('Hello!');
+// import "./user_socket.js"
+
+// console.log('Hello!');
+
+export function sanitize(string) {
+  return string.replace(/</g,"&lt;")
+}
