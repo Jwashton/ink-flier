@@ -1,3 +1,7 @@
+# 2024-10-31
+- Re the @William question bellow, I think I'm going to move all the broadcasts into channel
+  - I'll at least be able to compare the two versions and see how looks. I'm pretty sure I'll like that soulution better tho
+
 # 2024-10-30
 - [ ] Game joins update Lobby! Next, make Game leave's do the same
 
