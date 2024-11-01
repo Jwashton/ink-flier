@@ -5,8 +5,10 @@ defmodule InkFlierWeb.RoomChannel do
   alias InkFlier.LobbyServer
   alias InkFlier.GameServer
 
+  @main_topic "room:lobby"
+
   @impl Phoenix.Channel
-  def join("room:lobby", payload, socket) do
+  def join(@main_topic, payload, socket) do
     if authorized?(payload) do
       games =
         LobbyServer.games_info
@@ -48,6 +50,8 @@ defmodule InkFlierWeb.RoomChannel do
     broadcast(socket, "game_updated", game_wrapper)
     {:noreply, socket}
   end
+
+  def main_topic, do: @main_topic
 
 
   # Add authorization logic here as required.
