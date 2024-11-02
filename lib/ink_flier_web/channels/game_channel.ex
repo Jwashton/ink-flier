@@ -1,4 +1,4 @@
-defmodule InkFlierWeb.LobbyGameChannel do
+defmodule InkFlierWeb.GameChannel do
   use InkFlierWeb, :channel
   import TinyMaps
 
@@ -7,7 +7,7 @@ defmodule InkFlierWeb.LobbyGameChannel do
   alias InkFlierWeb.Endpoint
 
   @impl Phoenix.Channel
-  def join("lobby_game:" <> game_id, payload, socket) do
+  def join("game:" <> game_id, payload, socket) do
     if authorized?(payload) do
       socket = assign(socket, game_id: game_id)
       players = GameServer.players(game_id)
