@@ -47,11 +47,7 @@ defmodule InkFlierWeb.LobbyGameChannel do
 
       _no_state_change -> nil
     end
-
-
   end
 
-  defp authorized?(_payload) do
-    true
-  end
+  defp authorized?(_payload), do: true
 end
