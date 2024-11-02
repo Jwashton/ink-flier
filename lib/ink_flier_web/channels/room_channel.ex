@@ -41,7 +41,7 @@ defmodule InkFlierWeb.RoomChannel do
   end
 
   @impl Phoenix.Channel
-  def handle_info({msg, game_id, _player_id}, socket) when msg in [:player_joined, :player_left] do
+  def handle_info({msg, game_id, _player_id}, socket) when msg in [:player_left] do
     game_wrapper =
       game_id
       |> GameServer.starting_info

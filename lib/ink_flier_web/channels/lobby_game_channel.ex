@@ -3,6 +3,8 @@ defmodule InkFlierWeb.LobbyGameChannel do
   import TinyMaps
 
   alias InkFlier.GameServer
+  alias InkFlierWeb.RoomChannel
+  alias InkFlierWeb.Endpoint
 
   @impl Phoenix.Channel
   def join("lobby_game:" <> game_id, payload, socket) do
@@ -20,7 +22,21 @@ defmodule InkFlierWeb.LobbyGameChannel do
   def handle_in("join", _params, socket) do
     ~M{user, game_id} = socket.assigns
 
-    broadcast_on_success(socket, game_id, user, &GameServer.join/2, "player_joined")
+    case GameServer.join(game_id, user) do
+      :ok ->
+        players = GameServer.players(game_id)
+
+        game_wrapper =
+          game_id
+          |> GameServer.starting_info
+          |> Map.put(:id, game_id)
+
+        broadcast(socket, "player_joined", ~M{players})
+        Endpoint.broadcast(RoomChannel.main_topic, "game_updated", game_wrapper)
+
+      _no_state_change -> nil
+    end
+
     {:reply, :ok, socket}
   end
 
@@ -42,7 +58,6 @@ defmodule InkFlierWeb.LobbyGameChannel do
         # two broadcasts, one to this page's topic and another to different page's topic: Lobby (who
         # also wants to live-js-update the page on player-change)
         broadcast(socket, success_msg, ~M{players})
-        Endpoint.broadcast(RoomChannel.main_topic, ...)
       _no_state_change -> nil
     end
   end

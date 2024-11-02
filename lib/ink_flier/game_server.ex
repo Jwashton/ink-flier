@@ -28,10 +28,7 @@ defmodule InkFlier.GameServer do
   @impl GenServer
   def handle_call({:join, player}, _, t) do
     case Game.add_player(t, player) do
-      {:ok, t} ->
-        LobbyServer.broadcast({:player_joined, Game.name(t), player})
-        {:reply, :ok, t}
-
+      {:ok, t} -> {:reply, :ok, t}
       {:error, _} = error -> {:reply, error, t}
     end
   end
