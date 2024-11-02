@@ -16,8 +16,9 @@ defmodule InkFlierWeb.CoreComponents do
   """
   use Phoenix.Component
 
+  use Gettext, backend: InkFlierWeb.Gettext
+
   alias Phoenix.LiveView.JS
-  import InkFlierWeb.Gettext
 
   @doc """
   Renders a modal.
