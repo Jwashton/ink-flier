@@ -7,6 +7,12 @@
     - Or SHOULD I keep all the broadcasts handled in channel code
       - I cam DRY a central broadcast-to-appropriate-topics game-meta-info-updated event
 
+    - Update:
+      - I think I like doing all the broadcasts from channels more
+      - The biggest downside is lobby_channel doesn't list ALL the events that it's corresponding javascript for it's page should have channel.on's for
+        - In the previous case, the js writer could check all of lobby_channel's handle_in/handle_info's and look for their broadcasts and replys, then just write js handle.on's for those
+        - But now they also need to look in every channel module, or do a global search for "broadcast" maybe, but that isn't very good
+
 # 2024-10-31
 - Re the @William question bellow, I think I'm going to move all the broadcasts into channel
   - I'll at least be able to compare the two versions and see how looks. I'm pretty sure I'll like that soulution better tho
