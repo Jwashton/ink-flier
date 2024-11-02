@@ -42,8 +42,9 @@ defmodule InkFlierWeb do
         formats: [:html, :json],
         layouts: [html: InkFlierWeb.Layouts]
 
+      use Gettext, backend: InkFlierWeb.Gettext
+
       import Plug.Conn
-      import InkFlierWeb.Gettext
 
       unquote(verified_routes())
 
@@ -88,11 +89,12 @@ defmodule InkFlierWeb do
 
   defp html_helpers do
     quote do
+      # Translation
+      use Gettext, backend: InkFlierWeb.Gettext
       # HTML escaping functionality
       import Phoenix.HTML
       # Core UI components and translation
       import InkFlierWeb.CoreComponents
-      import InkFlierWeb.Gettext
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS
