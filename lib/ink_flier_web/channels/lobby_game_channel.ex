@@ -3,6 +3,8 @@ defmodule InkFlierWeb.LobbyGameChannel do
   import TinyMaps
 
   alias InkFlier.GameServer
+  alias InkFlierWeb.RoomChannel
+  alias InkFlierWeb.Endpoint
 
   @impl Phoenix.Channel
   def join("lobby_game:" <> game_id, payload, socket) do
@@ -18,32 +20,34 @@ defmodule InkFlierWeb.LobbyGameChannel do
 
   @impl Phoenix.Channel
   def handle_in("join", _params, socket) do
-    ~M{user, game_id} = socket.assigns
-
-    broadcast_on_success(socket, game_id, user, &GameServer.join/2, "player_joined")
+    broadcast_on_success(socket, &GameServer.join/2)
     {:reply, :ok, socket}
   end
 
   @impl Phoenix.Channel
-  def handle_in("leave", params, socket) do
-    target = Map.get(params, "target", socket.assigns.user)
-    ~M{game_id} = socket.assigns
-
-    broadcast_on_success(socket, game_id, target, &GameServer.remove/2, "player_left")
+  def handle_in("leave", _params, socket) do
+    broadcast_on_success(socket, &GameServer.remove/2)
     {:reply, :ok, socket}
   end
 
 
-  defp broadcast_on_success(socket, game_id, target, server_command, success_msg) do
-    case server_command.(game_id, target) do
+  defp broadcast_on_success(socket, server_command) do
+    ~M{user, game_id} = socket.assigns
+
+    case server_command.(game_id, user) do
       :ok ->
         players = GameServer.players(game_id)
-        broadcast(socket, success_msg, ~M{players})
+        game_wrapper =
+          game_id
+          |> GameServer.starting_info
+          |> Map.put(:id, game_id)
+
+        broadcast(socket, "players_updated", ~M{players})
+        Endpoint.broadcast(RoomChannel.main_topic, "game_updated", game_wrapper)
+
       _no_state_change -> nil
     end
   end
 
-  defp authorized?(_payload) do
-    true
-  end
+  defp authorized?(_payload), do: true
 end

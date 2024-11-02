@@ -3,10 +3,11 @@ defmodule InkFlierWeb.RoomChannel do
   import TinyMaps
 
   alias InkFlier.LobbyServer
-  alias InkFlier.GameServer
+
+  @main_topic "room:lobby"
 
   @impl Phoenix.Channel
-  def join("room:lobby", payload, socket) do
+  def join(@main_topic, payload, socket) do
     if authorized?(payload) do
       games =
         LobbyServer.games_info
@@ -38,16 +39,7 @@ defmodule InkFlierWeb.RoomChannel do
     {:reply, :ok, socket}
   end
 
-  @impl Phoenix.Channel
-  def handle_info({msg, game_id, _player_id}, socket) when msg in [:player_joined, :player_left] do
-    game_wrapper =
-      game_id
-      |> GameServer.starting_info
-      |> Map.put(:id, game_id)
-
-    broadcast(socket, "game_updated", game_wrapper)
-    {:noreply, socket}
-  end
+  def main_topic, do: @main_topic
 
 
   # Add authorization logic here as required.
