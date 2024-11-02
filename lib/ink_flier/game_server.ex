@@ -20,9 +20,7 @@ defmodule InkFlier.GameServer do
 
 
   @impl GenServer
-  def init(opts) do
-    {:ok, Game.new(opts)}
-  end
+  def init(opts), do: {:ok, Game.new(opts)}
 
   @impl GenServer
   def handle_call({:join, player}, _, t), do: reply_with_ok_or_error(t, Game.add_player(t, player))
