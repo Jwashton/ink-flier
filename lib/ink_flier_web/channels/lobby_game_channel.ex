@@ -20,30 +20,29 @@ defmodule InkFlierWeb.LobbyGameChannel do
 
   @impl Phoenix.Channel
   def handle_in("join", _params, socket) do
-    broadcast_on_success(socket, &GameServer.join/2, "player_joined")
+    broadcast_on_success(socket, &GameServer.join/2)
     {:reply, :ok, socket}
   end
 
   @impl Phoenix.Channel
   def handle_in("leave", _params, socket) do
-    broadcast_on_success(socket, &GameServer.remove/2, "player_left")
+    broadcast_on_success(socket, &GameServer.remove/2)
     {:reply, :ok, socket}
   end
 
 
-  defp broadcast_on_success(socket, server_command, success_msg) do
+  defp broadcast_on_success(socket, server_command) do
     ~M{user, game_id} = socket.assigns
 
     case server_command.(game_id, user) do
       :ok ->
         players = GameServer.players(game_id)
-
         game_wrapper =
           game_id
           |> GameServer.starting_info
           |> Map.put(:id, game_id)
 
-        broadcast(socket, success_msg, ~M{players})
+        broadcast(socket, "players_updated", ~M{players})
         Endpoint.broadcast(RoomChannel.main_topic, "game_updated", game_wrapper)
 
       _no_state_change -> nil
