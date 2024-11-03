@@ -39,7 +39,7 @@ defmodule InkFlier.Game do
   end
   def remove_player!(t, player_id), do: update_in(t.players, &List.delete(&1, player_id))
 
-  def starting_info(t), do: %{creator: t.creator, players: t.players, track_id: t.track_id}
+  def summary_info(t), do: %{name: t.name, creator: t.creator, players: t.players, track_id: t.track_id}
   def creator(t), do: t.creator
   def players(t), do: t.players |> Enum.reverse
   def track_id(t), do: t.track_id

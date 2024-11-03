@@ -39,7 +39,7 @@ defmodule InkFlierWeb.GameChannel do
         players = GameServer.players(game_id)
         game_wrapper =
           game_id
-          |> GameServer.starting_info
+          |> GameServer.summary_info
           |> Map.put(:id, game_id)
 
         broadcast(socket, "players_updated", ~M{players})

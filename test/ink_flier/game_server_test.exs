@@ -8,11 +8,6 @@ defmodule InkFlierTest.GameServer do
     assert GameServer.creator(123) == "Robin"
   end
 
-  test "starting_info/1" do
-    {:ok, _pid} = GameServer.start_link(id: 123, creator: "Batman")
-    assert %{creator: "Batman", players: []} = GameServer.starting_info(123)
-  end
-
   test "A player can join" do
     {:ok, _pid} = GameServer.start_link(id: 123, creator: "Batman")
     :ok = GameServer.join(123, "Robin")
@@ -34,6 +29,6 @@ defmodule InkFlierTest.GameServer do
   test "start_link can take track_id" do
     opts = [id: 123, creator: "Bob", track_id: :some_track]
     {:ok, _pid} = GameServer.start_link(opts)
-    assert %{track_id: :some_track} = GameServer.starting_info(123)
+    assert %{track_id: :some_track} = GameServer.summary_info(123)
   end
 end

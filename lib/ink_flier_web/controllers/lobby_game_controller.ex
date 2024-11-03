@@ -20,7 +20,7 @@ defmodule InkFlierWeb.LobbyGameController do
   def home(conn, ~m{game_id}) do
     # TODO temporarily start_link a new game "321" in application... later it will need to be started from lobby
 
-    ~M{creator, players} = GameServer.starting_info(game_id)
+    ~M{creator, players} = GameServer.summary_info(game_id)
 
     conn
     # TODO don't think we're sending down players here anymore. Which means we might not need GameServer.starting_info... keep it for now is fine tho
