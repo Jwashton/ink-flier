@@ -30,9 +30,9 @@ defmodule InkFlierTest.LobbyServer do
     {:ok, game_id1} = LobbyServer.start_game(@lobby, [])
     {:ok, game_id2} = LobbyServer.start_game(@lobby, creator: "Bob")
 
-    assert [{^game_id1, info1}, {^game_id2, info2}] = LobbyServer.games_info(@lobby)
-    assert %{creator: nil} = info1
-    assert %{creator: "Bob"} = info2
+    assert [info1, info2] = LobbyServer.games_info(@lobby)
+    assert %{name: ^game_id1, creator: nil} = info1
+    assert %{name: ^game_id2, creator: "Bob"} = info2
   end
 
   test "delete_game" do

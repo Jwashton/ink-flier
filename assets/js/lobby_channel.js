@@ -21,7 +21,7 @@ function drawGamesFromScratch(games) {
 }
 
 function makeGameRow(gameWrapper, newGame) {
-  const gameId = gameWrapper.id
+  const gameId = gameWrapper.name
   const gameCreator = gameWrapper.creator
   const gamePlayers = gameWrapper.players
 
@@ -61,7 +61,7 @@ let gameContainer = document.querySelector("#game-list")
 let socket = new Socket("/socket", {params: {token: window.userToken}})
 socket.connect()
 
-let channel = socket.channel("room:lobby", {})
+let channel = socket.channel("lobby:main", {})
 channel.join()
   .receive("ok", games => {
     drawGamesFromScratch(games)
@@ -74,7 +74,7 @@ channel.on("game_created", gameWrapper => {
 
 channel.on("game_updated", gameWrapper => {
   const gameRow = makeGameRow(gameWrapper, null)
-  document.querySelector(`[data-game-id="${gameWrapper.id}"]`).replaceWith(gameRow)
+  document.querySelector(`[data-game-id="${gameWrapper.name}"]`).replaceWith(gameRow)
 })
 
 channel.on("game_deleted", payload => {

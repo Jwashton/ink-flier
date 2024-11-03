@@ -75,12 +75,10 @@ defmodule InkFlier.LobbyServer do
   def handle_call(:games_info, _, t) do
     t
     |> Lobby.games
-    |> Enum.map(&game_info_tuple/1)
+    |> Enum.map(&GameServer.summary_info/1)
     |> reply(t)
   end
 
 
   defp reply(msg, t), do: {:reply, msg, t}
-
-  defp game_info_tuple(game_id), do: {game_id, GameServer.starting_info(game_id)}
 end

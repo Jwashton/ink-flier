@@ -14,7 +14,7 @@ defmodule InkFlier.GameServer do
 
   def creator(id), do: GenServer.call(via(id), :creator)
   def players(id), do: GenServer.call(via(id), :players)
-  def starting_info(id), do: GenServer.call(via(id), :starting_info)
+  def summary_info(id), do: GenServer.call(via(id), :summary_info)
 
   def via(id), do: {:via, Registry, {Registry.Game, id}}
 
@@ -35,7 +35,7 @@ defmodule InkFlier.GameServer do
   def handle_call(:players, _, t), do: {:reply, Game.players(t), t}
 
   @impl GenServer
-  def handle_call(:starting_info, _, t), do: {:reply, Game.starting_info(t), t}
+  def handle_call(:summary_info, _, t), do: {:reply, Game.summary_info(t), t}
 
 
   defp reply_with_ok_or_error(t, reply) do

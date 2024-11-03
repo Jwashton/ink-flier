@@ -8,7 +8,7 @@ const playerListElement = document.getElementById("player-list")
 let socket = new Socket("/socket", {params: {token: window.userToken}})
 socket.connect()
 
-let channel = socket.channel(`lobby_game:${gameId}`, {})
+let channel = socket.channel(`game:${gameId}`, {})
 channel.join()
   .receive("ok", resp => { drawPlayers(resp.players) })
   .receive("error", resp => { console.log("Unable to join", resp) })
