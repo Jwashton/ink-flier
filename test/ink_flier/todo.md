@@ -1,17 +1,7 @@
 # 2024-11-01
 - @William/me
   - On broadcast from channel or engine
-    - Maybe YES from engine? I might/will be doing player-join events from different pages
-    - Dont wanna repeat the broadcast to multiple topics code for every button on every pg that fires the event
-    - Maybe it is fine to handle cross-page broadcast responsibility in the engine and easier same-page broadcasts from their own channel?
-    - Or SHOULD I keep all the broadcasts handled in channel code
-      - I cam DRY a central broadcast-to-appropriate-topics game-meta-info-updated event
-
-    - Update:
-      - I think I like doing all the broadcasts from channels more
-      - The biggest downside is lobby_channel doesn't list ALL the events that it's corresponding javascript for it's page should have channel.on's for
-        - In the previous case, the js writer could check all of lobby_channel's handle_in/handle_info's and look for their broadcasts and replys, then just write js handle.on's for those
-        - But now they also need to look in every channel module, or do a global search for "broadcast" maybe, but that isn't very good
+    - I typed this up in [the pr](https://github.com/Jwashton/ink-flier/pull/15)
 
 # 2024-10-31
 - Re the @William question bellow, I think I'm going to move all the broadcasts into channel
