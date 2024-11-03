@@ -11,6 +11,8 @@ defmodule InkFlierWeb.LobbyChannel do
     if authorized?(payload) do
       games =
         LobbyServer.games_info
+      raise "next, gamesInfo has the game id in them now, altho it's called name. Let's make the client expect name instead of id. Then I can super simplify these channel calls, and in other channel"
+        |> dbg(charlists: :as_lists)
         |> Enum.reverse
         |> Enum.map(fn {id, game_info} ->
           ~M{id, players: game_info.players, creator: game_info.creator}
