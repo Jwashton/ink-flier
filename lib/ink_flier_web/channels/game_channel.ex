@@ -3,7 +3,7 @@ defmodule InkFlierWeb.GameChannel do
   import TinyMaps
 
   alias InkFlier.GameServer
-  alias InkFlierWeb.RoomChannel
+  alias InkFlierWeb.LobbyChannel
   alias InkFlierWeb.Endpoint
 
   @impl Phoenix.Channel
@@ -43,7 +43,7 @@ defmodule InkFlierWeb.GameChannel do
           |> Map.put(:id, game_id)
 
         broadcast(socket, "players_updated", ~M{players})
-        Endpoint.broadcast(RoomChannel.main_topic, "game_updated", game_wrapper)
+        Endpoint.broadcast(LobbyChannel.main_topic, "game_updated", game_wrapper)
 
       _no_state_change -> nil
     end

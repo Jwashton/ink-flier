@@ -61,7 +61,7 @@ let gameContainer = document.querySelector("#game-list")
 let socket = new Socket("/socket", {params: {token: window.userToken}})
 socket.connect()
 
-let channel = socket.channel("room:lobby", {})
+let channel = socket.channel("lobby:main", {})
 channel.join()
   .receive("ok", games => {
     drawGamesFromScratch(games)

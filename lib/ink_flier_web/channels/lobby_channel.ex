@@ -1,10 +1,10 @@
-defmodule InkFlierWeb.RoomChannel do
+defmodule InkFlierWeb.LobbyChannel do
   use InkFlierWeb, :channel
   import TinyMaps
 
   alias InkFlier.LobbyServer
 
-  @main_topic "room:lobby"
+  @main_topic "lobby:main"
 
   @impl Phoenix.Channel
   def join(@main_topic, payload, socket) do

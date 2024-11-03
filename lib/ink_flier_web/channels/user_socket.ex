@@ -2,7 +2,7 @@ defmodule InkFlierWeb.UserSocket do
   use Phoenix.Socket
   import TinyMaps
 
-  channel "room:*", InkFlierWeb.RoomChannel
+  channel "lobby:*", InkFlierWeb.LobbyChannel
   channel "game:*", InkFlierWeb.GameChannel
 
   # Socket params are passed from the client and can
