@@ -3,22 +3,14 @@ defmodule InkFlierWeb.LobbyChannel do
   import TinyMaps
 
   alias InkFlier.LobbyServer
+  alias InkFlier.GameServer
 
   @main_topic "lobby:main"
 
   @impl Phoenix.Channel
   def join(@main_topic, payload, socket) do
     if authorized?(payload) do
-      games =
-        LobbyServer.games_info
-      raise "next, gamesInfo has the game id in them now, altho it's called name. Let's make the client expect name instead of id. Then I can super simplify these channel calls, and in other channel"
-        |> dbg(charlists: :as_lists)
-        |> Enum.reverse
-        |> Enum.map(fn {id, game_info} ->
-          ~M{id, players: game_info.players, creator: game_info.creator}
-        end)
-
-      {:ok, games, socket}
+      {:ok, LobbyServer.games_info |> Enum.reverse, socket}
     else
       {:error, %{reason: "unauthorized"}}
     end
@@ -26,17 +18,16 @@ defmodule InkFlierWeb.LobbyChannel do
 
   @impl Phoenix.Channel
   def handle_in("create_game", _track_id, socket) do
-    user = socket.assigns.user
-    {:ok, game_id} = LobbyServer.start_game(creator: user)
-    game_wrapper = %{id: game_id, creator: user, players: []}
+    {:ok, game_id} = LobbyServer.start_game(creator: socket.assigns.user)
 
-    broadcast(socket, "game_created", game_wrapper)
+    broadcast(socket, "game_created", GameServer.summary_info(game_id))
     {:reply, :ok, socket}
   end
 
   @impl Phoenix.Channel
   def handle_in("delete_game", game_id, socket) do
     :ok = LobbyServer.delete_game(game_id)
+
     broadcast(socket, "game_deleted", ~M{game_id})
     {:reply, :ok, socket}
   end
@@ -44,8 +35,5 @@ defmodule InkFlierWeb.LobbyChannel do
   def main_topic, do: @main_topic
 
 
-  # Add authorization logic here as required.
-  defp authorized?(_payload) do
-    true
-  end
+  defp authorized?(_payload), do: true
 end

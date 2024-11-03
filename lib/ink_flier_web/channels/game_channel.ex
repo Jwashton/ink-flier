@@ -31,19 +31,15 @@ defmodule InkFlierWeb.GameChannel do
   end
 
 
-  defp broadcast_on_success(socket, server_command) do
+  defp broadcast_on_success(socket, game_command) do
     ~M{user, game_id} = socket.assigns
 
-    case server_command.(game_id, user) do
+    case game_command.(game_id, user) do
       :ok ->
         players = GameServer.players(game_id)
-        game_wrapper =
-          game_id
-          |> GameServer.summary_info
-          |> Map.put(:id, game_id)
 
         broadcast(socket, "players_updated", ~M{players})
-        Endpoint.broadcast(LobbyChannel.main_topic, "game_updated", game_wrapper)
+        Endpoint.broadcast(LobbyChannel.main_topic, "game_updated", GameServer.summary_info(game_id))
 
       _no_state_change -> nil
     end
