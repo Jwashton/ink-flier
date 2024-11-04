@@ -1,5 +1,6 @@
 # 2024-11-04
 - Gracefully redirect to lobby if game id doesn't exist
+  - Is there a nice way to test it? I think there are channel AND controller tests with nice doc (and even generated example tests in our existing folder possibly. Check the hex tho)
 
 # 2024-11-02
 - Really need atleast a few frontend tests (Would just the channel tests work?)
