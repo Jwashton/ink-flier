@@ -1,7 +1,18 @@
+# 2024-11-04
+- Gracefully redirect to lobby if game id doesn't exist
+
+# 2024-11-02
+- Really need atleast a few frontend tests (Would just the channel tests work?)
+  - Manually reloading everything and clicking around a bunch when I update the channels is super slowdown
+
+- Big remaining todo that'll be nice when done: retire LobbyServer in the ways listed below
+
 # 2024-11-01
-- @William/me
+- @William
   - On broadcast from channel or engine
     - I typed this up in [the pr](https://github.com/Jwashton/ink-flier/pull/15)
+  - Can you help me setup some channel tests, or possibly hound/whatever, for the reload-all-pages-for-fresh-js and click a bunch of places to test new game and player join/leave etc all work
+    - Manually doing it each time is so not test'y, and makes everything way slower when refactoring the channels
 
 # 2024-10-31
 - Re the @William question bellow, I think I'm going to move all the broadcasts into channel
