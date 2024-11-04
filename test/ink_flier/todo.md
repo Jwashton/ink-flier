@@ -2,6 +2,13 @@
 - Gracefully redirect to lobby if game id doesn't exist
   - Is there a nice way to test it? I think there are channel AND controller tests with nice doc (and even generated example tests in our existing folder possibly. Check the hex tho)
 
+- Play with some of the css/ui for Moves (player locked in, list players current lock-in status and previous turn's postions, round #)
+
+- Maybe make the fun which-css-to-load-as-an-@assign code in the layout file! :)
+  - Later can easily repeat for js. Only do the css first tho
+    - Since I want to split it up into one css for all lobbies and then some page-element-specific ones
+
+
 # 2024-11-02
 - Really need atleast a few frontend tests (Would just the channel tests work?)
   - Manually reloading everything and clicking around a bunch when I update the channels is super slowdown
