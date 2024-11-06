@@ -1,3 +1,12 @@
+# 2024-11-05
+- with @william answers
+  - LobbyServer (the migration to flat Lobby "context")
+  - the good way to do it piecemeal, start by making the GameCache/CameStore process. Call to that in all the LobbyServer handlecalls, without otherwise nuking them
+  - Once that works, I can make those gameserver "t" state changes no longer do anything. Just be nil
+  - And then flatten it out of genserver mode, and just called lobby
+
+  - Also, the notes below from last time, especially the MasterSupervisor of Supervisors starting the two GameSupervisor and GameStore, and letting them know eachothers names' (test or default or whatever)
+
 # 2024-11-04
 - Gracefully redirect to lobby if game id doesn't exist
   - Is there a nice way to test it? I think there are channel AND controller tests with nice doc (and even generated example tests in our existing folder possibly. Check the hex tho)
