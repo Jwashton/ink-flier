@@ -14,7 +14,7 @@ channel.join()
   .receive("error", resp => { console.log("Unable to join", resp) })
 
 
-channel.on("players_update", resp => { drawPlayers(resp.players) })
+channel.on("players_updated", resp => { drawPlayers(resp.players) })
 
 document.getElementById("join-button").addEventListener("click", (resp) => { channel.push("join") })
 document.getElementById("leave-button").addEventListener("click", (resp) => { channel.push("leave") })
