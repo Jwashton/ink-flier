@@ -4,8 +4,12 @@ defmodule InkFlierWeb.LobbyChannel do
 
   alias InkFlier.LobbyServer
   alias InkFlier.GameServer
+  alias InkFlierWeb.Endpoint
 
   @main_topic "lobby:main"
+
+  def game_updated(game_id), do: Endpoint.broadcast(@main_topic, "game_updated", GameServer.summary_info(game_id))
+
 
   @impl Phoenix.Channel
   def join(@main_topic, payload, socket) do
@@ -31,8 +35,6 @@ defmodule InkFlierWeb.LobbyChannel do
     broadcast(socket, "game_deleted", ~M{game_id})
     {:reply, :ok, socket}
   end
-
-  def main_topic, do: @main_topic
 
 
   defp authorized?(_payload), do: true

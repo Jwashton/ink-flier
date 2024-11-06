@@ -4,7 +4,6 @@ defmodule InkFlierWeb.GameChannel do
 
   alias InkFlier.GameServer
   alias InkFlierWeb.LobbyChannel
-  alias InkFlierWeb.Endpoint
 
   @impl Phoenix.Channel
   def join("game:" <> game_id, payload, socket) do
@@ -39,7 +38,7 @@ defmodule InkFlierWeb.GameChannel do
         players = GameServer.players(game_id)
 
         broadcast(socket, "players_updated", ~M{players})
-        Endpoint.broadcast(LobbyChannel.main_topic, "game_updated", GameServer.summary_info(game_id))
+        LobbyChannel.game_updated(game_id)
 
       _no_state_change -> nil
     end
