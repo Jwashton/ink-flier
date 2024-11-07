@@ -1,4 +1,4 @@
-defmodule InkFlierWeb.LobbyGameChannelTest do
+defmodule InkFlierWeb.GameChannelTest do
   use InkFlierWeb.ChannelCase
 
   # setup do
