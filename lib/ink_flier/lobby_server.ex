@@ -41,6 +41,8 @@ defmodule InkFlier.LobbyServer do
 
   def whereis(game_id), do: game_id |> GameServer.via |> GenServer.whereis
 
+  def default_name, do: @name
+
 
   @impl GenServer
   def init(game_supervisor), do: {:ok, Lobby.new(game_supervisor)}
