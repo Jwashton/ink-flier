@@ -28,7 +28,8 @@
           ```
         - But getEnv for test, or something like that
           - Then tests are required to start_supervised! the thing manually, but they WONT have to give it a special name
-          - And I can murder all that overrideable @name \\ name... stuff if I want
+          - And I can kill all that overrideable @name \\ name... stuff if I want
+          - AND I can kill the annoying socket.assigns.lobby param I had to add all over lobby_channel.ex
 
 
 # 2024-11-05
