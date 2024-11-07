@@ -1,3 +1,36 @@
+# 2024-11-06
+- @William
+  - Should I not be starting my main processes (LobbyServer or GameSupervisor or GameCache etc) in Application (so they auto start when I restart the server)?
+    - I thought that was the normal thing, but it seems to cause a lot of problems when I want to test stuff
+    - There's a globally started one my real application will use, but I also need to add an overrideable name to every stinking engine genserver I create
+      - So I can have one globally-started application one, but some specifically-named ones JUST for my tests. Noone else cares about this option
+
+    - Not only does it need me to add that overrideable name to every engine genserver I want to test...
+      - It ALSO needs me to add this to the channel code:
+          ```lobby_channel.ex
+          socket = assign_new(socket, :lobby, LobbyServer.default_name)
+
+          # ...
+
+          # Then, every time I call LobbyServer (or whichever engine genserver), I can't use the default name, I have to go:
+          {:ok, game_id} = LobbyServer.start_game(socket.assigns.lobby, creator: socket.assigns.user)
+
+          # instead of just
+          {:ok, game_id} = LobbyServer.start_game(creator: socket.assigns.user)
+          ```
+    - I think MAYBE it's fine. Maybe I should get used to always calling engine processes by SOME name-or-pid in their first param, even if I ask them what their default is like with that LobbyServer.default_name
+    - It feels weird tho, like I'm messing with the code too much to make the tests work
+
+    - Possible answer: Maybe there's some config setting I'm supposed to run where application doesn't start some of the things if I'm in test mode...
+      - I bet it's this:
+          ```
+          {DNSCluster, query: Application.get_env(:ink_flier, :dns_cluster_query) || :ignore},
+          ```
+        - But getEnv for test, or something like that
+          - Then tests are required to start_supervised! the thing manually, but they WONT have to give it a special name
+          - And I can murder all that overrideable @name \\ name... stuff if I want
+
+
 # 2024-11-05
 - with @william answers
   - LobbyServer (the migration to flat Lobby "context")
