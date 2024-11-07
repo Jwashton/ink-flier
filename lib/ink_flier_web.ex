@@ -33,6 +33,10 @@ defmodule InkFlierWeb do
   def channel do
     quote do
       use Phoenix.Channel
+
+      defp assign_new(socket, k, v) do
+        if socket.assigns[k], do: socket, else: assign(socket, k, v)
+      end
     end
   end
 

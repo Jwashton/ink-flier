@@ -13,12 +13,7 @@ defmodule InkFlierWeb.LobbyChannel do
 
   @impl Phoenix.Channel
   def join(@main_topic, payload, socket) do
-    socket =
-      if socket.assigns[:lobby] do
-        socket
-      else
-        assign(socket, :lobby, LobbyServer.default_name)
-      end
+    socket = assign_new(socket, :lobby, LobbyServer.default_name)
 
     if authorized?(payload) do
       {:ok, LobbyServer.games_info(socket.assigns.lobby) |> Enum.reverse, socket}
