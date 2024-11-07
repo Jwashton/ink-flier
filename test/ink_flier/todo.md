@@ -1,4 +1,8 @@
 # 2024-11-06
+- [X] Channel tests are actually working!
+- [ ] Next I can start filling in the actual tests checking returns, etc
+- Finally, I can write a test (and then actually implement) graceful channel (or router or something) redirects when we try to connect to a game id that doesn't exist/was deleted
+
 - @William
   - Should I not be starting my main processes (LobbyServer or GameSupervisor or GameCache etc) in Application (so they auto start when I restart the server)?
     - I thought that was the normal thing, but it seems to cause a lot of problems when I want to test stuff
