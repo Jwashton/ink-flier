@@ -1,27 +1,36 @@
 defmodule InkFlierWeb.GameChannelTest do
   use InkFlierWeb.ChannelCase
+  alias InkFlier.LobbyServer
+  alias InkFlier.GameSupervisor
 
-  # setup do
-  #   {:ok, _, socket} =
-  #     InkFlierWeb.UserSocket
-  #     |> socket("user_id", %{some: :assign})
-  #     |> subscribe_and_join(InkFlierWeb.LobbyGameChannel, "lobby_game:lobby")
+  @lobby __MODULE__.LobbyServer
+  @game_starter __MODULE__.GameSupervisor
 
-  #   %{socket: socket}
-  # end
+  setup do
+    start_supervised!({GameSupervisor, name: @game_starter})
+    start_supervised!({LobbyServer, name: @lobby, game_supervisor: @game_starter})
+    :ok
+  end
 
-  # test "ping replies with status ok", %{socket: socket} do
-  #   ref = push(socket, "ping", %{"hello" => "there"})
-  #   assert_reply ref, :ok, %{"hello" => "there"}
-  # end
 
-  # test "shout broadcasts to lobby_game:lobby", %{socket: socket} do
-  #   push(socket, "shout", %{"hello" => "all"})
-  #   assert_broadcast "shout", %{"hello" => "all"}
-  # end
+  test "Broadcast goes to multiple topics (Game AND Lobby)" do
+    {:ok, game_id} = LobbyServer.start_game(@lobby, creator: "BillyBob")
+    game_topic = "game:" <> game_id
 
-  # test "broadcasts are pushed to the client", %{socket: socket} do
-  #   broadcast_from!(socket, "broadcast", %{"some" => "data"})
-  #   assert_push "broadcast", %{"some" => "data"}
-  # end
+    {:ok, _join_reply, game_socket} =
+      InkFlierWeb.UserSocket
+      |> socket("user_id", %{user: "Robin", lobby: @lobby})
+      |> subscribe_and_join(InkFlierWeb.GameChannel, game_topic)
+
+    {:ok, _join_reply, _lobby_socket} =
+      InkFlierWeb.UserSocket
+      |> socket("user_id", %{user: "Robin", lobby: @lobby})
+      |> subscribe_and_join(InkFlierWeb.LobbyChannel, "lobby:main")
+
+    push(game_socket, "join", %{}) |> assert_reply(:ok)
+    %{topic: ^game_topic} = assert_broadcast("players_updated", _)
+    %{topic: "lobby:main"} = assert_broadcast("game_updated", _)
+  end
+
+  # test "game doesn't exist, redirect gracefully" do
 end
