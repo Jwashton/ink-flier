@@ -13,16 +13,18 @@ defmodule InkFlierWeb.LobbyChannelTest do
   end
 
 
-  test "Should get a list of started games on join" do
-    {:ok, _game_id} = LobbyServer.start_game(@lobby, creator: "BillyBob")
+  describe "join" do
+    setup [:start_game]
 
-    {:ok, game_list_reply, _socket} =
-      InkFlierWeb.UserSocket
-      |> socket("user_id", %{user: "Robin", lobby: @lobby})
-      |> subscribe_and_join(InkFlierWeb.LobbyChannel, "lobby:main")
+    test "Should get a list of started games" do
+      {:ok, game_list_reply, _socket} =
+        InkFlierWeb.UserSocket
+        |> socket("user_id", %{user: "Robin", lobby: @lobby})
+        |> subscribe_and_join(InkFlierWeb.LobbyChannel, "lobby:main")
 
-    assert [game_reply | []] = game_list_reply
-    assert game_reply.creator == "BillyBob"
+      assert [game_reply | []] = game_list_reply
+      assert game_reply.creator == "BillyBob"
+    end
   end
 
   describe "Push: create_game" do
@@ -45,6 +47,12 @@ defmodule InkFlierWeb.LobbyChannelTest do
 
       assert_broadcast "game_created", %{creator: "Robin"}
     end
+  end
+
+
+  defp start_game(_) do
+    {:ok, _game_id} = LobbyServer.start_game(@lobby, creator: "BillyBob")
+    :ok
   end
 
 
