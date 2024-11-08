@@ -1,4 +1,7 @@
 # 2024-11-07
+- Next, continue game_channel_test.exs
+  - I can write a test (and then actually implement) graceful channel (or router or something) redirects when we try to connect to a game id that doesn't exist/was deleted
+
 - @William
   - (answered, but see below about show william how to solve the check-multiple-channels-recieving-broadcasts problem)
     - In the channel tests, when I do: Process.info(self(), :messages)
@@ -16,8 +19,7 @@
 
 # 2024-11-06
 - [X] Channel tests are actually working!
-- [ ] Next I can start filling in the actual tests checking returns, etc
-- Finally, I can write a test (and then actually implement) graceful channel (or router or something) redirects when we try to connect to a game id that doesn't exist/was deleted
+- [X] Next I can start filling in the actual tests checking returns, etc
 
 - @William
   - Should I not be starting my main processes (LobbyServer or GameSupervisor or GameCache etc) in Application (so they auto start when I restart the server)?
