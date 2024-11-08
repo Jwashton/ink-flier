@@ -1,3 +1,17 @@
+# 2024-11-07
+- @William
+  - (answered, but see below about show william how to solve the check-multiple-channels-recieving-broadcasts problem)
+    - In the channel tests, when I do: Process.info(self(), :messages)
+      - eg. game_channel_test sends player "join" event. or lobby sends "game_created"
+    - When I inspect that Process.info thing, The messages are doubled. One says broadcast and one says message
+    - I THINK this is something to do with the channeltests special subscribe_and_join thing
+    - But it's possible I'm always sending this event twice which would be lame
+      - Actually, I can test this with js console outputs on the .on's
+      - Yeah, we're good. Only sends once
+
+    - Show William the assert_broadcast (has a return value we can check for WHICH topic got the broadcast) <3 xD
+      - code in game_channel_test.exs
+
 # 2024-11-06
 - [X] Channel tests are actually working!
 - [ ] Next I can start filling in the actual tests checking returns, etc
