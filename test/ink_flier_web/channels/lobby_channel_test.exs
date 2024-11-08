@@ -37,10 +37,22 @@ defmodule InkFlierWeb.LobbyChannelTest do
     end
   end
 
+  describe "Push: delete_game" do
+    setup [:start_game, :join_lobby]
+
+    test "Delete works", ~M{socket, game_id} do
+      push(socket, "delete_game", game_id)
+
+      assert_broadcast "game_deleted", %{game_id: ^game_id}
+      assert LobbyServer.games_info(@lobby) |> length == 0
+    end
+  end
+
+
 
   defp start_game(_) do
-    {:ok, _game_id} = LobbyServer.start_game(@lobby, creator: "BillyBob")
-    :ok
+    {:ok, game_id} = LobbyServer.start_game(@lobby, creator: "BillyBob")
+    ~M{game_id}
   end
 
   defp join_lobby(_) do
