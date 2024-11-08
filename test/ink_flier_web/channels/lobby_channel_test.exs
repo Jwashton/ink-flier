@@ -27,8 +27,6 @@ defmodule InkFlierWeb.LobbyChannelTest do
     setup [:join_lobby, :push_create_game]
 
     test "actually creats a game" do
-      assert_broadcast _msg, _payload
-      # First do an assert_broadcast (or timer.sleep), since push/3 is async
       assert LobbyServer.games_info(@lobby) |> length == 1
     end
 
@@ -41,10 +39,10 @@ defmodule InkFlierWeb.LobbyChannelTest do
     setup [:start_game, :join_lobby]
 
     test "Delete works", ~M{socket, game_id} do
-      push(socket, "delete_game", game_id)
+      push(socket, "delete_game", game_id) |> assert_reply(:ok)
 
-      assert_broadcast "game_deleted", %{game_id: ^game_id}
       assert LobbyServer.games_info(@lobby) |> length == 0
+      assert_broadcast "game_deleted", %{game_id: ^game_id}
     end
   end
 
@@ -64,7 +62,8 @@ defmodule InkFlierWeb.LobbyChannelTest do
   end
 
   defp push_create_game(~M{socket}) do
-    push(socket, "create_game", %{})
+    # push/3 by itself is async. Use assert_reply/4 to wait for reply and not cause a race
+    push(socket, "create_game", %{}) |> assert_reply(:ok)
     :ok
   end
 end
