@@ -16,6 +16,7 @@ defmodule InkFlierWeb.GameChannelTest do
   test "Broadcast goes to multiple topics (Game AND Lobby)" do
     {:ok, game_id} = LobbyServer.start_game(@lobby, creator: "BillyBob")
     game_topic = "game:" <> game_id
+    lobby_topic = "lobby:main"
 
     {:ok, _join_reply, game_socket} =
       InkFlierWeb.UserSocket
@@ -25,11 +26,11 @@ defmodule InkFlierWeb.GameChannelTest do
     {:ok, _join_reply, _lobby_socket} =
       InkFlierWeb.UserSocket
       |> socket("user_id", %{user: "Robin", lobby: @lobby})
-      |> subscribe_and_join(InkFlierWeb.LobbyChannel, "lobby:main")
+      |> subscribe_and_join(InkFlierWeb.LobbyChannel, lobby_topic)
 
     push(game_socket, "join", %{}) |> assert_reply(:ok)
     %{topic: ^game_topic} = assert_broadcast("players_updated", _)
-    %{topic: "lobby:main"} = assert_broadcast("game_updated", _)
+    %{topic: ^lobby_topic} = assert_broadcast("game_updated", _)
   end
 
   # test "game doesn't exist, redirect gracefully" do
