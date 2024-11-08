@@ -14,33 +14,25 @@ defmodule InkFlierWeb.LobbyChannelTest do
   end
 
 
-  describe "join" do
-    setup [:start_game]
+  describe "Start games then join lobby" do
+    setup [:start_game, :join_lobby]
 
-    test "Should get a list of started games" do
-      {:ok, game_list_reply, _socket} =
-        InkFlierWeb.UserSocket
-        |> socket("user_id", %{user: "Robin", lobby: @lobby})
-        |> subscribe_and_join(InkFlierWeb.LobbyChannel, "lobby:main")
-
-      assert [game_reply | []] = game_list_reply
-      assert game_reply.creator == "BillyBob"
+    test "Should return a list of started games", ~M{join_reply} do
+      assert [game1 | []] = join_reply
+      assert game1.creator == "BillyBob"
     end
   end
 
   describe "Push: create_game" do
-    setup [:join_lobby]
+    setup [:join_lobby, :push_create_game]
 
-    test "actually creats a game", ~M{socket} do
-      push(socket, "create_game", %{})
-
+    test "actually creats a game" do
       assert_broadcast _msg, _payload
-      # Needs to happen after assert_broadcast or time.sleeper, since push/3 is async aparently
+      # First do an assert_broadcast (or timer.sleep), since push/3 is async
       assert LobbyServer.games_info(@lobby) |> length == 1
     end
 
-    test "broadcasts the resulting game", ~M{socket} do
-      push(socket, "create_game", %{})
+    test "broadcasts the resulting game" do
       assert_broadcast "game_created", %{creator: "Robin"}
     end
   end
@@ -52,11 +44,16 @@ defmodule InkFlierWeb.LobbyChannelTest do
   end
 
   defp join_lobby(_) do
-    {:ok, _reply, socket} =
+    {:ok, join_reply, socket} =
       InkFlierWeb.UserSocket
       |> socket("user_id", %{user: "Robin", lobby: @lobby})
       |> subscribe_and_join(InkFlierWeb.LobbyChannel, "lobby:main")
-    ~M{socket}
+    ~M{join_reply, socket}
+  end
+
+  defp push_create_game(~M{socket}) do
+    push(socket, "create_game", %{})
+    :ok
   end
 
   # test "ping replies with status ok", %{socket: socket} do
