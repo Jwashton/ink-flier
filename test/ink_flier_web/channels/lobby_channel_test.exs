@@ -21,6 +21,13 @@ defmodule InkFlierWeb.LobbyChannelTest do
       assert [game1 | []] = join_reply
       assert game1.creator == "BillyBob"
     end
+
+    test "Push delete also works", ~M{socket, game_id} do
+      push(socket, "delete_game", game_id) |> assert_reply(:ok)
+
+      assert LobbyServer.games_info(@lobby) |> length == 0
+      assert_broadcast "game_deleted", %{game_id: ^game_id}
+    end
   end
 
   describe "Push: create_game" do
@@ -32,17 +39,6 @@ defmodule InkFlierWeb.LobbyChannelTest do
 
     test "broadcasts the resulting game" do
       assert_broadcast "game_created", %{creator: "Robin"}
-    end
-  end
-
-  describe "Push: delete_game" do
-    setup [:start_game, :join_lobby]
-
-    test "Delete works", ~M{socket, game_id} do
-      push(socket, "delete_game", game_id) |> assert_reply(:ok)
-
-      assert LobbyServer.games_info(@lobby) |> length == 0
-      assert_broadcast "game_deleted", %{game_id: ^game_id}
     end
   end
 
