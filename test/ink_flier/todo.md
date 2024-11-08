@@ -1,4 +1,9 @@
 # 2024-11-07
+- Play with the william question below about conditionally starting stuff in application only if we're NOT in test env
+  - So I can take out all the `lobby: @lobby` first params in a million tests calling genserver functions
+  - Can use the default global name, the tests will just manually start that global process with start_supervised!
+    - (So that it gets reset between tests)
+
 - Next, continue game_channel_test.exs
   - I can write a test (and then actually implement) graceful channel (or router or something) redirects when we try to connect to a game id that doesn't exist/was deleted
 
@@ -49,9 +54,9 @@
           {DNSCluster, query: Application.get_env(:ink_flier, :dns_cluster_query) || :ignore},
           ```
         - But getEnv for test, or something like that
-          - Then tests are required to start_supervised! the thing manually, but they WONT have to give it a special name
-          - And I can kill all that overrideable @name \\ name... stuff if I want
-          - AND I can kill the annoying socket.assigns.lobby param I had to add all over lobby_channel.ex
+          - [ ] Then tests are required to start_supervised! the thing manually, but they WONT have to give it a special name
+          - [ ] And I can kill all that overrideable @name \\ name... stuff if I want
+          - [ ] AND I can kill the annoying socket.assigns.lobby param I had to add all over lobby_channel.ex
 
 
 # 2024-11-05
