@@ -12,6 +12,8 @@
     - Show William the assert_broadcast (has a return value we can check for WHICH topic got the broadcast) <3 xD
       - code in game_channel_test.exs
 
+      - Process.info and scanning the list manually would also have worked. Still being able to use the built-in assert_broadcast even in this advanced weirdo situation is awesome tho
+
 # 2024-11-06
 - [X] Channel tests are actually working!
 - [ ] Next I can start filling in the actual tests checking returns, etc
