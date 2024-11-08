@@ -1,3 +1,11 @@
+# 2024-11-08
+- @William
+  - How hard would it be to setup docker so I could basically uninstall elixir and erlang from the computer (like how there's no actual sql on this computer) and instead use the most up-to-date versions through docker?
+    - But still be able to use vim or other local computer stuff as my editor, not necessarily vscode's special virtual environment or w/e
+    - And to run tests and mix <whatever>, in a cmd prompt or something equiv that was somehow able to access the docker stuff
+    - Altho I guess mix runs and interacts with the sql database already. So maybe docker is taking care of a lot of this. I just need to do turn it on and off when I want with a docker compose sort of thing?
+    - It can't be that easy, can it? To just do a elixir & erlang version of the same thing we did with the sql?
+
 # 2024-11-07
 - Play with the william question below about conditionally starting stuff in application only if we're NOT in test env
   - So I can take out all the `lobby: @lobby` first params in a million tests calling genserver functions
