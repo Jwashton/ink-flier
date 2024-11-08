@@ -15,12 +15,13 @@ defmodule InkFlierWeb.LobbyChannelTest do
   test "Should get a list of started games on join" do
     {:ok, _game_id} = LobbyServer.start_game(@lobby, creator: "BillyBob")
 
-    {:ok, reply, _socket} =
+    {:ok, game_list_reply, _socket} =
       InkFlierWeb.UserSocket
       |> socket("user_id", %{user: "Robin", lobby: @lobby})
       |> subscribe_and_join(InkFlierWeb.LobbyChannel, "lobby:main")
 
-    assert %{todo: 321} in reply
+    assert [game_reply | []] = game_list_reply
+    assert game_reply.creator == "BillyBob"
   end
 
   # test "next" do
