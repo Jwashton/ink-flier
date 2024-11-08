@@ -1,5 +1,6 @@
 defmodule InkFlierWeb.LobbyChannelTest do
   use InkFlierWeb.ChannelCase
+  import TinyMaps
   alias InkFlier.LobbyServer
   alias InkFlier.GameSupervisor
 
@@ -28,23 +29,18 @@ defmodule InkFlierWeb.LobbyChannelTest do
   end
 
   describe "Push: create_game" do
-    test "actually creats a game" do
-      InkFlierWeb.UserSocket
-      |> socket("user_id", %{user: "Robin", lobby: @lobby})
-      |> subscribe_and_join!(InkFlierWeb.LobbyChannel, "lobby:main")
-      |> push("create_game", %{})
+    setup [:join_lobby]
+
+    test "actually creats a game", ~M{socket} do
+      push(socket, "create_game", %{})
 
       assert_broadcast _msg, _payload
       # Needs to happen after assert_broadcast or time.sleeper, since push/3 is async aparently
       assert LobbyServer.games_info(@lobby) |> length == 1
     end
 
-    test "broadcasts the resulting game" do
-      InkFlierWeb.UserSocket
-      |> socket("user_id", %{user: "Robin", lobby: @lobby})
-      |> subscribe_and_join!(InkFlierWeb.LobbyChannel, "lobby:main")
-      |> push("create_game", %{})
-
+    test "broadcasts the resulting game", ~M{socket} do
+      push(socket, "create_game", %{})
       assert_broadcast "game_created", %{creator: "Robin"}
     end
   end
@@ -55,6 +51,13 @@ defmodule InkFlierWeb.LobbyChannelTest do
     :ok
   end
 
+  defp join_lobby(_) do
+    {:ok, _reply, socket} =
+      InkFlierWeb.UserSocket
+      |> socket("user_id", %{user: "Robin", lobby: @lobby})
+      |> subscribe_and_join(InkFlierWeb.LobbyChannel, "lobby:main")
+    ~M{socket}
+  end
 
   # test "ping replies with status ok", %{socket: socket} do
   #   ref = push(socket, "ping", %{"hello" => "there"})
