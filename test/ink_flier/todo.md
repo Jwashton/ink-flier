@@ -6,6 +6,12 @@
     - Altho I guess mix runs and interacts with the sql database already. So maybe docker is taking care of a lot of this. I just need to do turn it on and off when I want with a docker compose sort of thing?
     - It can't be that easy, can it? To just do a elixir & erlang version of the same thing we did with the sql?
 
+  - lobby_server_application_started_test.exs
+    - It would have been nice to have a test that pretends it's NOT in the test env (aka, simulates the dev or prod env)
+    - So I could confirm the config :supervise_games IS set correctly to auto-start when I run phx.server
+    - I don't know if this is possible though. I tried Application.put_env
+      - I think that failed because the app was already started by the time we get to running this test, so the putEnv is pointless
+
 # 2024-11-07
 - Play with the william question below about conditionally starting stuff in application only if we're NOT in test env
   - So I can take out all the `lobby: @lobby` first params in a million tests calling genserver functions
