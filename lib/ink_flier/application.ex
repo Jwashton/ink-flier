@@ -35,6 +35,9 @@ defmodule InkFlier.Application do
     ]
   end
 
+  # Situationally skip auto-starting the game supervisors when we prefer to manually start
+  # them ourselves. For example, in the tests we'll manually start_supervised!/1 these children, so
+  # state is cleared between each test
   def game_children(true), do: [InkFlier.GameSystem]
   def game_children(_), do: []
 

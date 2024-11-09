@@ -19,6 +19,8 @@ defmodule InkFlier.GameSupervisor do
   def delete_game(name \\ @name, pid), do: DynamicSupervisor.terminate_child(name, pid)
   def delete_game!(name \\ @name, pid), do: :ok = delete_game(name, pid)
 
+  def count_children, do: DynamicSupervisor.count_children(__MODULE__)
+
   def default_name, do: @name
 
 
