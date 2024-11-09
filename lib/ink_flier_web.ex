@@ -33,6 +33,9 @@ defmodule InkFlierWeb do
   def channel do
     quote do
       use Phoenix.Channel
+
+      defp assign_new(socket, k, _) when is_map_key(socket.assigns, k), do: socket
+      defp assign_new(socket, k, v), do: assign(socket, k, v)
     end
   end
 
