@@ -18,20 +18,14 @@ defmodule InkFlier.LobbyServer do
 
   @name __MODULE__
 
-  def start_link(opts) do
-    opts = Keyword.put_new(opts, :name, @name)
+  def start_link(opts), do: GenServer.start_link(__MODULE__, :ok, Keyword.put(opts, :name, @name))
 
-    GenServer.start_link(__MODULE__, :ok, opts)
-  end
-
-  def start_game(name \\ @name, game_opts), do: GenServer.call(name, {:start_game, game_opts})
-  def delete_game(name \\ @name, game_id), do: GenServer.call(name, {:delete_game, game_id})
-  def games(name \\ @name), do: GenServer.call(name, :games)
-  def games_info(name \\ @name), do: GenServer.call(name, :games_info)
+  def start_game(game_opts), do: GenServer.call(@name, {:start_game, game_opts})
+  def delete_game(game_id), do: GenServer.call(@name, {:delete_game, game_id})
+  def games, do: GenServer.call(@name, :games)
+  def games_info, do: GenServer.call(@name, :games_info)
 
   def whereis(game_id), do: game_id |> GameServer.via |> GenServer.whereis
-
-  def default_name, do: @name
 
 
   @impl GenServer
