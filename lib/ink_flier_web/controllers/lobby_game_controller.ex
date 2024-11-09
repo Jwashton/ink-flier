@@ -18,14 +18,15 @@ defmodule InkFlierWeb.LobbyGameController do
   # end
 
   def home(conn, ~m{game_id}) do
-    raise """next
-    if whereis gameid (or something), assign like below, otherwise assign: bad game, or something
-    """
-    # ~M{creator, players} = GameServer.summary_info(game_id)
-    [creator, players] = [nil, nil]
-
-    conn
-    |> assign(~M{creator, players, game_id})
-    |> render
+    if GameServer.whereis(game_id) do
+      ~M{creator, players} = GameServer.summary_info(game_id)
+      conn
+      |> assign(~M{creator, players, game_id})
+      |> render
+    else
+      conn
+      |> assign(~M{game_id})
+      |> render(:bad_game_id)
+    end
   end
 end

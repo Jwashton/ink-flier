@@ -31,4 +31,10 @@ defmodule InkFlierTest.GameServer do
     {:ok, _pid} = GameServer.start_link(opts)
     assert %{track_id: :some_track} = GameServer.summary_info(123)
   end
+
+  test "Check if game for id exists" do
+    {:ok, _pid} = GameServer.start_link(id: 123, creator: "Robin")
+    assert GameServer.whereis(123)
+    refute GameServer.whereis(:badId)
+  end
 end

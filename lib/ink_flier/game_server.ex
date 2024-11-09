@@ -17,6 +17,7 @@ defmodule InkFlier.GameServer do
   def summary_info(id), do: GenServer.call(via(id), :summary_info)
 
   def via(id), do: {:via, Registry, {Registry.Game, id}}
+  def whereis(id), do: via(id) |> GenServer.whereis
 
 
   @impl GenServer
