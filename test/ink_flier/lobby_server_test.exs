@@ -2,15 +2,13 @@ defmodule InkFlierTest.LobbyServer do
   use ExUnit.Case
 
   alias InkFlier.LobbyServer
-  alias InkFlier.GameSupervisor
   alias InkFlier.GameServer
 
   @lobby __MODULE__.LobbyServer
-  @game_starter __MODULE__.GameSupervisor
 
   setup do
-    start_supervised!({GameSupervisor, name: @game_starter})
-    start_supervised!({LobbyServer, name: @lobby, game_supervisor: @game_starter})
+    start_supervised!(InkFlier.GameSupervisor)
+    start_supervised!({LobbyServer, name: @lobby})
     :ok
   end
 

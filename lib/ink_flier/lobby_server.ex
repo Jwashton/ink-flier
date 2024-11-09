@@ -8,11 +8,6 @@ defmodule InkFlier.LobbyServer do
     -Note the 2 things being maintained in parallel:
       - The actual GameServer processes (supervised by GameSupervisor)
       - The list of the via-names of those processes (kept in the state of *this* process)
-
-  Also responsible for sending pubsub notifications to lobby subscribers for events like "game #237
-  had a player join" or "game #930 ended"
-
-  May control a "General lobby chat" later
   """
 
   use GenServer
@@ -23,15 +18,10 @@ defmodule InkFlier.LobbyServer do
 
   @name __MODULE__
 
-  @doc """
-  On start, LobbyServer needs to know the Name of the GameSupervisor he's using.
-  That can be overridden (in tests, for example), but otherwise will just use GameSupervisor's system default
-  """
   def start_link(opts) do
     opts = Keyword.put_new(opts, :name, @name)
-    game_supervisor = Keyword.get(opts, :game_supervisor, GameSupervisor.default_name)
 
-    GenServer.start_link(__MODULE__, game_supervisor, opts)
+    GenServer.start_link(__MODULE__, :ok, opts)
   end
 
   def start_game(name \\ @name, game_opts), do: GenServer.call(name, {:start_game, game_opts})
@@ -45,7 +35,7 @@ defmodule InkFlier.LobbyServer do
 
 
   @impl GenServer
-  def init(game_supervisor), do: {:ok, Lobby.new(game_supervisor)}
+  def init(:ok), do: {:ok, Lobby.new}
 
   @impl GenServer
   def handle_call({:start_game, game_opts}, _, t) do
@@ -53,9 +43,7 @@ defmodule InkFlier.LobbyServer do
     game_opts = Keyword.put(game_opts, :id, game_id)
 
     t = Lobby.track_game_id(t, game_id)
-    t
-    |> Lobby.game_supervisor
-    |> GameSupervisor.start_game!(game_opts)
+    GameSupervisor.start_game!(game_opts)
 
     {:reply, {:ok, game_id}, t}
   end
@@ -63,9 +51,7 @@ defmodule InkFlier.LobbyServer do
   @impl GenServer
   def handle_call({:delete_game, game_id}, _, t) do
     t = Lobby.untrack_game_id(t, game_id)
-    t
-    |> Lobby.game_supervisor
-    |> GameSupervisor.delete_game(whereis(game_id))
+    GameSupervisor.delete_game(whereis(game_id))
 
     {:reply, :ok, t}
   end
