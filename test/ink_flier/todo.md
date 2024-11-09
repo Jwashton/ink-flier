@@ -1,4 +1,10 @@
 # 2024-11-08
+- Next, continue game_channel_test.exs
+  - I can write a test (and then actually implement) graceful channel (or router or something) redirects when we try to connect to a game id that doesn't exist/was deleted
+
+- [X] After removing the @name stuff from all the tests (and the one channel I had to use non-default name-filled-in 1st arg)
+  - go through the processes themselves and make sure there's no lingering @name stuff
+
 - @William
   - How hard would it be to setup docker so I could basically uninstall elixir and erlang from the computer (like how there's no actual sql on this computer) and instead use the most up-to-date versions through docker?
     - But still be able to use vim or other local computer stuff as my editor, not necessarily vscode's special virtual environment or w/e
@@ -17,9 +23,6 @@
   - So I can take out all the `lobby: @lobby` first params in a million tests calling genserver functions
   - Can use the default global name, the tests will just manually start that global process with start_supervised!
     - (So that it gets reset between tests)
-
-- Next, continue game_channel_test.exs
-  - I can write a test (and then actually implement) graceful channel (or router or something) redirects when we try to connect to a game id that doesn't exist/was deleted
 
 - @William
   - (answered, but see below about show william how to solve the check-multiple-channels-recieving-broadcasts problem)
