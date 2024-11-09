@@ -1,27 +1,20 @@
 defmodule InkFlier.GameSupervisor do
   use DynamicSupervisor
-
   alias InkFlier.GameServer
-
-  @typedoc "Unique global name the single GameSupervisor"
-  @type name :: module
 
   @name __MODULE__
 
   def start_link(opts) do
-    opts = Keyword.put_new(opts, :name, @name)
-    DynamicSupervisor.start_link(__MODULE__, :ok, opts)
+    DynamicSupervisor.start_link(__MODULE__, :ok, Keyword.put(opts, :name, @name))
   end
 
-  def start_game(name \\ @name, game_opts), do: DynamicSupervisor.start_child(name, {GameServer, game_opts})
-  def start_game!(name \\ @name, game_opts), do: {:ok, _pid} = start_game(name, game_opts)
+  def start_game(game_opts), do: DynamicSupervisor.start_child(@name, {GameServer, game_opts})
+  def start_game!(game_opts), do: {:ok, _pid} = start_game(game_opts)
 
-  def delete_game(name \\ @name, pid), do: DynamicSupervisor.terminate_child(name, pid)
-  def delete_game!(name \\ @name, pid), do: :ok = delete_game(name, pid)
+  def delete_game(pid), do: DynamicSupervisor.terminate_child(@name, pid)
+  def delete_game!(pid), do: :ok = delete_game(pid)
 
-  def count_children, do: DynamicSupervisor.count_children(__MODULE__)
-
-  def default_name, do: @name
+  def count_children, do: DynamicSupervisor.count_children(@name)
 
 
   @impl DynamicSupervisor
