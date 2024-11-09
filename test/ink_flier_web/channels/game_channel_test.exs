@@ -2,14 +2,11 @@ defmodule InkFlierWeb.GameChannelTest do
   use InkFlierWeb.ChannelCase
   import TinyMaps
   alias InkFlier.LobbyServer
-  alias InkFlier.GameSupervisor
 
-  @lobby __MODULE__.LobbyServer
   @lobby_topic "lobby:main"
 
   setup do
-    start_supervised!(GameSupervisor)
-    start_supervised!({LobbyServer, name: @lobby})
+    start_supervised!(InkFlier.GameSystem)
     :ok
   end
 
@@ -26,11 +23,11 @@ defmodule InkFlierWeb.GameChannelTest do
 
   # test "game doesn't exist, redirect gracefully" do
 
-  defp test_socket, do: socket(InkFlierWeb.UserSocket, "user_id", %{user: "Robin", lobby: @lobby})
+  defp test_socket, do: socket(InkFlierWeb.UserSocket, "user_id", %{user: "Robin"})
   defp subscribe_test_to_channel(channel, topic), do: subscribe_and_join(test_socket(), channel, topic)
 
   defp start_game(_) do
-    {:ok, game_id} = LobbyServer.start_game(@lobby, creator: "BillyBob")
+    {:ok, game_id} = LobbyServer.start_game(creator: "BillyBob")
     game_topic = "game:" <> game_id
     ~M{game_id, game_topic}
   end
