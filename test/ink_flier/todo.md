@@ -2,6 +2,15 @@
 - Next, continue game_channel_test.exs
   - I can write a test (and then actually implement) graceful channel (or router or something) redirects when we try to connect to a game id that doesn't exist/was deleted
 
+- After that I might flatten LobbyServer into just a context, not a process, like William & I talked about and have notes below
+
+- After that, look more at the webpage and easily decide which feature to add.
+  - Like the css/html for player's current status (lockedin/deciding, and previous_coord, etc)
+  - A msgbox on screen for errors like "illegal move"
+  - Game knows which track it was started from, and prints that on screen somewhere
+    - (or lists the collision objects, etc)
+  - Can start to do some simple move actions
+
 - [X] After removing the @name stuff from all the tests (and the one channel I had to use non-default name-filled-in 1st arg)
   - go through the processes themselves and make sure there's no lingering @name stuff
 
