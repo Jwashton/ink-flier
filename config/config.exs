@@ -9,7 +9,8 @@ import Config
 
 config :ink_flier,
   ecto_repos: [InkFlier.Repo],
-  generators: [timestamp_type: :utc_datetime]
+  generators: [timestamp_type: :utc_datetime],
+  supervise_games: true
 
 # Configures the endpoint
 config :ink_flier, InkFlierWeb.Endpoint,

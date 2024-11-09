@@ -9,7 +9,7 @@ defmodule InkFlier.Application do
   def start(_type, _args) do
     children =
       main_children()
-      ++ game_children()
+      ++ game_children(Application.get_env(:ink_flier, :supervise_games))
       ++ end_children()
 
     opts = [strategy: :one_for_one, name: InkFlier.Supervisor]
@@ -35,15 +35,12 @@ defmodule InkFlier.Application do
     ]
   end
 
-  def game_children do
-    if Application.get_env(:ink_flier, :supervise_games, true) do
-      [
-        InkFlier.GameSystem,
-      ]
-    else
-      []
-    end
+  def game_children(true) do
+    [
+      InkFlier.GameSystem,
+    ]
   end
+  def game_children(_), do: []
 
   def end_children do
     [
