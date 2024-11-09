@@ -3,23 +3,21 @@ defmodule InkFlierTest.GameSupervisor do
 
   alias InkFlier.GameSupervisor
 
-  @name TestGameSupervisor
-
   setup do
-    start_supervised!({GameSupervisor, name: @name})
+    start_supervised!(GameSupervisor)
     :ok
   end
 
 
   test "Start supervised games" do
-    {:ok, _pid} = GameSupervisor.start_game(@name, id: 3211, creator: "Bob")
-    assert DynamicSupervisor.count_children(@name).active == 1
+    {:ok, _pid} = GameSupervisor.start_game(id: 3211, creator: "Bob")
+    assert GameSupervisor.count_children.active == 1
   end
 
   test "Delete supervised games" do
-    {:ok, game_pid} = GameSupervisor.start_game(@name, id: 321)
+    {:ok, game_pid} = GameSupervisor.start_game(id: 321)
 
-    GameSupervisor.delete_game!(@name, game_pid)
-    assert DynamicSupervisor.count_children(@name).active == 0
+    GameSupervisor.delete_game!(game_pid)
+    assert GameSupervisor.count_children.active == 0
   end
 end

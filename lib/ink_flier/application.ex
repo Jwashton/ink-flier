@@ -7,33 +7,39 @@ defmodule InkFlier.Application do
 
   @impl true
   def start(_type, _args) do
-    children = [
+    children =
+      main_children()
+      ++ game_children(Application.get_env(:ink_flier, :supervise_games))
+      ++ end_children()
+
+    opts = [strategy: :one_for_one, name: InkFlier.Supervisor]
+    Supervisor.start_link(children, opts)
+  end
+
+  # Tell Phoenix to update the endpoint configuration whenever the application is updated.
+  @impl true
+  def config_change(changed, _new, removed) do
+    InkFlierWeb.Endpoint.config_change(changed, removed)
+    :ok
+  end
+
+  def main_children do
+    [
       InkFlierWeb.Telemetry,
       InkFlier.Repo,
       {DNSCluster, query: Application.get_env(:ink_flier, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: InkFlier.PubSub},
       # Start the Finch HTTP client for sending emails
       {Finch, name: InkFlier.Finch},
-      # Start a worker by calling: InkFlier.Worker.start_link(arg)
-      # {InkFlier.Worker, arg},
-      # Start to serve requests, typically the last entry
       {Registry, keys: :unique, name: Registry.Game},
-      InkFlier.GameSupervisor,
-      InkFlier.LobbyServer,
-      InkFlierWeb.Endpoint
     ]
-
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: InkFlier.Supervisor]
-    Supervisor.start_link(children, opts)
   end
 
-  # Tell Phoenix to update the endpoint configuration
-  # whenever the application is updated.
-  @impl true
-  def config_change(changed, _new, removed) do
-    InkFlierWeb.Endpoint.config_change(changed, removed)
-    :ok
-  end
+  # Situationally skip auto-starting the game supervisors when we prefer to manually start
+  # them ourselves. For example, in the tests we'll manually start_supervised!/1 these children, so
+  # state is cleared between each test
+  def game_children(true), do: [InkFlier.GameSystem]
+  def game_children(_), do: []
+
+  def end_children, do: [InkFlierWeb.Endpoint]
 end
