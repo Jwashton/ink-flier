@@ -35,16 +35,8 @@ defmodule InkFlier.Application do
     ]
   end
 
-  def game_children(true) do
-    [
-      InkFlier.GameSystem,
-    ]
-  end
+  def game_children(true), do: [InkFlier.GameSystem]
   def game_children(_), do: []
 
-  def end_children do
-    [
-      InkFlierWeb.Endpoint
-    ]
-  end
+  def end_children, do: [InkFlierWeb.Endpoint]
 end
