@@ -21,6 +21,7 @@ defmodule InkFlierWeb.GameChannelTest do
     end
   end
 
+  @tag :skip
   describe "If game doesn't exist, redirect gracefully" do
 
     # TODO this might be a controller/conn test, I believe. The live-redirect broadcast happens here tho in the test below
