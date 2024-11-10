@@ -15,6 +15,8 @@ defmodule InkFlier.LobbyServer do
   alias InkFlier.Lobby
   alias InkFlier.GameSupervisor
   alias InkFlier.GameServer
+  alias Phoenix.PubSub
+  alias InkFlierWeb.GameChannel
 
   @name __MODULE__
 
@@ -44,8 +46,10 @@ defmodule InkFlier.LobbyServer do
 
   @impl GenServer
   def handle_call({:delete_game, game_id}, _, t) do
+    GameSupervisor.delete_game!(whereis(game_id))
+    PubSub.broadcast(InkFlier.PubSub, GameChannel.topic(game_id), {}) raise "finish here"
+
     t = Lobby.untrack_game_id(t, game_id)
-    GameSupervisor.delete_game(whereis(game_id))
 
     {:reply, :ok, t}
   end

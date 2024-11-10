@@ -5,6 +5,8 @@ defmodule InkFlierWeb.GameChannel do
   alias InkFlier.GameServer
   alias InkFlierWeb.LobbyChannel
 
+  def topic(game_id), do: "game:" <> game_id
+
   @impl Phoenix.Channel
   def join("game:" <> game_id, payload, socket) do
     if authorized?(payload) do
