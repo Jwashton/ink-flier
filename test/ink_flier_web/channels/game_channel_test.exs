@@ -2,6 +2,7 @@ defmodule InkFlierWeb.GameChannelTest do
   use InkFlierWeb.ChannelCase
   import TinyMaps
   alias InkFlier.LobbyServer
+  alias InkFlier.GameServer
 
   @lobby_topic "lobby:main"
 
@@ -22,11 +23,11 @@ defmodule InkFlierWeb.GameChannelTest do
   end
 
   # describe "If game doesn't exist, redirect gracefully" do
-
-
   describe "Start game page" do
-  end
-  test "If game is deleted while viewing it's page, receive broadcast" do
+    setup [:start_game, :join_game]
+
+    test "If game is deleted while viewing it's page, receive broadcast" do
+    end
   end
   # TODO Somewhere on new screen "So and so deleted the game". Assigns?
 
