@@ -21,18 +21,14 @@ defmodule InkFlierWeb.GameChannelTest do
     end
   end
 
-  @tag :skip
-  describe "If game doesn't exist, redirect gracefully" do
+  # describe "If game doesn't exist, redirect gracefully" do
 
-    # TODO this might be a controller/conn test, I believe. The live-redirect broadcast happens here tho in the test below
-    test "When trying to load/refresh the page" do
-      {:ok, _join_reply, _game_socket} = subscribe_test_to_channel(InkFlierWeb.GameChannel, "game:badGameId")
-    end
 
-    # I don't need to test the actual page change here; Like all the channel tests, just assert that the msg went out/broadcast happens. The js will just be smart enough to know it needs to do a redirect then
-    test "When just staring at the page (broadcast happens)" do
-    end
+  describe "Start game page" do
   end
+  test "If game is deleted while viewing it's page, receive broadcast" do
+  end
+  # TODO Somewhere on new screen "So and so deleted the game". Assigns?
 
 
 
