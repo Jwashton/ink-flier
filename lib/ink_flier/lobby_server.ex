@@ -47,7 +47,7 @@ defmodule InkFlier.LobbyServer do
   @impl GenServer
   def handle_call({:delete_game, game_id}, _, t) do
     GameSupervisor.delete_game!(whereis(game_id))
-    PubSub.broadcast(InkFlier.PubSub, GameChannel.topic(game_id), {}) raise "finish here"
+    PubSub.broadcast(InkFlier.PubSub, GameChannel.topic(game_id), "game_deleted")
 
     t = Lobby.untrack_game_id(t, game_id)
 

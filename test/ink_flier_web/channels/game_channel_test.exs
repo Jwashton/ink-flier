@@ -26,7 +26,8 @@ defmodule InkFlierWeb.GameChannelTest do
 
     test "If game is deleted while viewing it's page, receive broadcast", ~M{game_id} do
       :ok = LobbyServer.delete_game(game_id)
-      assert_broadcast("game_deleted", _)
+      {:messages, [handle_info_msg]} = Process.info(self(), :messages)
+      assert handle_info_msg == "game_deleted"
     end
   end
 
