@@ -1,3 +1,6 @@
+# 2024-11-12
+- Game page's Js: channel.on for the game_deleted event
+
 # 2024-11-08
 - Next, continue game_channel_test.exs
   - I can write a test (and then actually implement) graceful channel (or router or something) redirects when we try to connect to a game id that doesn't exist/was deleted
