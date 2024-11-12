@@ -27,6 +27,12 @@
     - I don't know if this is possible though. I tried Application.put_env
       - I think that failed because the app was already started by the time we get to running this test, so the putEnv is pointless
 
+  - I wanted to have the game process automatically do a pubsub broadcast when it terminated
+    - But the [doc](https://hexdocs.pm/elixir/GenServer.html#c:terminate/2) warned that the terminate/2 callback "isn't gurunteed to be called"
+    - I settled with having the helper Lobby "context" code do the broadcast whenever it told GameSupervisor to kill the child
+    - I ended up putting it in the Lobby context, who uses the via-name to get the pid then tells the gamesupervisor to terminate
+    - Was curious why the terminate in gameserver itself wasn't a good option. That kind of seemed like the *point* of the terminate callback
+
 # 2024-11-07
 - Play with the william question below about conditionally starting stuff in application only if we're NOT in test env
   - So I can take out all the `lobby: @lobby` first params in a million tests calling genserver functions
