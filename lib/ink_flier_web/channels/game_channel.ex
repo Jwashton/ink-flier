@@ -4,8 +4,12 @@ defmodule InkFlierWeb.GameChannel do
 
   alias InkFlier.GameServer
   alias InkFlierWeb.LobbyChannel
+  alias InkFlierWeb.Endpoint
 
   def topic(game_id), do: "game:" <> game_id
+
+  def notify_game_deleted(game_id), do: Endpoint.broadcast(topic(game_id), "game_deleted", %{})
+
 
   @impl Phoenix.Channel
   def join("game:" <> game_id, payload, socket) do

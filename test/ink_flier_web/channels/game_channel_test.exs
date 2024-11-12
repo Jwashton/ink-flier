@@ -24,10 +24,11 @@ defmodule InkFlierWeb.GameChannelTest do
   describe "Start game page" do
     setup [:start_game, :join_game]
 
-    test "If game is deleted while viewing it's page, receive broadcast", ~M{game_id} do
+    test "If game is deleted while viewing it's page, receive an endpoint broadcast", ~M{game_id} do
+      # NOTE Different from a handle_in or handle_info, Endpoint.broadcast goes straight to js
+      # unless intercepted by channel's handle_out
       :ok = LobbyServer.delete_game(game_id)
-      {:messages, [handle_info_msg]} = Process.info(self(), :messages)
-      assert handle_info_msg == "game_deleted"
+      assert_received %{event: "game_deleted"}
     end
   end
 
