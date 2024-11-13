@@ -12,17 +12,7 @@ defmodule InkFlierWeb.GameChannelTest do
   end
 
 
-  describe "Join both lobby and game channels" do
-    setup [:start_game, :join_lobby_channel, :join_game_channel]
-
-    test "Broadcast goes to multiple topics (Game AND Lobby)", ~M{game_topic, game_socket} do
-      push(game_socket, "join", %{}) |> assert_reply(:ok)
-      %{topic: ^game_topic} = assert_broadcast("players_updated", _)
-      %{topic: @lobby_topic} = assert_broadcast("game_updated", _)
-    end
-  end
-
-  describe "Start game page" do
+  describe "Join game channel" do
     setup [:start_game, :join_game_channel]
 
     test "If game is deleted while viewing it's page, receive an endpoint broadcast", ~M{game_id} do
@@ -33,6 +23,16 @@ defmodule InkFlierWeb.GameChannelTest do
     end
   end
 
+  describe "Join both channels (lobby and game)" do
+    setup [:start_game, :join_lobby_channel, :join_game_channel]
+
+    test "Broadcast goes to multiple topics (Game AND Lobby)", ~M{game_topic, game_socket} do
+      push(game_socket, "join", %{}) |> assert_reply(:ok)
+      %{topic: ^game_topic} = assert_broadcast("players_updated", _)
+      %{topic: @lobby_topic} = assert_broadcast("game_updated", _)
+    end
+  end
+
   # describe "Join game channel and add self to game" do
   describe "TODO" do
     # setup [:start_game, :join_game_channel, :add_self_to_game]
@@ -40,21 +40,37 @@ defmodule InkFlierWeb.GameChannelTest do
 
     test "Player can add themselves to game", ~M{game_socket, game_id} do
       push(game_socket, "join") |> assert_reply(:ok)
-      assert game_socket.assigns.user in GameServer.players(game_id)
+
       assert_broadcast("players_updated", _)
+      assert game_socket.assigns.user in GameServer.players(game_id)
     end
 
     test "Player can remove themselves from game", ~M{game_socket, game_id} do
       push(game_socket, "join") |> assert_reply(:ok)
 
       push(game_socket, "leave", %{}) |> assert_reply(:ok)
-      refute game_socket.assigns.user in GameServer.players(game_id)
+
       assert_broadcast("players_updated", _)
+      refute game_socket.assigns.user in GameServer.players(game_id)
     end
 
-    # test "Player can remove other target from game", ~M{game_socket, game_id} do
-    # end
+    test "Player can remove *other* target from game", ~M{game_socket, game_id} do
+      push(game_socket, "join") |> assert_reply(:ok)
+
+      :ok = GameServer.join(game_id, "Betsy")
+      push(game_socket, "leave", %{target: "Betsy"}) |> assert_reply(:ok)
+
+      assert_broadcast("players_updated", _)
+      assert game_socket.assigns.user in GameServer.players(game_id)
+      refute "Betsy" in GameServer.players(game_id)
+    end
   end
+
+  # test "No broadcast for removing players that haven't joined" do
+  #   push(game_socket, "leave", %{}) |> assert_reply(:ok)
+  #   push(game_socket, "leave", %{target: "Betsy"}) |> assert_reply(:ok)
+  #   refute_broadcast("players_updated", _)
+  # end
 
 
 
