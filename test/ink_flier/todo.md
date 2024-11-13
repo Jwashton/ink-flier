@@ -4,6 +4,7 @@
   - Prob do move lobby_server's `:ok = GameChannel.notify_game_deleted(game_id)` to GameSupervisor.delete_game
     - And instead of taking pid, take gameName, (update the few places that call that to not need to pass in whereis first)
     - And then just use GameServer.via should work
+  - Note that the GenServer.terminate also prob would have been fine. I like the Supervisor being in charge of it more tho
 
 # 2024-11-08
 - Next, continue game_channel_test.exs
