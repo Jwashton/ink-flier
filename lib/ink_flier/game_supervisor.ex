@@ -6,11 +6,11 @@ defmodule InkFlier.GameSupervisor do
 
   def start_link(opts), do: DynamicSupervisor.start_link(__MODULE__, :ok, Keyword.put(opts, :name, @name))
 
-  def start_game(game_opts), do: DynamicSupervisor.start_child(@name, {GameServer, game_opts})
   def start_game!(game_opts), do: {:ok, _pid} = start_game(game_opts)
+  def start_game(game_opts), do: DynamicSupervisor.start_child(@name, {GameServer, game_opts})
 
-  def delete_game(pid), do: DynamicSupervisor.terminate_child(@name, pid)
   def delete_game!(pid), do: :ok = delete_game(pid)
+  def delete_game(pid), do: DynamicSupervisor.terminate_child(@name, pid)
 
   def count_children, do: DynamicSupervisor.count_children(@name)
 

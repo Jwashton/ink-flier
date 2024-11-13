@@ -21,7 +21,18 @@ defmodule InkFlierWeb.GameChannelTest do
     end
   end
 
-  # test "game doesn't exist, redirect gracefully" do
+  describe "Start game page" do
+    setup [:start_game, :join_game]
+
+    test "If game is deleted while viewing it's page, receive an endpoint broadcast", ~M{game_id} do
+      # NOTE Different from a handle_in or handle_info, Endpoint.broadcast goes straight to js
+      # unless intercepted by channel's handle_out
+      :ok = LobbyServer.delete_game(game_id)
+      assert_received %{event: "game_deleted"}
+    end
+  end
+
+
 
   defp test_socket, do: socket(InkFlierWeb.UserSocket, "user_id", %{user: "Robin"})
   defp subscribe_test_to_channel(channel, topic), do: subscribe_and_join(test_socket(), channel, topic)
