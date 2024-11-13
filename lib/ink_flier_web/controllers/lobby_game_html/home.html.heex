@@ -4,22 +4,28 @@
     data-user = {@user}
 ></template>
 
-<p>
+<div class="game">
+  <p>
   Game id: <%= @game_id %>
-</p>
-<p>
+  </p>
+  <p>
   Creator: <%= @creator %>
-</p>
-<p>
+  </p>
+  <p>
   <button id="join-button">Join</button>
   <button id="leave-button">Leave</button>
-</p>
-<p>
+  </p>
+  <p>
   Players:
   <ul id="player-list">
     ...Loading
   </ul>
-</p>
+  </p>
+
+  <textarea id="messages" class="game__messages" readonly>Messages</textarea>
+</div>
+
+
 
 
 <template id="player-template">
