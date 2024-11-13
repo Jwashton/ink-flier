@@ -1,5 +1,9 @@
 # 2024-11-12
 - Game page's Js: channel.on for the game_deleted event
+- With William
+  - Prob do move lobby_server's `:ok = GameChannel.notify_game_deleted(game_id)` to GameSupervisor.delete_game
+    - And instead of taking pid, take gameName, (update the few places that call that to not need to pass in whereis first)
+    - And then just use GameServer.via should work
 
 # 2024-11-08
 - Next, continue game_channel_test.exs
@@ -30,7 +34,7 @@
     - I don't know if this is possible though. I tried Application.put_env
       - I think that failed because the app was already started by the time we get to running this test, so the putEnv is pointless
 
-  - I wanted to have the game process automatically do a pubsub broadcast when it terminated
+  - [X] I wanted to have the game process automatically do a pubsub broadcast when it terminated
     - But the [doc](https://hexdocs.pm/elixir/GenServer.html#c:terminate/2) warned that the terminate/2 callback "isn't gurunteed to be called"
     - I settled with having the helper Lobby "context" code do the broadcast whenever it told GameSupervisor to kill the child
     - I ended up putting it in the Lobby context, who uses the via-name to get the pid then tells the gamesupervisor to terminate
@@ -42,7 +46,7 @@
   - Can use the default global name, the tests will just manually start that global process with start_supervised!
     - (So that it gets reset between tests)
 
-- @William
+- [X] @William
   - (answered, but see below about show william how to solve the check-multiple-channels-recieving-broadcasts problem)
     - In the channel tests, when I do: Process.info(self(), :messages)
       - eg. game_channel_test sends player "join" event. or lobby sends "game_created"
@@ -61,7 +65,7 @@
 - [X] Channel tests are actually working!
 - [X] Next I can start filling in the actual tests checking returns, etc
 
-- @William
+- [X] @William
   - Should I not be starting my main processes (LobbyServer or GameSupervisor or GameCache etc) in Application (so they auto start when I restart the server)?
     - I thought that was the normal thing, but it seems to cause a lot of problems when I want to test stuff
     - There's a globally started one my real application will use, but I also need to add an overrideable name to every stinking engine genserver I create
@@ -121,18 +125,18 @@
 - Big remaining todo that'll be nice when done: retire LobbyServer in the ways listed below
 
 # 2024-11-01
-- @William
+- [X] @William
   - On broadcast from channel or engine
     - I typed this up in [the pr](https://github.com/Jwashton/ink-flier/pull/15)
   - Can you help me setup some channel tests, or possibly hound/whatever, for the reload-all-pages-for-fresh-js and click a bunch of places to test new game and player join/leave etc all work
     - Manually doing it each time is so not test'y, and makes everything way slower when refactoring the channels
 
 # 2024-10-31
-- Re the @William question bellow, I think I'm going to move all the broadcasts into channel
+- [X] Re the @William question bellow, I think I'm going to move all the broadcasts into channel
   - I'll at least be able to compare the two versions and see how looks. I'm pretty sure I'll like that soulution better tho
 
 # 2024-10-30
-- [ ] Game joins update Lobby! Next, make Game leave's do the same
+- [X] Game joins update Lobby! Next, make Game leave's do the same
 
 - Right now roomChannel is manually putting game_id into the "game_wrapper" maps it's sending down to the js
   - It did that because LobbyServer had the only list of gameIds
@@ -152,7 +156,7 @@
 - userSocket.js, `channel.on("game_updated"...`:
   - don't call makeGameRow with `newGame` but instead `updatedGame` and tweak makeGameRow's code to add a different css class (--updated) instead
 
-- @William
+- [X] @William
   - Right now GameServer's joins/leaves call a function in some saved module (Lobby) that's responsible for sending a PubSub broadcast
     - Are we sure it wouldn't be better for a Lobby (or some other) process to exist who's only job is to subscribe to all game topics (`game:123`, etc) and listen to them doing broadcasts?...
     - I have to pay attention to WHO's sending msg's. The channel/js certainly.
