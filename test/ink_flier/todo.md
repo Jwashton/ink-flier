@@ -1,3 +1,7 @@
+# 2024-11-12b
+- @William
+  - With William: Github CI for integration tests
+
 # 2024-11-12
 - Game page's Js: channel.on for the game_deleted event
 - With William
@@ -5,6 +9,8 @@
     - And instead of taking pid, take gameName, (update the few places that call that to not need to pass in whereis first)
     - And then just use GameServer.via should work
   - Note that the GenServer.terminate also prob would have been fine. I like the Supervisor being in charge of it more tho
+- At some point, I broke the "x" kick other player out of game from Game page, double check that
+  - Write test if possible. The broadcast event might be fine tho and it's just a js not wired up right
 
 # 2024-11-08
 - Next, continue game_channel_test.exs
