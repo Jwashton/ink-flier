@@ -2,6 +2,7 @@ defmodule InkFlierWeb.GameChannelTest do
   use InkFlierWeb.ChannelCase
   import TinyMaps
   alias InkFlier.LobbyServer
+  alias InkFlier.GameServer
 
   @lobby_topic "lobby:main"
 
@@ -30,6 +31,26 @@ defmodule InkFlierWeb.GameChannelTest do
       :ok = LobbyServer.delete_game(game_id)
       assert_received %{event: "game_deleted"}
     end
+  end
+
+  # describe "Join game channel and add self to game" do
+  describe "TODO" do
+    # setup [:start_game, :join_game_channel, :add_self_to_game]
+    setup [:start_game, :join_game_channel]
+
+    test "Player can remove themselves from game", ~M{game_socket, game_id} do
+      push(game_socket, "join") |> assert_reply(:ok)
+      assert game_socket.assigns.user in GameServer.players(game_id)
+      assert_broadcast("players_updated", _)
+    end
+
+    # test "Player can remove other target from game" do
+    #   push(game_socket, "join") |> assert_reply(:ok)
+
+    #   push(game_socket, "leave", %{}) |> assert_reply(:ok)
+    #   refute game_socket.assigns.user in GameServer.players(game_id)
+    #   assert_broadcast("players_updated", _)
+    # end
   end
 
 
