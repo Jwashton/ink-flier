@@ -38,18 +38,21 @@ defmodule InkFlierWeb.GameChannelTest do
     # setup [:start_game, :join_game_channel, :add_self_to_game]
     setup [:start_game, :join_game_channel]
 
-    test "Player can remove themselves from game", ~M{game_socket, game_id} do
+    test "Player can add themselves to game", ~M{game_socket, game_id} do
       push(game_socket, "join") |> assert_reply(:ok)
       assert game_socket.assigns.user in GameServer.players(game_id)
       assert_broadcast("players_updated", _)
     end
 
-    # test "Player can remove other target from game" do
-    #   push(game_socket, "join") |> assert_reply(:ok)
+    test "Player can remove themselves from game", ~M{game_socket, game_id} do
+      push(game_socket, "join") |> assert_reply(:ok)
 
-    #   push(game_socket, "leave", %{}) |> assert_reply(:ok)
-    #   refute game_socket.assigns.user in GameServer.players(game_id)
-    #   assert_broadcast("players_updated", _)
+      push(game_socket, "leave", %{}) |> assert_reply(:ok)
+      refute game_socket.assigns.user in GameServer.players(game_id)
+      assert_broadcast("players_updated", _)
+    end
+
+    # test "Player can remove other target from game", ~M{game_socket, game_id} do
     # end
   end
 
