@@ -15,7 +15,7 @@ defmodule InkFlierWeb.GameControllerTest do
 
     test "If game doesn't exist, don't crash", ~M{conn} do
       conn = get(conn, ~p"/lobby/game/badGameId")
-      assert html_response(conn, 200) =~ "does not exist"
+      assert html_response(conn, 404) =~ "does not exist"
     end
   end
 

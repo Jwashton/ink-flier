@@ -26,6 +26,7 @@ defmodule InkFlierWeb.LobbyGameController do
     else
       conn
       |> assign(~M{game_id})
+      |> put_status(404)
       |> render(:bad_game_id)
     end
   end
