@@ -3,7 +3,7 @@
   - With William: Github CI for integration tests
 
 # 2024-11-12
-- Game page's Js: channel.on for the game_deleted event
+- [X] Game page's Js: channel.on for the game_deleted event
 - With William
   - Prob do move lobby_server's `:ok = GameChannel.notify_game_deleted(game_id)` to GameSupervisor.delete_game
     - And instead of taking pid, take gameName, (update the few places that call that to not need to pass in whereis first)
