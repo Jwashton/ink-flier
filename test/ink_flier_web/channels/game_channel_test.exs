@@ -12,7 +12,7 @@ defmodule InkFlierWeb.GameChannelTest do
 
 
   describe "Join both lobby and game channels" do
-    setup [:start_game, :join_lobby, :join_game]
+    setup [:start_game, :join_lobby_channel, :join_game_channel]
 
     test "Broadcast goes to multiple topics (Game AND Lobby)", ~M{game_topic, game_socket} do
       push(game_socket, "join", %{}) |> assert_reply(:ok)
@@ -22,7 +22,7 @@ defmodule InkFlierWeb.GameChannelTest do
   end
 
   describe "Start game page" do
-    setup [:start_game, :join_game]
+    setup [:start_game, :join_game_channel]
 
     test "If game is deleted while viewing it's page, receive an endpoint broadcast", ~M{game_id} do
       # NOTE Different from a handle_in or handle_info, Endpoint.broadcast goes straight to js
@@ -43,12 +43,12 @@ defmodule InkFlierWeb.GameChannelTest do
     ~M{game_id, game_topic}
   end
 
-  defp join_lobby(_) do
+  defp join_lobby_channel(_) do
     {:ok, _join_reply, _lobby_socket} = subscribe_test_to_channel(InkFlierWeb.LobbyChannel, @lobby_topic)
     :ok
   end
 
-  defp join_game(~M{game_topic}) do
+  defp join_game_channel(~M{game_topic}) do
     {:ok, _join_reply, game_socket} = subscribe_test_to_channel(InkFlierWeb.GameChannel, game_topic)
     ~M{game_socket}
   end
