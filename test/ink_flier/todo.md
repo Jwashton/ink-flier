@@ -13,10 +13,17 @@
   - Write test if possible. The broadcast event might be fine tho and it's just a js not wired up right
 
 # 2024-11-08
-- Next, continue game_channel_test.exs
+- [X] Next, continue game_channel_test.exs
   - I can write a test (and then actually implement) graceful channel (or router or something) redirects when we try to connect to a game id that doesn't exist/was deleted
 
 - After that I might flatten LobbyServer into just a context, not a process, like William & I talked about and have notes below
+
+- Split lobby.css into 2 or 3 files, a main (with the colors), and then one for each page
+  - Pass that in as an @attr as a list or something
+  - Basically use layout with the @attrs instead of doing \<script...\> at the top of the lobby and game pages
+    - (Which means do the above for their css AND .js)
+  - Start with the JS since it'll be easier 1-to-1
+  - Then do the css which'll have a MAIN for each, then a second page-specific css for each
 
 - After that, look more at the webpage and easily decide which feature to add.
   - Like the css/html for player's current status (lockedin/deciding, and previous_coord, etc)
