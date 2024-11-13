@@ -1,6 +1,6 @@
 defmodule InkFlierTest.LobbyServerApplicationStarted do
   @moduledoc """
-  Special task to run these: `mix test.integration
+  Special task to run these: `mix test.integration`
   """
   use ExUnit.Case
 
