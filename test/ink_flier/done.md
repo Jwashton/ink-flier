@@ -1,3 +1,7 @@
+# 2024-11-13
+- Finish extracting the shared setup for channels, currently stuck in git stash
+- Finish "No broadcast for removing players that haven't joined" in gameChannelTest
+
 # 2024-10-30
 - Player joining from the game page sends a live javascript update even to people on the lobby page, refreshing it's game for just that row!
 
