@@ -30,16 +30,23 @@ defmodule InkFlierWeb.GameChannel do
   end
 
   @impl Phoenix.Channel
+  def handle_in("leave", ~m{target}, socket) do
+    broadcast_on_success(socket, &GameServer.remove/2, target)
+    {:reply, :ok, socket}
+  end
+
+  @impl Phoenix.Channel
   def handle_in("leave", _params, socket) do
     broadcast_on_success(socket, &GameServer.remove/2)
     {:reply, :ok, socket}
   end
 
 
-  defp broadcast_on_success(socket, game_command) do
-    ~M{user, game_id} = socket.assigns
+  defp broadcast_on_success(socket, game_command, target \\ nil) do
+    ~M{game_id} = socket.assigns
+    target = target || socket.assigns.user
 
-    case game_command.(game_id, user) do
+    case game_command.(game_id, target) do
       :ok ->
         players = GameServer.players(game_id)
 
