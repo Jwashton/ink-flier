@@ -1,6 +1,8 @@
 defmodule InkFlierWeb.LobbyChannelTest do
   use InkFlierWeb.ChannelCase
   import TinyMaps
+  import InkFlierWebTest.ChannelSetup, only: [start_game: 1, join_lobby_channel: 1]
+
   alias InkFlier.LobbyServer
 
   setup do
@@ -9,51 +11,33 @@ defmodule InkFlierWeb.LobbyChannelTest do
   end
 
 
-  describe "Start games then join lobby" do
-    setup [:start_game, :join_lobby]
+  describe "Join lobby channel" do
+    setup do: %{user: "Robin"}
+    setup [:join_lobby_channel]
 
-    test "Should return a list of started games", ~M{join_reply} do
-      assert [game1 | []] = join_reply
-      assert game1.creator == "BillyBob"
-    end
+    test "Push create_game to the lobby: creates a game & broadcasts the result", ~M{lobby_socket} do
+      push!(lobby_socket, "create_game", %{})
 
-    test "Push delete also works", ~M{socket, game_id} do
-      push!(socket, "delete_game", game_id)
-
-      assert LobbyServer.games_info |> length == 0
-      assert_broadcast "game_deleted", %{game_id: ^game_id}
-    end
-  end
-
-  describe "Push: create_game" do
-    setup [:join_lobby, :push_create_game]
-
-    test "actually creats a game" do
       assert LobbyServer.games_info |> length == 1
-    end
-
-    test "broadcasts the resulting game" do
       assert_broadcast "game_created", %{creator: "Robin"}
     end
   end
 
 
+  describe "Start games then join lobby" do
+    setup do: %{user: "Spiderman"}
+    setup [:start_game, :join_lobby_channel]
 
-  defp start_game(_) do
-    {:ok, game_id} = LobbyServer.start_game(creator: "BillyBob")
-    ~M{game_id}
-  end
+    test "On joining the channel, should receive a list of started games", ~M{lobby_join_reply} do
+      assert [game1 | []] = lobby_join_reply
+      assert game1.creator == "Spiderman"
+    end
 
-  defp join_lobby(_) do
-    {:ok, join_reply, socket} =
-      InkFlierWeb.UserSocket
-      |> socket("user_id", %{user: "Robin"})
-      |> subscribe_and_join(InkFlierWeb.LobbyChannel, "lobby:main")
-    ~M{join_reply, socket}
-  end
+    test "Push delete also works", ~M{lobby_socket, game_id} do
+      push!(lobby_socket, "delete_game", game_id)
 
-  defp push_create_game(~M{socket}) do
-    push!(socket, "create_game", %{})
-    :ok
+      assert LobbyServer.games_info |> length == 0
+      assert_broadcast "game_deleted", %{game_id: ^game_id}
+    end
   end
 end
