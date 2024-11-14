@@ -11,6 +11,18 @@ defmodule InkFlierWeb.LobbyChannelTest do
   end
 
 
+  describe "Join lobby channel" do
+    setup [:join_lobby_channel]
+
+    test "Push create_game to the lobby: creates a game & broadcasts the result", ~M{lobby_socket} do
+      push!(lobby_socket, "create_game", %{})
+
+      assert LobbyServer.games_info |> length == 1
+      assert_broadcast "game_created", %{creator: "Robin"}
+    end
+  end
+
+
   describe "Start games then join lobby" do
     setup do: %{game_creator: "Spiderman"}
     setup [:start_game, :join_lobby_channel]
@@ -26,24 +38,5 @@ defmodule InkFlierWeb.LobbyChannelTest do
       assert LobbyServer.games_info |> length == 0
       assert_broadcast "game_deleted", %{game_id: ^game_id}
     end
-  end
-
-
-  describe "Push create_game message to the lobby" do
-    setup [:join_lobby_channel, :push_create_game]
-
-    test "actually creats a game" do
-      assert LobbyServer.games_info |> length == 1
-    end
-
-    test "broadcasts the resulting game" do
-      assert_broadcast "game_created", %{creator: "Robin"}
-    end
-  end
-
-
-  defp push_create_game(~M{lobby_socket}) do
-    push!(lobby_socket, "create_game", %{})
-    :ok
   end
 end
