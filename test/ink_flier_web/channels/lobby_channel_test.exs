@@ -4,6 +4,7 @@ defmodule InkFlierWeb.LobbyChannelTest do
 
   import InkFlierWebTest.ChannelSetup, only: [start_game: 1]
   alias InkFlier.LobbyServer
+  alias InkFlierWeb.LobbyChannel
 
   setup do
     start_supervised!(InkFlier.GameSystem)
@@ -44,7 +45,7 @@ defmodule InkFlierWeb.LobbyChannelTest do
     {:ok, join_reply, socket} =
       InkFlierWeb.UserSocket
       |> socket("user_id", %{user: "Robin"})
-      |> subscribe_and_join(InkFlierWeb.LobbyChannel, "lobby:main")
+      |> subscribe_and_join(LobbyChannel, LobbyChannel.topic)
     ~M{join_reply, socket}
   end
 

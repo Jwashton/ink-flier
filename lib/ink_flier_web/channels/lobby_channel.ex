@@ -8,6 +8,8 @@ defmodule InkFlierWeb.LobbyChannel do
 
   @main_topic "lobby:main"
 
+  def topic, do: @main_topic
+
   def notify_game_updated(game_id), do: Endpoint.broadcast(@main_topic, "game_updated", GameServer.summary_info(game_id))
 
 

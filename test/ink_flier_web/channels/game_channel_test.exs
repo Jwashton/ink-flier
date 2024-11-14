@@ -5,8 +5,7 @@ defmodule InkFlierWeb.GameChannelTest do
   import InkFlierWebTest.ChannelSetup, only: [start_game: 1]
   alias InkFlier.LobbyServer
   alias InkFlier.GameServer
-
-  @lobby_topic "lobby:main"
+  alias InkFlierWeb.LobbyChannel
 
   setup do
     start_supervised!(InkFlier.GameSystem)
@@ -35,9 +34,11 @@ defmodule InkFlierWeb.GameChannelTest do
     setup [:start_game, :join_lobby_channel, :join_game_channel]
 
     test "Broadcast goes to multiple topics (Game AND Lobby)", ~M{game_topic, game_socket} do
+      lobby_topic = LobbyChannel.topic
+
       push!(game_socket, "join", %{})
       %{topic: ^game_topic} = assert_broadcast("players_updated", _)
-      %{topic: @lobby_topic} = assert_broadcast("game_updated", _)
+      %{topic: ^lobby_topic} = assert_broadcast("game_updated", _)
     end
   end
 
@@ -74,7 +75,7 @@ defmodule InkFlierWeb.GameChannelTest do
 
 
   defp join_lobby_channel(_) do
-    {:ok, _join_reply, _lobby_socket} = subscribe_test_to_channel(InkFlierWeb.LobbyChannel, @lobby_topic)
+    {:ok, _join_reply, _lobby_socket} = subscribe_test_to_channel(LobbyChannel, LobbyChannel.topic)
     :ok
   end
 
