@@ -13,11 +13,12 @@ defmodule InkFlierWeb.LobbyChannelTest do
 
 
   describe "Start games then join lobby" do
+    setup do: %{game_creator: "Spiderman"}
     setup [:start_game, :join_lobby_channel]
 
     test "On joining the channel, should receive a list of started games", ~M{lobby_join_reply} do
       assert [game1 | []] = lobby_join_reply
-      assert game1.creator == "BillyBob"
+      assert game1.creator == "Spiderman"
     end
 
     test "Push delete also works", ~M{lobby_socket, game_id} do

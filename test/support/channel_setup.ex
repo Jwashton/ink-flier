@@ -5,9 +5,12 @@ defmodule InkFlierWebTest.ChannelSetup do
   alias InkFlier.LobbyServer
   alias InkFlierWeb.LobbyChannel
 
-  def start_game(_) do
-    {:ok, game_id} = LobbyServer.start_game(creator: "BillyBob")
+  def start_game(context) do
+    creator = context[:game_creator] || "Billy"
+
+    {:ok, game_id} = LobbyServer.start_game(creator: creator)
     game_topic = "game:" <> game_id
+
     ~M{game_id, game_topic}
   end
 
