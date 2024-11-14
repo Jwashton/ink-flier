@@ -15,41 +15,43 @@ defmodule InkFlierWeb.GameChannel do
   def join("game:" <> game_id, payload, socket) do
     if authorized?(payload) do
       socket = assign(socket, game_id: game_id)
-      players = GameServer.players(game_id)
 
-      {:ok, ~M{players}, socket}
+      {:ok, %{players: GameServer.players(game_id)}, socket}
     else
       {:error, %{reason: "unauthorized"}}
     end
   end
 
   @impl Phoenix.Channel
-  def handle_in("join", _params, socket) do
-    update_game_and_broadcast_on_success(socket, &GameServer.join/2, socket.assigns.user)
-  end
+  def handle_in("join", _params, socket), do: update_game_and_broadcast_on_success(socket, &GameServer.join/2)
 
   @impl Phoenix.Channel
-  def handle_in("leave", ~m{target}, socket) do
-    update_game_and_broadcast_on_success(socket, &GameServer.remove/2, target)
-  end
+  def handle_in("leave", ~m{target}, socket), do: update_game_and_broadcast_on_success(socket, &GameServer.remove/2, target)
 
   @impl Phoenix.Channel
-  def handle_in("leave", _params, socket) do
-    update_game_and_broadcast_on_success(socket, &GameServer.remove/2, socket.assigns.user)
+  def handle_in("leave", _params, socket), do: update_game_and_broadcast_on_success(socket, &GameServer.remove/2)
+
+
+  defp update_game_and_broadcast_on_success(socket, add_or_remove_player, target \\ nil) do
+    target = target || socket.assigns.user
+    game_id = socket.assigns.game_id
+
+    game_id
+    |> add_or_remove_player.(target)
+    |> broadcast_on_success(game_id, socket)
+    |> ok
   end
 
 
-  defp update_game_and_broadcast_on_success(socket, add_or_remove_player, target) do
-    ~M{game_id} = socket.assigns
-    case add_or_remove_player.(game_id, target) do
-      :ok ->
-        broadcast(socket, "players_updated", %{players: GameServer.players(game_id)})
-        LobbyChannel.notify_game_updated(game_id)
+  defp broadcast_on_success(:ok, game_id, socket) do
+    :ok = broadcast(socket, "players_updated", %{players: GameServer.players(game_id)})
+    :ok = LobbyChannel.notify_game_updated(game_id)
 
-      _no_state_change -> nil
-    end
-    {:reply, :ok, socket}
+    socket
   end
+  defp broadcast_on_success(_, _, socket), do: socket
 
+
+  defp ok(socket), do: {:reply, :ok, socket}
   defp authorized?(_payload), do: true
 end
