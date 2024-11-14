@@ -39,22 +39,17 @@ defmodule InkFlierWeb.GameChannel do
   end
 
 
-  defp ok(socket), do: {:reply, :ok, socket}
-
-  defp update_game_and_broadcast_on_success(socket, func, target) do
-    func.(socket.assigns.game_id, target)
-    |> broadcast_on_success(socket)
-    |> ok
-  end
-
-  defp broadcast_on_success(:ok, socket) do
+  defp update_game_and_broadcast_on_success(socket, add_or_remove_player, target) do
     ~M{game_id} = socket.assigns
-    players = GameServer.players(game_id)
-    broadcast(socket, "players_updated", ~M{players})
-    LobbyChannel.notify_game_updated(game_id)
-    socket
+    case add_or_remove_player.(game_id, target) do
+      :ok ->
+        broadcast(socket, "players_updated", %{players: GameServer.players(game_id)})
+        LobbyChannel.notify_game_updated(game_id)
+
+      _no_state_change -> nil
+    end
+    {:reply, :ok, socket}
   end
-  defp broadcast_on_success(_, _), do: nil
 
   defp authorized?(_payload), do: true
 end
