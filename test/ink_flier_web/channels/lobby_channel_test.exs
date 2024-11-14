@@ -18,7 +18,7 @@ defmodule InkFlierWeb.LobbyChannelTest do
     end
 
     test "Push delete also works", ~M{socket, game_id} do
-      push(socket, "delete_game", game_id) |> assert_reply(:ok)
+      push!(socket, "delete_game", game_id)
 
       assert LobbyServer.games_info |> length == 0
       assert_broadcast "game_deleted", %{game_id: ^game_id}
@@ -53,8 +53,7 @@ defmodule InkFlierWeb.LobbyChannelTest do
   end
 
   defp push_create_game(~M{socket}) do
-    # push/3 by itself is async. Use assert_reply/4 to wait for reply and not cause a race
-    push(socket, "create_game", %{}) |> assert_reply(:ok)
+    push!(socket, "create_game", %{})
     :ok
   end
 end

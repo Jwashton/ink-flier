@@ -15,40 +15,43 @@ defmodule InkFlierWeb.GameChannel do
   def join("game:" <> game_id, payload, socket) do
     if authorized?(payload) do
       socket = assign(socket, game_id: game_id)
-      players = GameServer.players(game_id)
 
-      {:ok, ~M{players}, socket}
+      {:ok, %{players: GameServer.players(game_id)}, socket}
     else
       {:error, %{reason: "unauthorized"}}
     end
   end
 
   @impl Phoenix.Channel
-  def handle_in("join", _params, socket) do
-    broadcast_on_success(socket, &GameServer.join/2)
-    {:reply, :ok, socket}
-  end
+  def handle_in("join", _params, socket), do: update_game_and_broadcast_on_success(socket, &GameServer.join/2)
 
   @impl Phoenix.Channel
-  def handle_in("leave", _params, socket) do
-    broadcast_on_success(socket, &GameServer.remove/2)
-    {:reply, :ok, socket}
+  def handle_in("leave", ~m{target}, socket), do: update_game_and_broadcast_on_success(socket, &GameServer.remove/2, target)
+
+  @impl Phoenix.Channel
+  def handle_in("leave", _params, socket), do: update_game_and_broadcast_on_success(socket, &GameServer.remove/2)
+
+
+  defp update_game_and_broadcast_on_success(socket, add_or_remove_player, target \\ nil) do
+    target = target || socket.assigns.user
+    game_id = socket.assigns.game_id
+
+    game_id
+    |> add_or_remove_player.(target)
+    |> broadcast_on_success(game_id, socket)
+    |> ok
   end
 
 
-  defp broadcast_on_success(socket, game_command) do
-    ~M{user, game_id} = socket.assigns
+  defp broadcast_on_success(:ok, game_id, socket) do
+    :ok = broadcast(socket, "players_updated", %{players: GameServer.players(game_id)})
+    :ok = LobbyChannel.notify_game_updated(game_id)
 
-    case game_command.(game_id, user) do
-      :ok ->
-        players = GameServer.players(game_id)
-
-        broadcast(socket, "players_updated", ~M{players})
-        LobbyChannel.game_updated(game_id)
-
-      _no_state_change -> nil
-    end
+    socket
   end
+  defp broadcast_on_success(_, _, socket), do: socket
 
+
+  defp ok(socket), do: {:reply, :ok, socket}
   defp authorized?(_payload), do: true
 end

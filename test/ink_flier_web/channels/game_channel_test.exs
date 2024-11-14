@@ -2,6 +2,7 @@ defmodule InkFlierWeb.GameChannelTest do
   use InkFlierWeb.ChannelCase
   import TinyMaps
   alias InkFlier.LobbyServer
+  alias InkFlier.GameServer
 
   @lobby_topic "lobby:main"
 
@@ -11,31 +12,62 @@ defmodule InkFlierWeb.GameChannelTest do
   end
 
 
-  describe "Join both lobby and game channels" do
-    setup [:start_game, :join_lobby, :join_game]
+  describe "Join game channel" do
+    setup [:start_game, :join_game_channel]
 
-    test "Broadcast goes to multiple topics (Game AND Lobby)", ~M{game_topic, game_socket} do
-      push(game_socket, "join", %{}) |> assert_reply(:ok)
-      %{topic: ^game_topic} = assert_broadcast("players_updated", _)
-      %{topic: @lobby_topic} = assert_broadcast("game_updated", _)
-    end
-  end
-
-  describe "Start game page" do
-    setup [:start_game, :join_game]
-
-    test "If game is deleted while viewing it's page, receive an endpoint broadcast", ~M{game_id} do
-      # NOTE Different from a handle_in or handle_info, Endpoint.broadcast goes straight to js
-      # unless intercepted by channel's handle_out
+    test "Receive an *endpoint* broadcast if game is deleted while viewing it's page", ~M{game_id} do
       :ok = LobbyServer.delete_game(game_id)
       assert_received %{event: "game_deleted"}
     end
   end
 
+  describe "Join both channels (lobby and game)" do
+    setup [:start_game, :join_lobby_channel, :join_game_channel]
+
+    test "Broadcast goes to multiple topics (Game AND Lobby)", ~M{game_topic, game_socket} do
+      push!(game_socket, "join", %{})
+      %{topic: ^game_topic} = assert_broadcast("players_updated", _)
+      %{topic: @lobby_topic} = assert_broadcast("game_updated", _)
+    end
+  end
+
+  describe "Join game channel and add self to game" do
+    setup [:start_game, :join_game_channel, :add_self_to_game]
+
+    test "Player can add themselves to game", ~M{game_socket, game_id} do
+      assert game_socket.assigns.user in GameServer.players(game_id)
+    end
+
+    test "Player can remove themselves from game", ~M{game_socket, game_id} do
+      push!(game_socket, "leave", %{})
+      assert_broadcast("players_updated", _)
+
+      refute game_socket.assigns.user in GameServer.players(game_id)
+    end
+
+    test "Player can remove *other* target from game", ~M{game_socket, game_id} do
+      :ok = GameServer.join(game_id, "Betsy")
+
+      push!(game_socket, "leave", %{target: "Betsy"})
+      assert_broadcast("players_updated", _)
+
+      assert game_socket.assigns.user in GameServer.players(game_id)
+      refute "Betsy" in GameServer.players(game_id)
+    end
+  end
+
+  # test "No broadcast for removing players that haven't joined" do
+  #   push(game_socket, "leave", %{}) |> assert_reply(:ok)
+  #   push(game_socket, "leave", %{target: "Betsy"}) |> assert_reply(:ok)
+  #   refute_broadcast("players_updated", _)
+  # end
+
 
 
   defp test_socket, do: socket(InkFlierWeb.UserSocket, "user_id", %{user: "Robin"})
+
   defp subscribe_test_to_channel(channel, topic), do: subscribe_and_join(test_socket(), channel, topic)
+
 
   defp start_game(_) do
     {:ok, game_id} = LobbyServer.start_game(creator: "BillyBob")
@@ -43,13 +75,19 @@ defmodule InkFlierWeb.GameChannelTest do
     ~M{game_id, game_topic}
   end
 
-  defp join_lobby(_) do
+  defp join_lobby_channel(_) do
     {:ok, _join_reply, _lobby_socket} = subscribe_test_to_channel(InkFlierWeb.LobbyChannel, @lobby_topic)
     :ok
   end
 
-  defp join_game(~M{game_topic}) do
+  defp join_game_channel(~M{game_topic}) do
     {:ok, _join_reply, game_socket} = subscribe_test_to_channel(InkFlierWeb.GameChannel, game_topic)
     ~M{game_socket}
+  end
+
+  defp add_self_to_game(~M{game_socket}) do
+    push!(game_socket, "join")
+    assert_broadcast("players_updated", _)
+    :ok
   end
 end

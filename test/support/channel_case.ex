@@ -16,16 +16,23 @@ defmodule InkFlierWeb.ChannelCase do
   """
 
   use ExUnit.CaseTemplate
+  import Phoenix.ChannelTest
 
   using do
     quote do
       # Import conveniences for testing with channels
-      import Phoenix.ChannelTest
       import InkFlierWeb.ChannelCase
+      import Phoenix.ChannelTest
 
       # The default endpoint for testing
       @endpoint InkFlierWeb.Endpoint
     end
+  end
+
+  # push/3 by itself is async. Use assert_reply/4 to wait for reply and not cause a race
+  def push!(socket, msg, payload \\ %{}) do
+    push(socket, msg, payload)
+    |> assert_reply(:ok)
   end
 
   setup tags do
