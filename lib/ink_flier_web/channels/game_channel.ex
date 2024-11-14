@@ -25,37 +25,34 @@ defmodule InkFlierWeb.GameChannel do
 
   @impl Phoenix.Channel
   def handle_in("join", _params, socket) do
-    broadcast_on_success(socket, &GameServer.join/2)
-    {:reply, :ok, socket}
-  end
-
-  @impl Phoenix.Channel
-  def handle_in("leave", ~m{target}, socket) do
-    broadcast_on_success(socket, &GameServer.remove/2, target)
-    {:reply, :ok, socket}
-  end
-
-  @impl Phoenix.Channel
-  def handle_in("leave", _params, socket) do
-    broadcast_on_success(socket, &GameServer.remove/2)
-    {:reply, :ok, socket}
-  end
-
-
-  defp broadcast_on_success(socket, game_command, target \\ nil) do
     ~M{game_id} = socket.assigns
-    target = target || socket.assigns.user
+    target = socket.assigns.user
 
-    case game_command.(game_id, target) do
-      :ok ->
-        players = GameServer.players(game_id)
+    game_id
+    |> GameServer.join(target)
+    |> broadcast_on_success(socket, game_id)
 
-        broadcast(socket, "players_updated", ~M{players})
-        LobbyChannel.game_updated(game_id)
-
-      _no_state_change -> nil
-    end
+    {:reply, :ok, socket}
   end
+
+  @impl Phoenix.Channel
+  def handle_in("leave", params, socket) do
+    ~M{game_id} = socket.assigns
+    target = Map.get(params, "target", socket.assigns.user)
+
+    game_id
+    |> GameServer.remove(target)
+    |> broadcast_on_success(socket, game_id)
+
+  {:reply, :ok, socket}
+  end
+
+  defp broadcast_on_success(:ok, socket, game_id) do
+    players = GameServer.players(game_id)
+    broadcast(socket, "players_updated", ~M{players})
+    LobbyChannel.notify_game_updated(game_id)
+  end
+  defp broadcast_on_success(_, _, _), do: nil
 
   defp authorized?(_payload), do: true
 end
