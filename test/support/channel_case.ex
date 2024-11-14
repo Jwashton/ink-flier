@@ -25,6 +25,12 @@ defmodule InkFlierWeb.ChannelCase do
 
       # The default endpoint for testing
       @endpoint InkFlierWeb.Endpoint
+
+      # push/3 by itself is async. Use assert_reply/4 to wait for reply and not cause a race
+      defp push!(socket, msg, payload \\ %{}) do
+        push(socket, msg, payload)
+        |> assert_reply(:ok)
+      end
     end
   end
 

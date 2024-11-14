@@ -15,9 +15,7 @@ defmodule InkFlierWeb.GameChannelTest do
   describe "Join game channel" do
     setup [:start_game, :join_game_channel]
 
-    test "If game is deleted while viewing it's page, receive an endpoint broadcast", ~M{game_id} do
-      # NOTE Different from a handle_in or handle_info, Endpoint.broadcast goes straight to js
-      # unless intercepted by channel's handle_out
+    test "Receive an *endpoint* broadcast if game is deleted while viewing it's page", ~M{game_id} do
       :ok = LobbyServer.delete_game(game_id)
       assert_received %{event: "game_deleted"}
     end
@@ -27,7 +25,7 @@ defmodule InkFlierWeb.GameChannelTest do
     setup [:start_game, :join_lobby_channel, :join_game_channel]
 
     test "Broadcast goes to multiple topics (Game AND Lobby)", ~M{game_topic, game_socket} do
-      push(game_socket, "join", %{}) |> assert_reply(:ok)
+      push!(game_socket, "join", %{})
       %{topic: ^game_topic} = assert_broadcast("players_updated", _)
       %{topic: @lobby_topic} = assert_broadcast("game_updated", _)
     end
@@ -41,7 +39,7 @@ defmodule InkFlierWeb.GameChannelTest do
     end
 
     test "Player can remove themselves from game", ~M{game_socket, game_id} do
-      push(game_socket, "leave", %{}) |> assert_reply(:ok)
+      push!(game_socket, "leave", %{})
       assert_broadcast("players_updated", _)
 
       refute game_socket.assigns.user in GameServer.players(game_id)
@@ -50,7 +48,7 @@ defmodule InkFlierWeb.GameChannelTest do
     test "Player can remove *other* target from game", ~M{game_socket, game_id} do
       :ok = GameServer.join(game_id, "Betsy")
 
-      push(game_socket, "leave", %{target: "Betsy"}) |> assert_reply(:ok)
+      push!(game_socket, "leave", %{target: "Betsy"})
       assert_broadcast("players_updated", _)
 
       assert game_socket.assigns.user in GameServer.players(game_id)
@@ -88,7 +86,7 @@ defmodule InkFlierWeb.GameChannelTest do
   end
 
   defp add_self_to_game(~M{game_socket}) do
-    push(game_socket, "join") |> assert_reply(:ok)
+    push!(game_socket, "join")
     assert_broadcast("players_updated", _)
     :ok
   end
