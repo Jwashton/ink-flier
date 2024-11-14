@@ -16,7 +16,8 @@ defmodule InkFlierWebTest.GameAndLobbyChannel do
     test "When player joins game, a broadcast goes to multiple topics (Game AND Lobby)", ~M{game_topic, game_socket} do
       lobby_topic = LobbyChannel.topic
 
-      push!(game_socket, "join", %{})
+      push!(game_socket, "join")
+
       %{topic: ^game_topic} = assert_broadcast("players_updated", _)
       %{topic: ^lobby_topic} = assert_broadcast("game_updated", _)
     end
