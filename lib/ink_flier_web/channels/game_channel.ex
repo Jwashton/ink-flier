@@ -36,24 +36,20 @@ defmodule InkFlierWeb.GameChannel do
     target = target || socket.assigns.user
     game_id = socket.assigns.game_id
 
-    add_or_remove_player
-    |> wrap(game_id, target)
-    |> broadcast_on_success(socket)
+    game_id
+    |> add_or_remove_player.(target)
+    |> broadcast_on_success(game_id, socket)
     |> ok
   end
 
-  defp wrap(add_or_remove_player, game_id, target) do
-    reply = add_or_remove_player.(game_id, target)
-    {reply, game_id}
-  end
 
-  defp broadcast_on_success({:ok, game_id}, socket) do
+  defp broadcast_on_success(:ok, game_id, socket) do
     :ok = broadcast(socket, "players_updated", %{players: GameServer.players(game_id)})
     :ok = LobbyChannel.notify_game_updated(game_id)
 
     socket
   end
-  defp broadcast_on_success(_, socket), do: socket
+  defp broadcast_on_success(_, _, socket), do: socket
 
 
   defp ok(socket), do: {:reply, :ok, socket}
