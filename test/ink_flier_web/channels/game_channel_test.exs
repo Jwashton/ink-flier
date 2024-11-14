@@ -33,34 +33,26 @@ defmodule InkFlierWeb.GameChannelTest do
     end
   end
 
-  # describe "Join game channel and add self to game" do
-  describe "TODO" do
-    # setup [:start_game, :join_game_channel, :add_self_to_game]
-    setup [:start_game, :join_game_channel]
+  describe "Join game channel and add self to game" do
+    setup [:start_game, :join_game_channel, :add_self_to_game]
 
     test "Player can add themselves to game", ~M{game_socket, game_id} do
-      push(game_socket, "join") |> assert_reply(:ok)
-
-      assert_broadcast("players_updated", _)
       assert game_socket.assigns.user in GameServer.players(game_id)
     end
 
     test "Player can remove themselves from game", ~M{game_socket, game_id} do
-      push(game_socket, "join") |> assert_reply(:ok)
-
       push(game_socket, "leave", %{}) |> assert_reply(:ok)
-
       assert_broadcast("players_updated", _)
+
       refute game_socket.assigns.user in GameServer.players(game_id)
     end
 
     test "Player can remove *other* target from game", ~M{game_socket, game_id} do
-      push(game_socket, "join") |> assert_reply(:ok)
-
       :ok = GameServer.join(game_id, "Betsy")
-      push(game_socket, "leave", %{target: "Betsy"}) |> assert_reply(:ok)
 
+      push(game_socket, "leave", %{target: "Betsy"}) |> assert_reply(:ok)
       assert_broadcast("players_updated", _)
+
       assert game_socket.assigns.user in GameServer.players(game_id)
       refute "Betsy" in GameServer.players(game_id)
     end
@@ -75,7 +67,9 @@ defmodule InkFlierWeb.GameChannelTest do
 
 
   defp test_socket, do: socket(InkFlierWeb.UserSocket, "user_id", %{user: "Robin"})
+
   defp subscribe_test_to_channel(channel, topic), do: subscribe_and_join(test_socket(), channel, topic)
+
 
   defp start_game(_) do
     {:ok, game_id} = LobbyServer.start_game(creator: "BillyBob")
@@ -91,5 +85,11 @@ defmodule InkFlierWeb.GameChannelTest do
   defp join_game_channel(~M{game_topic}) do
     {:ok, _join_reply, game_socket} = subscribe_test_to_channel(InkFlierWeb.GameChannel, game_topic)
     ~M{game_socket}
+  end
+
+  defp add_self_to_game(~M{game_socket}) do
+    push(game_socket, "join") |> assert_reply(:ok)
+    assert_broadcast("players_updated", _)
+    :ok
   end
 end
