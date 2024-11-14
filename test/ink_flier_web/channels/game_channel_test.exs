@@ -2,7 +2,8 @@ defmodule InkFlierWeb.GameChannelTest do
   use InkFlierWeb.ChannelCase
   import TinyMaps
 
-  import InkFlierWebTest.ChannelSetup, only: [start_game: 1]
+  import InkFlierWebTest.ChannelSetup, only: [start_game: 1, join_lobby_channel: 1]
+
   alias InkFlier.LobbyServer
   alias InkFlier.GameServer
   alias InkFlierWeb.LobbyChannel
@@ -74,10 +75,6 @@ defmodule InkFlierWeb.GameChannelTest do
   defp subscribe_test_to_channel(channel, topic), do: subscribe_and_join(test_socket(), channel, topic)
 
 
-  defp join_lobby_channel(_) do
-    {:ok, _join_reply, _lobby_socket} = subscribe_test_to_channel(LobbyChannel, LobbyChannel.topic)
-    :ok
-  end
 
   defp join_game_channel(~M{game_topic}) do
     {:ok, _join_reply, game_socket} = subscribe_test_to_channel(InkFlierWeb.GameChannel, game_topic)

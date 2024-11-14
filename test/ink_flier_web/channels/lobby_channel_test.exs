@@ -2,9 +2,9 @@ defmodule InkFlierWeb.LobbyChannelTest do
   use InkFlierWeb.ChannelCase
   import TinyMaps
 
-  import InkFlierWebTest.ChannelSetup, only: [start_game: 1]
+  import InkFlierWebTest.ChannelSetup, only: [start_game: 1, join_lobby_channel: 1]
+
   alias InkFlier.LobbyServer
-  alias InkFlierWeb.LobbyChannel
 
   setup do
     start_supervised!(InkFlier.GameSystem)
@@ -13,15 +13,15 @@ defmodule InkFlierWeb.LobbyChannelTest do
 
 
   describe "Start games then join lobby" do
-    setup [:start_game, :join_lobby]
+    setup [:start_game, :join_lobby_channel]
 
-    test "Should return a list of started games", ~M{join_reply} do
-      assert [game1 | []] = join_reply
+    test "Should return a list of started games", ~M{lobby_join_reply} do
+      assert [game1 | []] = lobby_join_reply
       assert game1.creator == "BillyBob"
     end
 
-    test "Push delete also works", ~M{socket, game_id} do
-      push!(socket, "delete_game", game_id)
+    test "Push delete also works", ~M{lobby_socket, game_id} do
+      push!(lobby_socket, "delete_game", game_id)
 
       assert LobbyServer.games_info |> length == 0
       assert_broadcast "game_deleted", %{game_id: ^game_id}
@@ -29,7 +29,7 @@ defmodule InkFlierWeb.LobbyChannelTest do
   end
 
   describe "Push: create_game" do
-    setup [:join_lobby, :push_create_game]
+    setup [:join_lobby_channel, :push_create_game]
 
     test "actually creats a game" do
       assert LobbyServer.games_info |> length == 1
@@ -41,16 +41,8 @@ defmodule InkFlierWeb.LobbyChannelTest do
   end
 
 
-  defp join_lobby(_) do
-    {:ok, join_reply, socket} =
-      InkFlierWeb.UserSocket
-      |> socket("user_id", %{user: "Robin"})
-      |> subscribe_and_join(LobbyChannel, LobbyChannel.topic)
-    ~M{join_reply, socket}
-  end
-
-  defp push_create_game(~M{socket}) do
-    push!(socket, "create_game", %{})
+  defp push_create_game(~M{lobby_socket}) do
+    push!(lobby_socket, "create_game", %{})
     :ok
   end
 end
