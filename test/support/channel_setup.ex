@@ -19,9 +19,7 @@ defmodule InkFlierWebTest.ChannelSetup do
   end
 
   def join_game_channel(context) do
-    ~M{game_topic} = context
-
-    {:ok, _game_join_reply, game_socket} = subscribe_test_to_channel(context, GameChannel, game_topic)
+    {:ok, _game_join_reply, game_socket} = subscribe_test_to_channel(context, GameChannel, context.game_topic)
     ~M{game_socket}
   end
 
