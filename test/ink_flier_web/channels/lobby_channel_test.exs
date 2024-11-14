@@ -1,7 +1,6 @@
 defmodule InkFlierWeb.LobbyChannelTest do
   use InkFlierWeb.ChannelCase
   import TinyMaps
-
   import InkFlierWebTest.ChannelSetup, only: [start_game: 1, join_lobby_channel: 1]
 
   alias InkFlier.LobbyServer
@@ -28,6 +27,7 @@ defmodule InkFlierWeb.LobbyChannelTest do
       assert_broadcast "game_deleted", %{game_id: ^game_id}
     end
   end
+
 
   describe "Push: create_game" do
     setup [:join_lobby_channel, :push_create_game]
