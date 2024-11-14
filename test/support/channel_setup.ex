@@ -7,25 +7,32 @@ defmodule InkFlierWebTest.ChannelSetup do
   alias InkFlierWeb.GameChannel
 
   def start_game(context) do
-    creator = context[:game_creator] || "Billy"
-
-    {:ok, game_id} = LobbyServer.start_game(creator: creator)
+    {:ok, game_id} = LobbyServer.start_game(creator: user(context))
     game_topic = "game:" <> game_id
 
     ~M{game_id, game_topic}
   end
 
-  def join_lobby_channel(_) do
-    {:ok, lobby_join_reply, lobby_socket} = subscribe_test_to_channel(LobbyChannel, LobbyChannel.topic)
+  def join_lobby_channel(context) do
+    {:ok, lobby_join_reply, lobby_socket} = subscribe_test_to_channel(context, LobbyChannel, LobbyChannel.topic)
     ~M{lobby_join_reply, lobby_socket}
   end
 
-  def join_game_channel(~M{game_topic}) do
-    {:ok, _join_reply, game_socket} = subscribe_test_to_channel(GameChannel, game_topic)
+  def join_game_channel(context) do
+    ~M{game_topic} = context
+
+    {:ok, _join_reply, game_socket} = subscribe_test_to_channel(context, GameChannel, game_topic)
     ~M{game_socket}
   end
 
 
-  defp test_socket, do: socket(InkFlierWeb.UserSocket, "user_id", %{user: "Robin"})
-  defp subscribe_test_to_channel(channel, topic), do: subscribe_and_join(test_socket(), channel, topic)
+  defp subscribe_test_to_channel(context, channel, topic) do
+    context
+    |> user
+    |> test_socket
+    |> subscribe_and_join(channel, topic)
+  end
+
+  defp user(context), do: context[:user] || "Billy"
+  defp test_socket(user), do: socket(InkFlierWeb.UserSocket, "user_id", ~M{user})
 end

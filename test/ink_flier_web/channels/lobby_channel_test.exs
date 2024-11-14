@@ -12,6 +12,7 @@ defmodule InkFlierWeb.LobbyChannelTest do
 
 
   describe "Join lobby channel" do
+    setup do: %{user: "Robin"}
     setup [:join_lobby_channel]
 
     test "Push create_game to the lobby: creates a game & broadcasts the result", ~M{lobby_socket} do
@@ -24,7 +25,7 @@ defmodule InkFlierWeb.LobbyChannelTest do
 
 
   describe "Start games then join lobby" do
-    setup do: %{game_creator: "Spiderman"}
+    setup do: %{user: "Spiderman"}
     setup [:start_game, :join_lobby_channel]
 
     test "On joining the channel, should receive a list of started games", ~M{lobby_join_reply} do
