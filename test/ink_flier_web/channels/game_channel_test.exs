@@ -37,7 +37,7 @@ defmodule InkFlierWeb.GameChannelTest do
     end
 
     test "Player can remove themselves from game", ~M{game_socket, game_id} do
-      push!(game_socket, "leave", %{})
+      push!(game_socket, "leave")
       assert_broadcast("players_updated", _)
 
       refute game_socket.assigns.user in GameServer.players(game_id)
