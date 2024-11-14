@@ -21,7 +21,15 @@ defmodule InkFlierWeb.GameChannelTest do
       :ok = LobbyServer.delete_game(game_id)
       assert_received %{event: "game_deleted"}
     end
+
+    test "No broadcast for removing players that haven't joined", ~M{game_socket} do
+      push!(game_socket, "leave")
+      push!(game_socket, "leave", %{target: "badPlayer"})
+
+      refute_broadcast("players_updated", _)
+    end
   end
+
 
   describe "Join both channels (lobby and game)" do
     setup [:start_game, :join_lobby_channel, :join_game_channel]
@@ -32,6 +40,7 @@ defmodule InkFlierWeb.GameChannelTest do
       %{topic: @lobby_topic} = assert_broadcast("game_updated", _)
     end
   end
+
 
   describe "Join game channel and add self to game" do
     setup [:start_game, :join_game_channel, :add_self_to_game]
@@ -57,13 +66,6 @@ defmodule InkFlierWeb.GameChannelTest do
       refute "Betsy" in GameServer.players(game_id)
     end
   end
-
-  # test "No broadcast for removing players that haven't joined" do
-  #   push(game_socket, "leave", %{}) |> assert_reply(:ok)
-  #   push(game_socket, "leave", %{target: "Betsy"}) |> assert_reply(:ok)
-  #   refute_broadcast("players_updated", _)
-  # end
-
 
 
   defp test_socket, do: socket(InkFlierWeb.UserSocket, "user_id", %{user: "Robin"})
