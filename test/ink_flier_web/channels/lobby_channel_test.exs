@@ -29,7 +29,7 @@ defmodule InkFlierWeb.LobbyChannelTest do
   end
 
 
-  describe "Push: create_game" do
+  describe "Push create_game message to the lobby" do
     setup [:join_lobby_channel, :push_create_game]
 
     test "actually creats a game" do
