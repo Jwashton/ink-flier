@@ -15,9 +15,9 @@ defmodule InkFlierTest.GameSupervisor do
   end
 
   test "Delete supervised games" do
-    {:ok, game_pid} = GameSupervisor.start_game(id: 321)
+    {:ok, _pid} = GameSupervisor.start_game(id: 321)
 
-    GameSupervisor.delete_game!(game_pid)
+    GameSupervisor.delete_game!(321)
     assert GameSupervisor.count_children.active == 0
   end
 end
