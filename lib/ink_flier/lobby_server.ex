@@ -16,6 +16,9 @@ defmodule InkFlier.LobbyServer do
   alias InkFlier.GameSupervisor
   alias InkFlier.GameServer
 
+  @type game_id :: any
+  @type games :: [game_id]
+
   @name __MODULE__
 
   def start_link(opts), do: GenServer.start_link(__MODULE__, :ok, Keyword.put(opts, :name, @name))
@@ -33,7 +36,7 @@ defmodule InkFlier.LobbyServer do
 
   @impl GenServer
   def handle_call({:start_game, game_opts}, _, t) do
-    game_id = Lobby.generate_id
+    game_id = generate_id()
     game_opts = Keyword.put(game_opts, :id, game_id)
 
     t = Lobby.track_game_id(t, game_id)
@@ -64,4 +67,10 @@ defmodule InkFlier.LobbyServer do
 
 
   defp reply(msg, t), do: {:reply, msg, t}
+
+  @spec generate_id :: game_id
+  def generate_id do
+    :crypto.strong_rand_bytes(8)
+    |> Base.url_encode64(padding: false)
+  end
 end
