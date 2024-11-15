@@ -6,7 +6,7 @@ defmodule InkFlierWeb.GameChannel do
   alias InkFlierWeb.LobbyChannel
   alias InkFlierWeb.Endpoint
 
-  def topic(game_id), do: "game:" <> game_id
+  def topic(game_id), do: "game:" <> to_string(game_id)
 
   def notify_game_deleted(game_id), do: Endpoint.broadcast(topic(game_id), "game_deleted", %{})
 

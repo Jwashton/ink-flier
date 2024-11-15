@@ -15,7 +15,6 @@ defmodule InkFlier.LobbyServer do
   alias InkFlier.Lobby
   alias InkFlier.GameSupervisor
   alias InkFlier.GameServer
-  alias InkFlierWeb.GameChannel
 
   @name __MODULE__
 
@@ -45,8 +44,7 @@ defmodule InkFlier.LobbyServer do
 
   @impl GenServer
   def handle_call({:delete_game, game_id}, _, t) do
-    GameSupervisor.delete_game!(whereis(game_id))
-    :ok = GameChannel.notify_game_deleted(game_id)
+    GameSupervisor.delete_game!(game_id)
 
     t = Lobby.untrack_game_id(t, game_id)
 
