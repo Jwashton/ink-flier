@@ -1,21 +1,4 @@
-# 2024-11-12b
-- @William
-  - With William: Github CI for integration tests
-
-# 2024-11-12
-- [X] Game page's Js: channel.on for the game_deleted event
-- With William
-  - Prob do move lobby_server's `:ok = GameChannel.notify_game_deleted(game_id)` to GameSupervisor.delete_game
-    - And instead of taking pid, take gameName, (update the few places that call that to not need to pass in whereis first)
-    - And then just use GameServer.via should work
-  - Note that the GenServer.terminate also prob would have been fine. I like the Supervisor being in charge of it more tho
-- [X] At some point, I broke the "x" kick other player out of game from Game page, double check that
-  - Write test if possible. The broadcast event might be fine tho and it's just a js not wired up right
-
 # 2024-11-08
-- [X] Next, continue game_channel_test.exs
-  - I can write a test (and then actually implement) graceful channel (or router or something) redirects when we try to connect to a game id that doesn't exist/was deleted
-
 - After that I might flatten LobbyServer into just a context, not a process, like William & I talked about and have notes below
 
 - Split lobby.css into 2 or 3 files, a main (with the colors), and then one for each page
@@ -32,10 +15,9 @@
     - (or lists the collision objects, etc)
   - Can start to do some simple move actions
 
-- [X] After removing the @name stuff from all the tests (and the one channel I had to use non-default name-filled-in 1st arg)
-  - go through the processes themselves and make sure there's no lingering @name stuff
-
 - @William
+  - With William: Github CI for integration tests
+
   - How hard would it be to setup docker so I could basically uninstall elixir and erlang from the computer (like how there's no actual sql on this computer) and instead use the most up-to-date versions through docker?
     - But still be able to use vim or other local computer stuff as my editor, not necessarily vscode's special virtual environment or w/e
     - And to run tests and mix <whatever>, in a cmd prompt or something equiv that was somehow able to access the docker stuff

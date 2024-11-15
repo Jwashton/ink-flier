@@ -2,6 +2,19 @@
 - Finish extracting the shared setup for channels, currently stuck in git stash
 - Finish "No broadcast for removing players that haven't joined" in gameChannelTest
 
+# 2024-11-12
+- [X] Game page's Js: channel.on for the game_deleted event
+- [X] Prob do move lobby_server's `:ok = GameChannel.notify_game_deleted(game_id)` to GameSupervisor.delete_game
+  - And instead of taking pid, take gameName, (update the few places that call that to not need to pass in whereis first)
+  - And then just use GameServer.via should work
+  - Note that the GenServer.terminate also prob would have been fine. I like the Supervisor being in charge of it more tho
+- [X] At some point, I broke the "x" kick other player out of game from Game page, double check that
+  - Write test if possible. The broadcast event might be fine tho and it's just a js not wired up right
+- [X] Next, continue game_channel_test.exs
+  - I can write a test (and then actually implement) graceful channel (or router or something) redirects when we try to connect to a game id that doesn't exist/was deleted
+- [X] After removing the @name stuff from all the tests (and the one channel I had to use non-default name-filled-in 1st arg)
+  - go through the processes themselves and make sure there's no lingering @name stuff
+
 # 2024-10-30
 - Player joining from the game page sends a live javascript update even to people on the lobby page, refreshing it's game for just that row!
 
