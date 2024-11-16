@@ -3,7 +3,7 @@ defmodule InkFlierWeb.GameChannelTest do
   import TinyMaps
   import InkFlierWebTest.ChannelSetup, only: [start_game: 1, join_game_channel: 1]
 
-  alias InkFlier.LobbyServer
+  alias InkFlier.Lobby
   alias InkFlier.GameServer
 
   setup do
@@ -16,7 +16,7 @@ defmodule InkFlierWeb.GameChannelTest do
     setup [:start_game, :join_game_channel]
 
     test "Receive an *endpoint* broadcast if game is deleted while viewing it's page", ~M{game_id} do
-      :ok = LobbyServer.delete_game(game_id)
+      :ok = Lobby.delete_game(game_id)
       assert_received %{event: "game_deleted"}
     end
 

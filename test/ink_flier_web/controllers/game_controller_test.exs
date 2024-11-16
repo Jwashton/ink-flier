@@ -7,7 +7,7 @@ defmodule InkFlierWeb.GameControllerTest do
 
     test "Page loads normally when game exists", ~M{conn} do
       start_supervised!(InkFlier.GameSystem)
-      {:ok, game_id} = InkFlier.LobbyServer.start_game(creator: "BillyBob")
+      {:ok, game_id} = InkFlier.Lobby.start_game(creator: "BillyBob")
 
       conn = get(conn, ~p"/lobby/game/#{game_id}")
       assert html_response(conn, 200) =~ "Game id: #{game_id}"

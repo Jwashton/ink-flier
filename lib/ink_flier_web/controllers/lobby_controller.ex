@@ -2,7 +2,7 @@ defmodule InkFlierWeb.LobbyController do
   use InkFlierWeb, :controller
 
   alias InkFlier.RaceTrack
-  # alias InkFlier.LobbyServer
+  # alias InkFlier.Lobby
 
   @tracks %{
       1 => RaceTrack.new(
@@ -29,7 +29,7 @@ defmodule InkFlierWeb.LobbyController do
   # def home(conn, %{"create" => _track_id_string} = params) do
   #   params = Map.delete(params, "create")
   #   game = Game.new(conn.assigns.user)
-  #   {:ok, _game_id} = LobbyServer.add_game(game)
+  #   {:ok, _game_id} = Lobby.add_game(game)
 
   #   redirect(conn, to: ~p"/lobby?#{params}")
   # end
@@ -43,7 +43,7 @@ defmodule InkFlierWeb.LobbyController do
 
 
   # defp assign_games(conn) do
-  #   LobbyServer.games
+  #   Lobby.games
   #   |> Enum.sort_by(&elem(&1, 0), :desc)
   #   |> then(& assign(conn, :games, &1) )
   # end
