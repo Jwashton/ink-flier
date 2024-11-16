@@ -3,6 +3,9 @@ defmodule InkFlier.Lobby do
   alias InkFlier.GameSupervisor
   alias InkFlier.GameServer
 
+  @type game_id :: any
+  @type games :: [game_id]
+
   def start_game(game_opts) do
     game_id = generate_id()
     :ok = GameStoreServer.track_game_id(game_id)
