@@ -37,7 +37,7 @@ defmodule InkFlierTest.LobbyServer do
     :ok = LobbyServer.delete_game(game_id1)
     assert LobbyServer.games == [game_id2]
 
-    assert LobbyServer.whereis(game_id2)
-    refute LobbyServer.whereis(game_id1)
+    assert GameServer.whereis(game_id2)
+    refute GameServer.whereis(game_id1)
   end
 end
