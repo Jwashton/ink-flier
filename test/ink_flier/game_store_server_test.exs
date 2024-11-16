@@ -14,6 +14,6 @@ defmodule InkFlierTest.GameStoreServer do
 
     :ok = GameStoreServer.untrack_game_id("Banana")
 
-    assert GameStoreServer.games == ["Apple", "Banana"]
+    assert GameStoreServer.games == ["Apple", "Coconut"]
   end
 end
