@@ -12,8 +12,19 @@ defmodule InkFlier.LobbyServer do
 
   def start_link(opts), do: GenServer.start_link(__MODULE__, :ok, Keyword.put(opts, :name, @name))
 
-  def start_game(game_opts), do: GenServer.call(@name, {:start_game, game_opts})
-  def delete_game(game_id), do: GenServer.call(@name, {:delete_game, game_id})
+  def start_game(game_opts) do
+    game_id = generate_id()
+    :ok = GameStoreServer.track_game_id(game_id)
+    {:ok, _pid} = GameSupervisor.start_game(Keyword.put(game_opts, :id, game_id))
+
+    {:ok, game_id}
+  end
+
+  def delete_game(game_id) do
+    :ok = GameSupervisor.delete_game(game_id)
+    :ok = GameStoreServer.untrack_game_id(game_id)
+  end
+
   def games, do: GenServer.call(@name, :games)
   def games_info, do: GenServer.call(@name, :games_info)
 
@@ -22,28 +33,6 @@ defmodule InkFlier.LobbyServer do
 
   @impl GenServer
   def init(:ok), do: {:ok, nil}
-
-  @impl GenServer
-  def handle_call({:start_game, game_opts}, _, t) do
-    game_id = generate_id()
-    game_opts = Keyword.put(game_opts, :id, game_id)
-
-    # t = Lobby.track_game_id(t, game_id)
-    :ok = GameStoreServer.track_game_id(game_id)
-    {:ok, _pid} = GameSupervisor.start_game(game_opts)
-
-    {:reply, {:ok, game_id}, t}
-  end
-
-  @impl GenServer
-  def handle_call({:delete_game, game_id}, _, t) do
-    GameSupervisor.delete_game!(game_id)
-
-    # t = Lobby.untrack_game_id(t, game_id)
-    :ok = GameStoreServer.untrack_game_id(game_id)
-
-    {:reply, :ok, t}
-  end
 
   @impl GenServer
   def handle_call(:games, _, t), do: {:reply, GameStoreServer.games, t}
