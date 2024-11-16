@@ -9,9 +9,8 @@ defmodule InkFlier.GameSystem do
   @impl Supervisor
   def init(:ok) do
     children = [
-      InkFlier.GameSupervisor,
-      InkFlier.LobbyServer,
       InkFlier.GameStoreServer,
+      InkFlier.GameSupervisor,
     ]
 
     Supervisor.init(children, strategy: :one_for_one)

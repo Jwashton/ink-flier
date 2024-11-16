@@ -1,16 +1,10 @@
 defmodule InkFlier.LobbyServer do
-  use GenServer
-
   alias InkFlier.GameSupervisor
   alias InkFlier.GameServer
   alias InkFlier.GameStoreServer
 
-  @type game_id :: any
-  @type games :: [game_id]
-
-  @name __MODULE__
-
-  def start_link(opts), do: GenServer.start_link(__MODULE__, :ok, Keyword.put(opts, :name, @name))
+  # @type game_id :: any
+  # @type games :: [game_id]
 
   def start_game(game_opts) do
     game_id = generate_id()
@@ -29,11 +23,6 @@ defmodule InkFlier.LobbyServer do
   def games_info, do: Enum.map(games(), &GameServer.summary_info/1)
 
 
-  @impl GenServer
-  def init(:ok), do: {:ok, nil}
-
-
-  @spec generate_id :: game_id
   defp generate_id do
     :crypto.strong_rand_bytes(8)
     |> Base.url_encode64(padding: false)
