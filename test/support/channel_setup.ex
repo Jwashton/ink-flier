@@ -2,12 +2,12 @@ defmodule InkFlierWebTest.ChannelSetup do
   use InkFlierWeb.ChannelCase
   import TinyMaps
 
-  alias InkFlier.LobbyServer
+  alias InkFlier.Lobby
   alias InkFlierWeb.LobbyChannel
   alias InkFlierWeb.GameChannel
 
   def start_game(context) do
-    {:ok, game_id} = LobbyServer.start_game(creator: user(context))
+    {:ok, game_id} = Lobby.start_game(creator: user(context))
     game_topic = "game:" <> game_id
 
     ~M{game_id, game_topic}

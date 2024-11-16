@@ -3,7 +3,7 @@ defmodule InkFlierWeb.LobbyChannelTest do
   import TinyMaps
   import InkFlierWebTest.ChannelSetup, only: [start_game: 1, join_lobby_channel: 1]
 
-  alias InkFlier.LobbyServer
+  alias InkFlier.Lobby
 
   setup do
     start_supervised!(InkFlier.GameSystem)
@@ -18,7 +18,7 @@ defmodule InkFlierWeb.LobbyChannelTest do
     test "Push create_game to the lobby: creates a game & broadcasts the result", ~M{lobby_socket} do
       push!(lobby_socket, "create_game", %{})
 
-      assert LobbyServer.games_info |> length == 1
+      assert Lobby.games_info |> length == 1
       assert_broadcast "game_created", %{creator: "Robin"}
     end
   end
@@ -36,7 +36,7 @@ defmodule InkFlierWeb.LobbyChannelTest do
     test "Push delete also works", ~M{lobby_socket, game_id} do
       push!(lobby_socket, "delete_game", game_id)
 
-      assert LobbyServer.games_info |> length == 0
+      assert Lobby.games_info |> length == 0
       assert_broadcast "game_deleted", %{game_id: ^game_id}
     end
   end

@@ -2,7 +2,7 @@ defmodule InkFlier.GameStore do
   use TypedStruct
 
   typedstruct enforce: true do
-    field :games, InkFlier.LobbyServer.games, default: []
+    field :games, InkFlier.Lobby.games, default: []
   end
 
   def new, do: struct!(__MODULE__)

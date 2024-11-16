@@ -1,4 +1,4 @@
-defmodule InkFlier.LobbyServer do
+defmodule InkFlier.Lobby do
   alias InkFlier.GameStoreServer
   alias InkFlier.GameSupervisor
   alias InkFlier.GameServer
