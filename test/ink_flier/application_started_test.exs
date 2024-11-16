@@ -1,4 +1,4 @@
-defmodule InkFlierTest.LobbyApplicationStarted do
+defmodule InkFlierTest.ApplicationStarted do
   @moduledoc """
   Special task to run these: `mix test.integration`
   """
