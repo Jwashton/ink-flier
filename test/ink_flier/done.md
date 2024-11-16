@@ -1,3 +1,6 @@
+# 2024-11-15
+- [X] After that I might flatten LobbyServer into just a context, not a process, like William & I talked about and have notes below
+
 # 2024-11-13
 - Finish extracting the shared setup for channels, currently stuck in git stash
 - Finish "No broadcast for removing players that haven't joined" in gameChannelTest
