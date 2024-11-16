@@ -1,10 +1,7 @@
 defmodule InkFlier.LobbyServer do
+  alias InkFlier.GameStoreServer
   alias InkFlier.GameSupervisor
   alias InkFlier.GameServer
-  alias InkFlier.GameStoreServer
-
-  # @type game_id :: any
-  # @type games :: [game_id]
 
   def start_game(game_opts) do
     game_id = generate_id()
