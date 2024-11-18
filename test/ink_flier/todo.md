@@ -2,6 +2,9 @@
 - Setting js/css with assigns, at the top of controllers this works:
   - `plug :assign, asd: 123`
 
+- Possibly split up lobby.css into a lobby-shared.css and lobby.css, or lobby-lobby.css, or something.
+  - I want one with all the :root shared colors, for both game and lobby, but lobby.html has stuff that's also specific just ti it
+
 # 2024-11-08
 - Split lobby.css into 2 or 3 files, a main (with the colors), and then one for each page
   - Pass that in as an @attr as a list or something
