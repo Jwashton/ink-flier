@@ -3,7 +3,7 @@ defmodule InkFlierWeb.LoginController do
   import TinyMaps
 
   plug :default_return_to, "/login"
-  plug :assign, js: ["/assets/js/lobby_channel.js"]
+  plug :assign, scripts: ["/assets/js/lobby_channel.js"]
 
   def new(conn, ~m{return_to}) do
     conn
