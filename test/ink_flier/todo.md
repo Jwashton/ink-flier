@@ -25,6 +25,10 @@
     - Is there a way to load an entire directory of css or js here? I'm about to split the css up a bit and I already split the js into multiple \*\_channel.js's
       - And this list is getting long, lol
 
+  - Is it bad to have split into multiple css like this, 1 overall one and then some per-page ones?
+    - Maybe it gets bad trying to hunt classes accross multiple files?
+    - But also the one-single-css file gets insanely huge and felt like I should split up the parts that only belonged to certain pages
+
   - With William: Github CI for integration tests
 
   - How hard would it be to setup docker so I could basically uninstall elixir and erlang from the computer (like how there's no actual sql on this computer) and instead use the most up-to-date versions through docker?
