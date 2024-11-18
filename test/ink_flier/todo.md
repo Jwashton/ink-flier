@@ -18,6 +18,13 @@
   - Can start to do some simple move actions
 
 - @William
+  - In assets/build.mjs
+      ```
+      entryPoints: ['js/app.mjs', 'js/game.mjs', 'js/lobby_channel.js', 'js/game_channel.js', 'css/app.css', 'css/lobby.css'],
+      ```
+    - Is there a way to load an entire directory of css or js here? I'm about to split the css up a bit and I already split the js into multiple \*\_channel.js's
+      - And this list is getting long, lol
+
   - With William: Github CI for integration tests
 
   - How hard would it be to setup docker so I could basically uninstall elixir and erlang from the computer (like how there's no actual sql on this computer) and instead use the most up-to-date versions through docker?
