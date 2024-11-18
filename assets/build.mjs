@@ -14,7 +14,7 @@ const plugins = [
 
 // Define esbuild options
 let opts = {
-  entryPoints: ['js/app.mjs', 'js/game.mjs', 'js/lobby_channel.js', 'js/game_channel.js', 'css/app.css', 'css/lobby.css'],
+  entryPoints: ['js/app.mjs', 'js/game.mjs', 'js/lobby_channel.js', 'js/game_channel.js', 'css/app.css', 'css/lobby.css', 'css/lobby-game.css'],
   bundle: true,
   logLevel: 'info',
   target: ['firefox127', 'chrome126'],

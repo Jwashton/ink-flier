@@ -4,6 +4,8 @@ defmodule InkFlierWeb.LobbyController do
   alias InkFlier.RaceTrack
   # alias InkFlier.Lobby
 
+  plug :assign, scripts: ["/assets/js/lobby_channel.js"]
+
   @tracks %{
       1 => RaceTrack.new(
         start: [{-1,-1}, {-2,-2}, {-3,-3}, {-4,-4}],
