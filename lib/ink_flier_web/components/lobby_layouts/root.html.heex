@@ -7,11 +7,12 @@
     <.live_title>
       <%= assigns[:page_title] || "Game Lobby" %>
     </.live_title>
-    <%# <link phx-track-static rel="stylesheet" href={~p"/assets/css/app.css"} /> %>
-    <link phx-track-static rel="stylesheet" href={~p"/assets/css/lobby.css"} />
-    <script>window.userToken = "<%= assigns[:user_token] %>";</script>
 
-    <.scripts scripts={assigns[:scripts]} />
+    <link phx-track-static rel="stylesheet" href={~p"/assets/css/lobby.css"} />
+    <.extra_styles styles={assigns[:styles]} />
+
+    <script>window.userToken = "<%= assigns[:user_token] %>";</script>
+    <.extra_scripts scripts={assigns[:scripts]} />
   </head>
   <body class="bg-white">
     <%= @inner_content %>
