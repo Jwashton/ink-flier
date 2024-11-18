@@ -4,6 +4,7 @@ defmodule InkFlierWeb.LobbyGameController do
 
   alias InkFlier.GameServer
 
+  plug :assign, styles: ["/assets/css/lobby-game.css"]
 
   # def home(conn, ~m{game_id, _join} = params) do
   #   params =
@@ -23,7 +24,7 @@ defmodule InkFlierWeb.LobbyGameController do
       ~M{creator, players} = GameServer.summary_info(game_id)
       conn
       |> assign(~M{creator, players, game_id})
-      |> assign(scripts: ["/assets/js/game_channel.js"])
+      |> assign(scripts: [~p"/assets/js/game_channel.js"])
       |> render
     else
       conn
