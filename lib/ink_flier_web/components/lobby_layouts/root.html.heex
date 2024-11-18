@@ -9,7 +9,9 @@
     </.live_title>
     <%# <link phx-track-static rel="stylesheet" href={~p"/assets/css/app.css"} /> %>
     <link phx-track-static rel="stylesheet" href={~p"/assets/css/lobby.css"} />
-    <.scripts scripts={@assigns[:scripts]} />
+    <script>window.userToken = "<%= assigns[:user_token] %>";</script>
+
+    <.scripts scripts={assigns[:scripts]} />
   </head>
   <body class="bg-white">
     <%= @inner_content %>

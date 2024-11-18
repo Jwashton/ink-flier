@@ -4,6 +4,8 @@ defmodule InkFlierWeb.LobbyGameController do
 
   alias InkFlier.GameServer
 
+  plug :assign, scripts: ["/assets/js/game_channel.js"]
+
   # def home(conn, ~m{game_id, _join} = params) do
   #   params =
   #     params
