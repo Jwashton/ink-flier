@@ -1,3 +1,11 @@
+# 2024-11-17
+- Split lobby.css into 2 or 3 files, a main (with the colors), and then one for each page
+  - Pass that in as an @attr as a list or something
+  - Basically use layout with the @attrs instead of doing \<script...\> at the top of the lobby and game pages
+    - (Which means do the above for their css AND .js)
+  - Start with the JS since it'll be easier 1-to-1
+  - Then do the css which'll have a MAIN for each, then a second page-specific css for each
+
 # 2024-11-15
 - [X] After that I might flatten LobbyServer into just a context, not a process, like William & I talked about and have notes below
 
