@@ -32,11 +32,11 @@ RUN apk update \
 ENV GIT_EDITOR="code --wait"
 
 # Set up non-root user
-RUN adduser -D -g '' -s bash vscode
-USER vscode
+RUN adduser -D -g '' -s bash developer
+USER developer
 WORKDIR /workspaces
 
-COPY .devcontainer/scripts/bash_theme_snippet.sh /home/vscode/.bashrc
+COPY .devcontainer/scripts/bash_theme_snippet.sh /home/developer/.bashrc
 
 # Install Phoenix
 RUN mix local.hex --force \
