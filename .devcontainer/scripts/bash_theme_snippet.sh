@@ -1,6 +1,11 @@
+#!/usr/bin/env bash
 
 # bash theme - partly inspired by https://github.com/ohmyzsh/ohmyzsh/blob/master/themes/robbyrussell.zsh-theme
 __bash_prompt() {
+    # Expressions inside single quotes are not evaluated. In this case this is
+    # expected behavior, as we want to evaluate the expressions when the prompt
+    # is displayed, not when the prompt is defined.
+    # shellcheck disable=SC2016
     local userpart='`export XIT=$? \
         && [ ! -z "${GITHUB_USER}" ] && echo -n "\[\033[0;32m\]@${GITHUB_USER} " || echo -n "\[\033[0;32m\]\u " \
         && [ "$XIT" -ne "0" ] && echo -n "\[\033[1;31m\]➜" || echo -n "\[\033[0m\]➜"`'
