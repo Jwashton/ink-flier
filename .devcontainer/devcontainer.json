@@ -1,11 +1,11 @@
 {
   "name": "Elixir with Phoenix, PostgreSQL, and NodeJS",
-  "dockerComposeFile": "docker-compose.yml",
+  "dockerComposeFile": "compose.yml",
   "service": "app",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "forwardPorts": [
     4000,
-    5432
+    "db:5432"
   ],
   "customizations": {
     "vscode": {
