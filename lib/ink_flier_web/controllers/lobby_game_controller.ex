@@ -21,9 +21,9 @@ defmodule InkFlierWeb.LobbyGameController do
 
   def home(conn, ~m{game_id}) do
     if GameServer.whereis(game_id) do
-      ~M{creator, players} = GameServer.summary_info(game_id)
+      ~M{creator, players, track_id} = GameServer.summary_info(game_id)
       conn
-      |> assign(~M{creator, players, game_id})
+      |> assign(~M{creator, players, game_id, track_id})
       |> assign(scripts: [~p"/assets/js/game_channel.js"])
       |> render
     else
