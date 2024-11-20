@@ -25,6 +25,7 @@ defmodule InkFlierWeb.LobbyChannelTest do
 
     test "Creating a game stores track number", ~M{lobby_socket} do
       push!(lobby_socket, "create_game", 22)
+
       assert_broadcast "game_created", ~M{name}
       assert %{track_id: 22} = GameServer.summary_info(name)
     end
