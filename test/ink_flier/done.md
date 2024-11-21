@@ -1,3 +1,6 @@
+# 2024-11-20
+- [X] GameServer is now being created with TrackId. Display it on html of both Lobby and Game
+
 # 2024-11-17
 - Split lobby.css into 2 or 3 files, a main (with the colors), and then one for each page
   - Pass that in as an @attr as a list or something

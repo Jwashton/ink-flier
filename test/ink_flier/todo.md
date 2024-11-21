@@ -1,9 +1,4 @@
 # 2024-11-19
-- [ ] GameServer is now being created with TrackId. Display it on html of both Lobby and Game
-  - Doesn't need a new test. We already tested that the data IS stored and available. This is just simple display of data we test-proved IS there
-  - So yeah, just add some css or whatever in the 2 html's, get to display the track id
-  - Then finish git branch
-
 - Game phase: :adding_players
   - Different controller's -> different heex based on which one prob
 
