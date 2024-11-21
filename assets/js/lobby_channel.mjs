@@ -37,7 +37,8 @@ function makeGameRow(gameWrapper, newGame) {
   element.querySelector(".gameId").innerHTML = gameId
   element.querySelector(".track-id").innerHTML = trackId
   element.querySelector(".gameCreator").innerHTML = sanitize(gameCreator)
-  element.querySelector(".deleteGame").addEventListener("click", payload => {
+
+  element.querySelector(".delete-game").addEventListener("click", payload => {
     delete_game(gameId)
   })
 
