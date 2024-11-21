@@ -86,6 +86,7 @@ a {
     "number  track   creator links"
     "players players players players"
   ;
+  grid-template-columns: 16em 10em 16em auto;
 
   row-gap: 7px;
   --gap: 11px;
