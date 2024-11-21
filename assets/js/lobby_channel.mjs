@@ -38,9 +38,8 @@ function makeGameRow(gameWrapper, newGame) {
   element.querySelector(".track-id").innerHTML = trackId
   element.querySelector(".gameCreator").innerHTML = sanitize(gameCreator)
 
-  element.querySelector(".delete-game").addEventListener("click", payload => {
-    delete_game(gameId)
-  })
+  element.querySelector(".join-game").addEventListener("click", _resp => { })
+  element.querySelector(".delete-game").addEventListener("click", _resp => { delete_game(gameId) })
 
   // NOTE switch this to another template/clone if it gets more complicated than <span>Player1</span>
   element.querySelector(".gamePlayers").innerHTML = ""
