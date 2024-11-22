@@ -1,2 +1,0 @@
-CREATE USER developer CREATEDB;
-CREATE DATABASE developer WITH OWNER developer;
