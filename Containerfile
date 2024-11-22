@@ -39,6 +39,7 @@ RUN apk update \
   bash \
   curl \
   gnupg \
+  ripgrep \
   # Timezone data
   tzdata \
   # Windows Compatibility
