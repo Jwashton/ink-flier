@@ -18,5 +18,6 @@
   },
   "remoteEnv": {
     "GIT_EDITOR": "code --wait"
-  }
+  },
+  "remoteUser": "developer"
 }
