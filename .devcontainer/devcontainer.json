@@ -2,7 +2,7 @@
   "name": "Elixir with Phoenix, PostgreSQL, and NodeJS",
   "dockerComposeFile": "../compose.yml",
   "service": "app",
-  "workspaceFolder": "/srv/${localWorkspaceFolderBasename}",
+  "workspaceFolder": "/srv",
   "forwardPorts": [
     4000,
     "db:5432"
