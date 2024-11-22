@@ -40,7 +40,9 @@ RUN apk update \
   curl \
   gnupg \
   # Timezone data
-  tzdata
+  tzdata \
+  # Windows Compatibility
+  su-exec
 
 # Set up non-root user
 RUN adduser -D -g '' -s bash developer
@@ -57,6 +59,6 @@ RUN mix local.hex --force \
 USER root
 
 # Set up entrypoint
-COPY --chown=developer .devcontainer/scripts/entrypoint.sh /entrypoint.sh
+COPY --chown=developer .devcontainer/scripts/entrypoint.sh /home/developer/entrypoint.sh
 
-ENTRYPOINT [ "/entrypoint.sh" ]
+ENTRYPOINT [ "/home/developer/entrypoint.sh" ]
