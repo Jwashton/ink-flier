@@ -1,5 +1,5 @@
 #!/bin/sh
 
-chown -R developer:developer /workspaces
+chown --recursive developer:developer /srv/*
 
 exec su-exec developer "$@"

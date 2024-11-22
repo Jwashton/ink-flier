@@ -4,7 +4,7 @@ services:
       context: ..
       dockerfile: ./.devcontainer/Containerfile
     volumes:
-      - ../..:/workspaces:cached
+      - ../..:/srv:Z,cached
     command: sleep infinity
 
   db:

@@ -8,13 +8,10 @@ FROM docker.io/elixir:1.17-alpine AS base
 RUN apk update \
   && apk upgrade \
   && apk add \
-
   # PostgreSQL client for Database access
   postgresql-client \
-
   # PID 1 reaping
   tini \
-
   # Timezone data
   tzdata
 
@@ -29,32 +26,26 @@ FROM base AS dev
 RUN apk update \
   && apk upgrade \
   && apk add \
-
   # Node.js for compiling front-end assets
   nodejs-current \
   npm \
-
   # Git for version control
   git \
-
   # Shellcheck for linting shell scripts
   shellcheck \
-
   # inotify-tools for file watching
   inotify-tools \
-
   # Common utilities
   bash \
   curl \
   gnupg \
-
   # Timezone data
   tzdata
 
 # Set up non-root user
 RUN adduser -D -g '' -s bash developer
 USER developer
-WORKDIR /workspaces
+WORKDIR /srv
 
 COPY --chown=developer .devcontainer/scripts/bash_theme_snippet.sh /home/developer/.bashrc
 

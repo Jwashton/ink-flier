@@ -34,7 +34,7 @@ ENV GIT_EDITOR="code --wait"
 # Set up non-root user
 RUN adduser -D -g '' -s bash developer
 USER developer
-WORKDIR /workspaces
+WORKDIR /srv
 
 COPY .devcontainer/scripts/bash_theme_snippet.sh /home/developer/.bashrc
 
