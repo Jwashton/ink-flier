@@ -49,7 +49,7 @@ RUN adduser -D -g '' -s bash developer
 USER developer
 WORKDIR /srv
 
-COPY --chown=developer .devcontainer/scripts/bash_theme_snippet.sh /home/developer/.bashrc
+COPY --chown=developer ./scripts/bash_theme_snippet.sh /home/developer/.bashrc
 
 # Install Phoenix
 RUN mix local.hex --force \
@@ -59,6 +59,6 @@ RUN mix local.hex --force \
 USER root
 
 # Set up entrypoint
-COPY --chown=developer .devcontainer/scripts/entrypoint.sh /home/developer/entrypoint.sh
+COPY --chown=developer ./scripts/entrypoint.sh /home/developer/entrypoint.sh
 
 ENTRYPOINT [ "/home/developer/entrypoint.sh" ]

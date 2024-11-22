@@ -1,6 +1,6 @@
 {
   "name": "Elixir with Phoenix, PostgreSQL, and NodeJS",
-  "dockerComposeFile": "compose.yml",
+  "dockerComposeFile": "../compose.yml",
   "service": "app",
   "workspaceFolder": "/srv/${localWorkspaceFolderBasename}",
   "forwardPorts": [
@@ -15,5 +15,8 @@
         "connor4312.nodejs-testing"
       ]
     }
+  },
+  "remoteEnv": {
+    "GIT_EDITOR": "code --wait"
   }
 }
