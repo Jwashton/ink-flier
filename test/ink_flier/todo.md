@@ -1,3 +1,7 @@
+# 2024-11-22
+- Attaching game.joingame button to LOBBY
+  - Brainstorm how to do this. Similar to game calling endpointbroadcast stuff in lobby or reverse etc?
+
 # 2024-11-19
 - Game phase: :adding_players
   - Different controller's -> different heex based on which one prob
@@ -18,6 +22,8 @@
   - Can start to do some simple move actions
 
 - @William
+  - With William: Github CI for integration tests
+
   - In assets/build.mjs
       ```
       entryPoints: ['js/app.mjs', 'js/game.mjs', 'js/lobby_channel.js', 'js/game_channel.js', 'css/app.css', 'css/lobby.css'],
@@ -29,7 +35,6 @@
     - Maybe it gets bad trying to hunt classes accross multiple files?
     - But also the one-single-css file gets insanely huge and felt like I should split up the parts that only belonged to certain pages
 
-  - With William: Github CI for integration tests
 
   - How hard would it be to setup docker so I could basically uninstall elixir and erlang from the computer (like how there's no actual sql on this computer) and instead use the most up-to-date versions through docker?
     - But still be able to use vim or other local computer stuff as my editor, not necessarily vscode's special virtual environment or w/e
