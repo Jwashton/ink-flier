@@ -24,18 +24,6 @@
 - @William
   - With William: Github CI for integration tests
 
-  - In assets/build.mjs
-      ```
-      entryPoints: ['js/app.mjs', 'js/game.mjs', 'js/lobby_channel.js', 'js/game_channel.js', 'css/app.css', 'css/lobby.css'],
-      ```
-    - Is there a way to load an entire directory of css or js here? I'm about to split the css up a bit and I already split the js into multiple \*\_channel.js's
-      - And this list is getting long, lol
-
-  - Is it bad to have split into multiple css like this, 1 overall one and then some per-page ones?
-    - Maybe it gets bad trying to hunt classes accross multiple files?
-    - But also the one-single-css file gets insanely huge and felt like I should split up the parts that only belonged to certain pages
-
-
   - How hard would it be to setup docker so I could basically uninstall elixir and erlang from the computer (like how there's no actual sql on this computer) and instead use the most up-to-date versions through docker?
     - But still be able to use vim or other local computer stuff as my editor, not necessarily vscode's special virtual environment or w/e
     - And to run tests and mix <whatever>, in a cmd prompt or something equiv that was somehow able to access the docker stuff
@@ -43,16 +31,6 @@
     - It can't be that easy, can it? To just do a elixir & erlang version of the same thing we did with the sql?
 
 # 2024-10-30
-- Delete GameServer.replyWithOkOrError and maybe re-extract/dry later
-  - This will happen after we do GameServer.remove's broadcast stuff
-    - And doing that will make sure we don't send "someone was removed from game" broadcasts from lobby every time it's clicked, just when it actually removed someone
-
-- GameServer's `Game.notify_module.broadcast` calls, especially nested inside a `if Game.notifyModule != nil`, look a little funky
-  - Prob extract this to a defp or something
-
-- userSocket.js, `channel.on("game_updated"...`:
-  - don't call makeGameRow with `newGame` but instead `updatedGame` and tweak makeGameRow's code to add a different css class (--updated) instead
-
 - [X] @William
   - Right now GameServer's joins/leaves call a function in some saved module (Lobby) that's responsible for sending a PubSub broadcast
     - Are we sure it wouldn't be better for a Lobby (or some other) process to exist who's only job is to subscribe to all game topics (`game:123`, etc) and listen to them doing broadcasts?...
