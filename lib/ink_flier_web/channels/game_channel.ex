@@ -14,6 +14,7 @@ defmodule InkFlierWeb.GameChannel do
     :ok = GameServer.join(game_id, player)
     :ok = Endpoint.broadcast(topic(game_id), "players_updated", %{players: GameServer.players(game_id)})
     :ok = LobbyChannel.notify_game_updated(game_id)
+    raise "here next, re todo"
   end
 
 
