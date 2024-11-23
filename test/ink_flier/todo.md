@@ -1,4 +1,14 @@
 # 2024-11-22
+- in gameChannel
+  - Try to reuse update_game_and_broadcast_on_success instead of redo'ing an Endpoint version of it with playerJoin
+  - Do this by making them BOTH just use Endpoint broadcast
+    - so convert update_game_and_broadcast_on_success to not need socket. It'll take gameId and target
+    - Then player_join will just be a wrapper to point at that similar to how the handleIn's do
+      - except THOSE will peel userId and gameId out of the socket assigns before passing it to the update_game_and_broadcast_on_success which now wants those instead of socket
+
+  - Then my tests will cover both, it's just that outsiders can also call playerjoin now and wont need a socket. they can just give a game id
+
+# 2024-11-22
 - Attaching game.joingame button to LOBBY
   - Brainstorm how to do this. Similar to game calling endpointbroadcast stuff in lobby or reverse etc?
 
