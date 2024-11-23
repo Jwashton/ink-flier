@@ -14,6 +14,7 @@ defmodule InkFlierWeb.GameChannel do
     :ok = GameServer.join(game_id, player)
     :ok = Endpoint.broadcast(topic(game_id), "players_updated", %{players: GameServer.players(game_id)})
     :ok = LobbyChannel.notify_game_updated(game_id)
+    raise "here next, re todo"
   end
 
 
@@ -44,19 +45,20 @@ defmodule InkFlierWeb.GameChannel do
 
     game_id
     |> add_or_remove_player.(target)
-    |> broadcast_on_success(game_id)
-
-    {:reply, :ok, socket}
+    |> broadcast_on_success(game_id, socket)
+    |> ok
   end
 
 
-  defp broadcast_on_success(:ok, game_id) do
-    :ok = Endpoint.broadcast(topic(game_id), "players_updated", %{players: GameServer.players(game_id)})
+  defp broadcast_on_success(:ok, game_id, socket) do
+    :ok = broadcast(socket, "players_updated", %{players: GameServer.players(game_id)})
     :ok = LobbyChannel.notify_game_updated(game_id)
+
+    socket
   end
-  defp broadcast_on_success(_, _,), do: nil
+  defp broadcast_on_success(_, _, socket), do: socket
 
 
-  # defp ok(socket), do: {:reply, :ok, socket}
+  defp ok(socket), do: {:reply, :ok, socket}
   defp authorized?(_payload), do: true
 end
