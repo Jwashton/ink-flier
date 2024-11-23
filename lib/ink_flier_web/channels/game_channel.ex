@@ -8,7 +8,13 @@ defmodule InkFlierWeb.GameChannel do
 
   def topic(game_id), do: "game:" <> to_string(game_id)
 
-  def notify_game_deleted(game_id), do: Endpoint.broadcast(topic(game_id), "game_deleted", %{})
+  def notify_game_deleted(game_id), do: :ok = Endpoint.broadcast(topic(game_id), "game_deleted", %{})
+
+  def player_join(game_id, player) do
+    :ok = GameServer.join(game_id, player)
+    :ok = Endpoint.broadcast(topic(game_id), "players_updated", %{players: GameServer.players(game_id)})
+    :ok = LobbyChannel.notify_game_updated(game_id)
+  end
 
 
   @impl Phoenix.Channel
