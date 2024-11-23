@@ -9,7 +9,7 @@ defmodule InkFlier.Lobby do
   def start_game(game_opts) do
     game_id = generate_id()
     :ok = GameStoreServer.track_game_id(game_id)
-    {:ok, _pid} = GameSupervisor.start_game(Keyword.put(game_opts, :id, game_id))
+    {:ok, _pid} = GameSupervisor.start_game(Keyword.put(game_opts, :name, game_id))
 
     {:ok, game_id}
   end

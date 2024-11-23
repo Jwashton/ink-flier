@@ -24,6 +24,7 @@ function makeGameRow(gameWrapper, newGame) {
   const gameId = gameWrapper.name
   const gameCreator = gameWrapper.creator
   const gamePlayers = gameWrapper.players
+  const trackId = gameWrapper.track_id
 
   const element = document.getElementById("game-template").content.cloneNode(true).firstElementChild
 
@@ -34,6 +35,7 @@ function makeGameRow(gameWrapper, newGame) {
 
   element.querySelector(".gameLink").href = `/lobby/game/${gameId}`
   element.querySelector(".gameId").innerHTML = gameId
+  element.querySelector(".track-id").innerHTML = trackId
   element.querySelector(".gameCreator").innerHTML = sanitize(gameCreator)
   element.querySelector(".deleteGame").addEventListener("click", payload => {
     delete_game(gameId)

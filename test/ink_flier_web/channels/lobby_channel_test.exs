@@ -4,6 +4,7 @@ defmodule InkFlierWeb.LobbyChannelTest do
   import InkFlierWebTest.ChannelSetup, only: [start_game: 1, join_lobby_channel: 1]
 
   alias InkFlier.Lobby
+  alias InkFlier.GameServer
 
   setup do
     start_supervised!(InkFlier.GameSystem)
@@ -16,10 +17,17 @@ defmodule InkFlierWeb.LobbyChannelTest do
     setup [:join_lobby_channel]
 
     test "Push create_game to the lobby: creates a game & broadcasts the result", ~M{lobby_socket} do
-      push!(lobby_socket, "create_game", %{})
+      push!(lobby_socket, "create_game")
 
       assert Lobby.games_info |> length == 1
       assert_broadcast "game_created", %{creator: "Robin"}
+    end
+
+    test "Creating a game stores track number", ~M{lobby_socket} do
+      push!(lobby_socket, "create_game", 22)
+
+      assert_broadcast "game_created", ~M{name}
+      assert %{track_id: 22} = GameServer.summary_info(name)
     end
   end
 
