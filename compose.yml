@@ -8,6 +8,8 @@ services:
     volumes:
       - ./:/srv:Z,cached
     command: sleep infinity
+    environment:
+      POSTGRES_HOST: db
 
   db:
     image: "postgres:16.3"

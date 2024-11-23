@@ -20,6 +20,9 @@ jobs:
     name: Run tests
     runs-on: ubuntu-latest
 
+    env:
+      POSTGRES_HOST: localhost
+
     services:
       postgres:
         image: postgres
