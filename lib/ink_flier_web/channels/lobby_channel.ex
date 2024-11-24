@@ -5,6 +5,7 @@ defmodule InkFlierWeb.LobbyChannel do
   alias InkFlier.Lobby
   alias InkFlier.GameServer
   alias InkFlierWeb.Endpoint
+  alias InkFlierWeb.GameChannel
 
   @main_topic "lobby:main"
 
@@ -35,6 +36,17 @@ defmodule InkFlierWeb.LobbyChannel do
     :ok = Lobby.delete_game(game_id)
 
     broadcast(socket, "game_deleted", ~M{game_id})
+    {:reply, :ok, socket}
+  end
+
+  @impl Phoenix.Channel
+  def handle_in("join_game", game_id, socket) do
+    GameChannel.player_join(game_id, socket.assigns.user)
+    {:reply, :ok, socket}
+  end
+  @impl Phoenix.Channel
+  def handle_in("leave_game", game_id, socket) do
+    GameChannel.player_leave(game_id, socket.assigns.user)
     {:reply, :ok, socket}
   end
 
