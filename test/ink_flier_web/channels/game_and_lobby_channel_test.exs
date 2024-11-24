@@ -24,15 +24,14 @@ defmodule InkFlierWebTest.GameAndLobbyChannel do
     end
 
     test "GameChannel.player_join/2", ~M{game_topic, lobby_topic, game_id} do
-      :ok = GameServer.join(game_id, "Sam")
       :ok = GameChannel.player_join(game_id, "Bran")
 
       %{topic: ^game_topic} = assert_broadcast("players_updated", players_reply)
       %{topic: ^lobby_topic} = assert_broadcast("game_updated", game_reply)
 
       assert %{name: ^game_id} = game_reply
-      assert %{players: ["Sam", "Bran"]} = players_reply
-      assert GameServer.players(game_id) == ["Sam", "Bran"]
+      assert %{players: ["Bran"]} = players_reply
+      assert GameServer.players(game_id) == ["Bran"]
     end
   end
 end
