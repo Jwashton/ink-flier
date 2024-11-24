@@ -10,20 +10,14 @@ defmodule InkFlierWeb.GameChannel do
 
   def notify_game_deleted(game_id), do: :ok = Endpoint.broadcast(topic(game_id), "game_deleted", %{})
 
-  def player_join(game_id, player) do
-    if GameServer.join(game_id, player), do: broadcast_players_updated(game_id)
-  end
-
-  def player_leave(game_id, player) do
-    if GameServer.remove(game_id, player), do: broadcast_players_updated(game_id)
-  end
+  def player_join(game_id, player), do: broadcast_on_success(&GameServer.join/2, game_id, player)
+  def player_leave(game_id, player), do: broadcast_on_success(&GameServer.remove/2, game_id, player)
 
 
   @impl Phoenix.Channel
   def join("game:" <> game_id, payload, socket) do
     if authorized?(payload) do
       socket = assign(socket, game_id: game_id)
-
       {:ok, %{players: GameServer.players(game_id)}, socket}
     else
       {:error, %{reason: "unauthorized"}}
@@ -48,6 +42,10 @@ defmodule InkFlierWeb.GameChannel do
     {:reply, :ok, socket}
   end
 
+
+  defp broadcast_on_success(add_or_remove_player, game_id, player) do
+    if add_or_remove_player.(game_id, player) == :ok, do: broadcast_players_updated(game_id)
+  end
 
   defp broadcast_players_updated(game_id) do
     :ok = Endpoint.broadcast(topic(game_id), "players_updated", %{players: GameServer.players(game_id)})
