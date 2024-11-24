@@ -29,6 +29,14 @@ defmodule InkFlierWeb.LobbyChannelTest do
       assert_broadcast "game_created", ~M{name}
       assert %{track_id: 22} = GameServer.summary_info(name)
     end
+
+    @tag :skip
+    test "Create & join game at same time", ~M{lobby_socket} do
+      push!(lobby_socket, "create_and_join_game")
+
+      assert_broadcast "game_created", ~M{name}
+      assert GameServer.players(name) == ["Robin"]
+    end
   end
 
 
