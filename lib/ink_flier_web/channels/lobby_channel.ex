@@ -44,6 +44,7 @@ defmodule InkFlierWeb.LobbyChannel do
     GameChannel.player_join(game_id, socket.assigns.user)
     {:reply, :ok, socket}
   end
+
   @impl Phoenix.Channel
   def handle_in("leave_game", game_id, socket) do
     GameChannel.player_leave(game_id, socket.assigns.user)
