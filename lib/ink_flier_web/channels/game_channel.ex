@@ -6,8 +6,6 @@ defmodule InkFlierWeb.GameChannel do
   alias InkFlierWeb.LobbyChannel
   alias InkFlierWeb.Endpoint
 
-  def topic(game_id), do: "game:" <> to_string(game_id)
-
   def notify_game_deleted(game_id), do: :ok = Endpoint.broadcast(topic(game_id), "game_deleted", %{})
 
   def player_join(game_id, player), do: broadcast_on_success(&GameServer.join/2, game_id, player)
@@ -52,5 +50,6 @@ defmodule InkFlierWeb.GameChannel do
     :ok = LobbyChannel.notify_game_updated(game_id)
   end
 
+  defp topic(game_id), do: "game:" <> to_string(game_id)
   defp authorized?(_payload), do: true
 end
