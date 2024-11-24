@@ -1,3 +1,9 @@
+# 2024-11-23
+- Finish failing tests in lobby_test
+  - Then un-skip test in lobby_channel_test
+    - And use the new join: true option in the channel to make this new msg work
+  - Then remember to actually wire that message to the html/js
+
 # 2024-11-22
 - in gameChannel
   - Try to reuse update_game_and_broadcast_on_success instead of redo'ing an Endpoint version of it with playerJoin
