@@ -1,5 +1,8 @@
 # 2024-11-23
 - Finish failing tests in lobby_test
+  - Use With statement, I think. In the start_game, with the opts
+    - Not 100% how this will look yet but I think it'll be pretty
+
   - Then un-skip test in lobby_channel_test
     - And use the new join: true option in the channel to make this new msg work
   - Then remember to actually wire that message to the html/js
