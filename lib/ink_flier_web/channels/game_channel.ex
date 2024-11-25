@@ -2,6 +2,7 @@ defmodule InkFlierWeb.GameChannel do
   use InkFlierWeb, :channel
   import TinyMaps
 
+  alias Phoenix.Channel
   alias InkFlier.GameServer
   alias InkFlierWeb.LobbyChannel
   alias InkFlierWeb.Endpoint
@@ -12,29 +13,25 @@ defmodule InkFlierWeb.GameChannel do
   def player_leave(game_id, player), do: broadcast_on_success(&GameServer.remove/2, game_id, player)
 
 
-  @impl Phoenix.Channel
-  def join("game:" <> game_id, payload, socket) do
-    if authorized?(payload) do
-      socket = assign(socket, game_id: game_id)
-      {:ok, %{players: GameServer.players(game_id)}, socket}
-    else
-      {:error, %{reason: "unauthorized"}}
-    end
+  @impl Channel
+  def join("game:" <> game_id, _payload, socket) do
+    socket = assign(socket, game_id: game_id)
+    {:ok, %{players: GameServer.players(game_id)}, socket}
   end
 
-  @impl Phoenix.Channel
+  @impl Channel
   def handle_in("join", _params, socket) do
     player_join(socket.assigns.game_id, socket.assigns.user)
     {:reply, :ok, socket}
   end
 
-  @impl Phoenix.Channel
+  @impl Channel
   def handle_in("leave", ~m{target}, socket) do
     player_leave(socket.assigns.game_id, target)
     {:reply, :ok, socket}
   end
 
-  @impl Phoenix.Channel
+  @impl Channel
   def handle_in("leave", _params, socket) do
     player_leave(socket.assigns.game_id, socket.assigns.user)
     {:reply, :ok, socket}
@@ -51,5 +48,4 @@ defmodule InkFlierWeb.GameChannel do
   end
 
   defp topic(game_id), do: "game:" <> to_string(game_id)
-  defp authorized?(_payload), do: true
 end
