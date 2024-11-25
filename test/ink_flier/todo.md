@@ -1,3 +1,9 @@
+# 2024-11-24
+- Sometime
+  - Remove onclick's from lobbyHtml/home
+    - Move it into javascript addEventListeners the way it's handled everywhere else in the channel js's
+  - Fix css for lobby.html mobile/small view, buttons go off right side screen
+
 # 2024-11-23
 - Finish failing tests in lobby_test
   - Use With statement, I think. In the start_game, with the opts
