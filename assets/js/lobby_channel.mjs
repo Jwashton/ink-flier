@@ -5,7 +5,10 @@ const NEW_GAME = "NEW_GAME"
 
 function create_game(track_id) { channel.push("create_game", track_id) }
 
+function create_and_join_game(track_id) { channel.push("create_and_join_game", track_id) }
+
 function delete_game(gameId) { channel.push("delete_game", gameId) }
+
 
 function appendGame(gameWrapper) {
   const game_row = makeGameRow(gameWrapper, NEW_GAME)
@@ -37,9 +40,10 @@ function makeGameRow(gameWrapper, newGame) {
   element.querySelector(".gameId").innerHTML = gameId
   element.querySelector(".track-id").innerHTML = trackId
   element.querySelector(".gameCreator").innerHTML = sanitize(gameCreator)
-  element.querySelector(".deleteGame").addEventListener("click", payload => {
-    delete_game(gameId)
-  })
+
+  element.querySelector(".join-game").addEventListener("click", _resp => { channel.push("join_game", gameId) })
+  element.querySelector(".leave-game").addEventListener("click", _resp => { channel.push("leave_game", gameId) })
+  element.querySelector(".delete-game").addEventListener("click", _resp => { delete_game(gameId) })
 
   // NOTE switch this to another template/clone if it gets more complicated than <span>Player1</span>
   element.querySelector(".gamePlayers").innerHTML = ""
@@ -90,5 +94,6 @@ function sanitize(string) {
 }
 
 window.create_game = create_game
+window.create_and_join_game = create_and_join_game
 window.delete_game = delete_game
 export default socket

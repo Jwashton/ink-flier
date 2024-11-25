@@ -40,4 +40,16 @@ defmodule InkFlierTest.Lobby do
     assert GameServer.whereis(game_id2)
     refute GameServer.whereis(game_id1)
   end
+
+
+  describe "Start & join game at same time " do
+    test "Requires creator" do
+      assert {:error, :set_creator_if_auto_joining} = Lobby.start_game([join: true])
+    end
+
+    test "Works if given correct opts" do
+      {:ok, game_id} = Lobby.start_game([creator: "Batman", join: true])
+      assert GameServer.players(game_id) == ["Batman"]
+    end
+  end
 end
