@@ -5,7 +5,10 @@ const NEW_GAME = "NEW_GAME"
 
 function create_game(track_id) { channel.push("create_game", track_id) }
 
+function create_and_join_game(track_id) { channel.push("create_and_join_game", track_id) }
+
 function delete_game(gameId) { channel.push("delete_game", gameId) }
+
 
 function appendGame(gameWrapper) {
   const game_row = makeGameRow(gameWrapper, NEW_GAME)
@@ -91,5 +94,6 @@ function sanitize(string) {
 }
 
 window.create_game = create_game
+window.create_and_join_game = create_and_join_game
 window.delete_game = delete_game
 export default socket
