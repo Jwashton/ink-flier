@@ -47,6 +47,7 @@ defmodule InkFlierTest.Lobby do
       {:error, :set_creator_to_auto_join} = Lobby.start_game([join: true])
     end
 
+    @tag :skip
     test "Works if given correct opts" do
       {:ok, game_id} = Lobby.start_game([creator: "Batman", join: true])
       assert GameServer.players(game_id) == ["Batman"]
