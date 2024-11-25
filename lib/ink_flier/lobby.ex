@@ -33,7 +33,7 @@ defmodule InkFlier.Lobby do
   defp validate_auto_join(opts) do
     cond do
       Keyword.get(opts, :join) == true and !Keyword.has_key?(opts, :creator) ->
-        {:error, :set_creator_to_auto_join}
+        {:error, :set_creator_if_auto_joining}
 
       true -> :ok
     end
