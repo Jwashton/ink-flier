@@ -18,7 +18,12 @@ defmodule InkFlier.Game do
     fields = Keyword.filter(opts, fn {k,_v} ->
       k in [:creator, :track_id, :players, :name]
     end)
-    struct!(__MODULE__, fields)
+    if Keyword.get(opts, :join) do
+      struct!(__MODULE__, fields)
+      |> add_player!(Keyword.get(opts, :creator))
+    else
+      struct!(__MODULE__, fields)
+    end
   end
 
   def add_player(t, player_id) do
