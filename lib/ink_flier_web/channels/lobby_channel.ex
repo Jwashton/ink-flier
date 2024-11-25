@@ -32,6 +32,14 @@ defmodule InkFlierWeb.LobbyChannel do
   end
 
   @impl Phoenix.Channel
+  def handle_in("create_and_join_game", track_id, socket) do
+    {:ok, game_id} = Lobby.start_game(creator: socket.assigns.user, track_id: track_id, join: true)
+
+    broadcast(socket, "game_created", GameServer.summary_info(game_id))
+    {:reply, :ok, socket}
+  end
+
+  @impl Phoenix.Channel
   def handle_in("delete_game", game_id, socket) do
     :ok = Lobby.delete_game(game_id)
 
