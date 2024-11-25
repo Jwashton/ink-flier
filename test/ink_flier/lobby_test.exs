@@ -44,7 +44,7 @@ defmodule InkFlierTest.Lobby do
 
   describe "Start & join game at same time " do
     test "Requires creator" do
-      {:error, :set_creator_if_auto_joining} = Lobby.start_game([join: true])
+      assert {:error, :set_creator_if_auto_joining} = Lobby.start_game([join: true])
     end
 
     test "Works if given correct opts" do
