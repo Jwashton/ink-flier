@@ -1,23 +1,35 @@
+# docker compose up -d
+
 services:
   app:
     build:
-      context: ..
-      dockerfile: ./.devcontainer/Containerfile
+      context: .
+      dockerfile: ./Containerfile
     volumes:
-      - ../..:/workspaces:cached
+      - ./:/srv:Z,cached
+    ports:
+      - 4000:4000
     command: sleep infinity
-    network_mode: service:db
+    environment:
+      POSTGRES_HOST: db
 
   db:
     image: "postgres:16.3"
     restart: unless-stopped
     volumes:
       - postgres-data:/var/lib/postgresql/data
-      - ./create-db-user.sql:/docker-entrypoint-initdb.d/create-db-user.sql
+    ports:
+      - 5432:5432
     environment:
       POSTGRES_USER: postgres
       POSTGRES_DB: postgres
       POSTGRES_PASSWORD: postgres
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
 
 volumes:
   postgres-data:

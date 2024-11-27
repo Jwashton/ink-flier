@@ -4,7 +4,7 @@ import Config
 config :ink_flier, InkFlier.Repo,
   username: "postgres",
   password: "postgres",
-  hostname: "localhost",
+  hostname: System.get_env("POSTGRES_HOST") || "localhost",
   database: "ink_flier_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
