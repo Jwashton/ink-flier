@@ -50,6 +50,7 @@ RUN apk update \
 RUN adduser -D -g '' -s bash developer
 USER developer
 WORKDIR /srv
+RUN git config --global --add safe.directory /srv
 
 COPY --chown=developer ./scripts/bash_theme_snippet.sh /home/developer/.bashrc
 
