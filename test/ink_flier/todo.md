@@ -1,3 +1,10 @@
+# 2024-11-26
+- Use [schemaless changeset]("controllers"
+ https://medium.com/very-big-things/towards-maintainable-elixir-the-core-and-the-interface-c267f0da43#:~:text=In-,controllers,-we%20usually%20normalize)
+  - At least in the log in controller, so I have practice and example
+  - See if there's anywhere else input'y or validate needing yet
+  - no chance the with statements to validate keyword opts want to work this way?
+
 # 2024-11-24
 - Sometime
   - Remove onclick's from lobbyHtml/home
