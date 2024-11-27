@@ -4,6 +4,12 @@
   - At least in the log in controller, so I have practice and example
   - See if there's anywhere else input'y or validate needing yet
   - no chance the with statements to validate keyword opts want to work this way?
+  - note this works, for using their wrapper validator example from above
+    
+'''
+[1, 2, foo: :bar]
+[1, 2, {:foo, :bar}]
+'''
 
 # 2024-11-24
 - Sometime
