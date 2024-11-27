@@ -1,4 +1,9 @@
-# docker compose up -d
+# To start the project:
+#   docker compose up -d
+
+# To enter the development container or start server in the container:
+#   docker compose exec --user developer app bash
+#   docker compose exec --user developer app mix phx.server
 
 services:
   app:
