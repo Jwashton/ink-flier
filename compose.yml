@@ -7,6 +7,8 @@ services:
       dockerfile: ./Containerfile
     volumes:
       - ./:/srv:Z,cached
+    ports:
+      - 4000:4000
     command: sleep infinity
     environment:
       POSTGRES_HOST: db
@@ -16,6 +18,8 @@ services:
     restart: unless-stopped
     volumes:
       - postgres-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
     environment:
       POSTGRES_USER: postgres
       POSTGRES_DB: postgres
