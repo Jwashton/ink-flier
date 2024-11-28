@@ -29,6 +29,23 @@ defmodule InkFlierTest.Game do
   end
 
 
+  describe "Phases" do
+    test "Starting phase" do
+      assert Game.summary_info(Game.new).phase == :adding_players
+    end
+
+    @tag :skip
+    test "start/1" do
+      game =
+        Game.new
+        |> Game.add_player!("James")
+        |> Game.start
+
+      assert Game.summary_info(game).phase == :started
+    end
+  end
+
+
   describe "Validations" do
     test "add_player/2" do
       game        = Game.new
@@ -44,6 +61,10 @@ defmodule InkFlierTest.Game do
       reply       = Game.remove_player(game, "James")
 
       assert reply == {:error, :no_such_player}
+    end
+
+    test "start/1" do
+      assert Game.new |> Game.start == {:error, :requires_atleast_one_player}
     end
   end
 end

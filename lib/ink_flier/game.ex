@@ -6,6 +6,7 @@ defmodule InkFlier.Game do
     field :creator, player_id
     field :track_id, InkFlier.RaceTrack.id
     field :players, players, default: []
+    field :phase, phases, default: :adding_players
   end
 
   @type observer_id :: any
@@ -13,6 +14,7 @@ defmodule InkFlier.Game do
 
   @type player_id :: any
   @type players :: [player_id]
+  @type phases :: :adding_players
 
   def new(opts \\ []) do
     __MODULE__
@@ -29,6 +31,12 @@ defmodule InkFlier.Game do
   def remove_player(t, player_id) do
     with :ok <- check_player_exists(t, player_id) do
       {:ok, remove_player!(t, player_id)}
+    end
+  end
+
+  def start(t) do
+    with :ok <- check_atleast_one_player(t) do
+      {:ok, t} # TODO don't just return t
     end
   end
 
@@ -57,5 +65,9 @@ defmodule InkFlier.Game do
 
   defp check_player_doesnt_exist(t, player_id) do
     unless player_id in t.players, do: :ok, else: {:error, :player_already_in_game}
+  end
+
+  defp check_atleast_one_player(t) do
+    if length(t.players) >= 1, do: :ok, else: {:error, :requires_atleast_one_player}
   end
 end
