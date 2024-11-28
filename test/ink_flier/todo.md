@@ -1,3 +1,9 @@
+# 2024-11-27
+- Remove creator/players (other getters) from GameServer and Game
+  - Anything that can be got with summary_info.creator, just do that
+  - This will break tests. MAYBE break a channel. if so check the channel and see if it makes since to keep the getter or switch to just using summary_info
+  - Maybe change Game.summary_info -> just Game.info while I'm at it
+
 # 2024-11-26
 - Use [schemaless changeset]("controllers"
  https://medium.com/very-big-things/towards-maintainable-elixir-the-core-and-the-interface-c267f0da43#:~:text=In-,controllers,-we%20usually%20normalize)
@@ -5,7 +11,7 @@
   - See if there's anywhere else input'y or validate needing yet
   - no chance the with statements to validate keyword opts want to work this way?
   - note this works, for using their wrapper validator example from above
-    
+
 '''
 [1, 2, foo: :bar]
 [1, 2, {:foo, :bar}]
