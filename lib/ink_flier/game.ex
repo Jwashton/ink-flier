@@ -18,9 +18,12 @@ defmodule InkFlier.Game do
   @type phases :: :adding_players
 
   def new(opts \\ []) do
+    auto_join? = Keyword.get(opts, :join)
+    creator = Keyword.get(opts, :creator)
+
     __MODULE__
     |> struct!(filter(opts))
-    |> maybe_auto_join(opts)
+    |> maybe_add_player(creator, auto_join?)
   end
 
   def add_player(t, player_id) do
@@ -51,12 +54,11 @@ defmodule InkFlier.Game do
   def name(t), do: t.name
 
 
+  defp maybe_add_player(t, player, true), do: add_player!(t, player)
+  defp maybe_add_player(t, _, _false), do: t
+
   defp filter(opts) do
     allowed = struct!(__MODULE__) |> Map.from_struct |> Map.keys
     Keyword.filter(opts, fn {k,_v} -> k in allowed end)
-  end
-
-  defp maybe_auto_join(t, opts) do
-    unless Keyword.get(opts, :join), do: t, else: add_player!(t, Keyword.get(opts, :creator))
   end
 end
