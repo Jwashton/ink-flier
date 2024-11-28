@@ -28,13 +28,14 @@ defmodule InkFlier.Game do
       {:ok, add_player!(t, player_id)}
     end
   end
-  def add_player!(t, player_id), do: update_in(t.players, &[player_id | &1])
 
   def remove_player(t, player_id) do
     with :ok <- check_player_exists(t, player_id) do
       {:ok, remove_player!(t, player_id)}
     end
   end
+
+  def add_player!(t, player_id), do: update_in(t.players, &[player_id | &1])
   def remove_player!(t, player_id), do: update_in(t.players, &List.delete(&1, player_id))
 
   def summary_info(t), do: t |> Map.from_struct
