@@ -42,7 +42,10 @@ defmodule InkFlier.Game do
   def name(t), do: t.name
 
 
-  defp filter(opts), do: Keyword.filter(opts, fn {k,_v} -> k in [:creator, :track_id, :players, :name] end)
+  defp filter(opts) do
+    allowed = struct!(__MODULE__) |> Map.from_struct |> Map.keys
+    Keyword.filter(opts, fn {k,_v} -> k in allowed end)
+  end
 
   defp maybe_auto_join(t, opts) do
     unless Keyword.get(opts, :join), do: t, else: add_player!(t, Keyword.get(opts, :creator))
