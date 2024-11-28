@@ -1,5 +1,6 @@
 defmodule InkFlier.Game do
   use TypedStruct
+  alias __MODULE__.Validate
 
   typedstruct do
     field :name, InkFlier.Lobby.game_id, required: true
@@ -23,19 +24,19 @@ defmodule InkFlier.Game do
   end
 
   def add_player(t, player_id) do
-    with :ok <- check_player_doesnt_exist(t, player_id) do
+    with :ok <- Validate.player_doesnt_exist(t, player_id) do
       {:ok, add_player!(t, player_id)}
     end
   end
 
   def remove_player(t, player_id) do
-    with :ok <- check_player_exists(t, player_id) do
+    with :ok <- Validate.player_exists(t, player_id) do
       {:ok, remove_player!(t, player_id)}
     end
   end
 
   def start(t) do
-    with :ok <- check_atleast_one_player(t) do
+    with :ok <- Validate.atleast_one_player(t) do
       {:ok, t} # TODO don't just return t
     end
   end
@@ -57,17 +58,5 @@ defmodule InkFlier.Game do
 
   defp maybe_auto_join(t, opts) do
     unless Keyword.get(opts, :join), do: t, else: add_player!(t, Keyword.get(opts, :creator))
-  end
-
-  defp check_player_exists(t, player_id) do
-    if player_id in t.players, do: :ok, else: {:error, :no_such_player}
-  end
-
-  defp check_player_doesnt_exist(t, player_id) do
-    unless player_id in t.players, do: :ok, else: {:error, :player_already_in_game}
-  end
-
-  defp check_atleast_one_player(t) do
-    if length(t.players) >= 1, do: :ok, else: {:error, :requires_atleast_one_player}
   end
 end
