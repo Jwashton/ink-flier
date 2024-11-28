@@ -33,10 +33,8 @@ defmodule InkFlier.Game do
   def add_player!(t, player_id), do: update_in(t.players, &[player_id | &1])
 
   def remove_player(t, player_id) do
-    if player_id in t.players do
+    with :ok <- check_player_exists(t, player_id) do
       {:ok, remove_player!(t, player_id)}
-    else
-      {:error, :no_such_player_to_remove}
     end
   end
   def remove_player!(t, player_id), do: update_in(t.players, &List.delete(&1, player_id))
@@ -51,5 +49,9 @@ defmodule InkFlier.Game do
 
   defp maybe_auto_join(t, opts) do
     if Keyword.get(opts, :join), do: add_player!(t, Keyword.get(opts, :creator)), else: t
+  end
+
+  defp check_player_exists(t, player_id) do
+    if player_id in t.players, do: :ok, else: {:error, :no_such_player}
   end
 end

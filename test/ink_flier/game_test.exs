@@ -36,7 +36,7 @@ defmodule InkFlierTest.Game do
     {:ok, game} = Game.remove_player(game, "James")
     assert game |> Game.players == ["Batman"]
 
-    {:error, :no_such_player_to_remove} = Game.remove_player(game, "James")
+    {:error, :no_such_player} = Game.remove_player(game, "James")
   end
 
   test "Creator is optional" do
