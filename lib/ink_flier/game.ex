@@ -15,11 +15,8 @@ defmodule InkFlier.Game do
   @type players :: [player_id]
 
   def new(opts \\ []) do
-    filtered_fields = Keyword.filter(opts, fn {k,_v} ->
-      k in [:creator, :track_id, :players, :name]
-    end)
-
-    struct!(__MODULE__, filtered_fields)
+    __MODULE__
+    |> struct!(filter(opts))
     |> maybe_auto_join(opts)
   end
 
@@ -44,6 +41,8 @@ defmodule InkFlier.Game do
   def track_id(t), do: t.track_id
   def name(t), do: t.name
 
+
+  defp filter(opts), do: Keyword.filter(opts, fn {k,_v} -> k in [:creator, :track_id, :players, :name] end)
 
   defp maybe_auto_join(t, opts) do
     unless Keyword.get(opts, :join), do: t, else: add_player!(t, Keyword.get(opts, :creator))
