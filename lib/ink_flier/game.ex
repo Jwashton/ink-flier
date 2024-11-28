@@ -24,10 +24,8 @@ defmodule InkFlier.Game do
   end
 
   def add_player(t, player_id) do
-    unless player_id in t.players do
+    with :ok <- check_player_doesnt_exist(t, player_id) do
       {:ok, add_player!(t, player_id)}
-    else
-      {:error, :player_already_in_game}
     end
   end
   def add_player!(t, player_id), do: update_in(t.players, &[player_id | &1])
@@ -53,5 +51,9 @@ defmodule InkFlier.Game do
 
   defp check_player_exists(t, player_id) do
     if player_id in t.players, do: :ok, else: {:error, :no_such_player}
+  end
+
+  defp check_player_doesnt_exist(t, player_id) do
+    unless player_id in t.players, do: :ok, else: {:error, :player_already_in_game}
   end
 end
