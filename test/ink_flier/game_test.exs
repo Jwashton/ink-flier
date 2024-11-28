@@ -34,12 +34,11 @@ defmodule InkFlierTest.Game do
       assert Game.summary_info(Game.new).phase == :adding_players
     end
 
-    @tag :skip
     test "start/1" do
       game =
         Game.new
         |> Game.add_player!("James")
-        |> Game.start
+        |> Game.start!
 
       assert Game.summary_info(game).phase == :started
     end

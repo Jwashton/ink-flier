@@ -41,6 +41,7 @@ defmodule InkFlier.Game do
       {:ok, t} # TODO don't just return t
     end
   end
+  def start!(t), do: ({:ok, t} = start(t); t)
 
   def add_player!(t, player_id), do: update_in(t.players, &[player_id | &1])
   def remove_player!(t, player_id), do: update_in(t.players, &List.delete(&1, player_id))
