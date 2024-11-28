@@ -1,5 +1,6 @@
 defmodule InkFlier.Game do
   use TypedStruct
+  alias __MODULE__.Opts
   alias __MODULE__.Validate
 
   typedstruct do
@@ -18,12 +19,9 @@ defmodule InkFlier.Game do
   @type phases :: :adding_players
 
   def new(opts \\ []) do
-    auto_join? = Keyword.get(opts, :join)
-    creator = Keyword.get(opts, :creator)
-
     __MODULE__
-    |> struct!(filter(opts))
-    |> maybe_add_player(creator, auto_join?)
+    |> struct!(Opts.filter(opts))
+    |> Opts.maybe_add_creator(opts)
   end
 
   def add_player(t, player_id) do
@@ -48,17 +46,9 @@ defmodule InkFlier.Game do
   def remove_player!(t, player_id), do: update_in(t.players, &List.delete(&1, player_id))
 
   def summary_info(t), do: t |> Map.from_struct
+
   def creator(t), do: t.creator
   def players(t), do: t.players |> Enum.reverse
   def track_id(t), do: t.track_id
   def name(t), do: t.name
-
-
-  defp maybe_add_player(t, player, true), do: add_player!(t, player)
-  defp maybe_add_player(t, _, _false), do: t
-
-  defp filter(opts) do
-    allowed = struct!(__MODULE__) |> Map.from_struct |> Map.keys
-    Keyword.filter(opts, fn {k,_v} -> k in allowed end)
-  end
 end
