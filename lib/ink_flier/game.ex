@@ -42,12 +42,11 @@ defmodule InkFlier.Game do
   def creator(t), do: t.creator
   def players(t), do: t.players |> Enum.reverse
   def track_id(t), do: t.track_id
-  def notify_module(t), do: t.notify_module
   def name(t), do: t.name
 
 
   defp maybe_auto_join(t, opts) do
-    if Keyword.get(opts, :join), do: add_player!(t, Keyword.get(opts, :creator)), else: t
+    unless Keyword.get(opts, :join), do: t, else: add_player!(t, Keyword.get(opts, :creator))
   end
 
   defp check_player_exists(t, player_id) do
