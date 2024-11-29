@@ -16,7 +16,7 @@ defmodule InkFlier.Game do
 
   @type player_id :: any
   @type players :: [player_id]
-  @type phases :: :adding_players
+  @type phases :: :adding_players | :started
 
   def new(opts \\ []) do
     __MODULE__
@@ -38,13 +38,16 @@ defmodule InkFlier.Game do
 
   def start(t) do
     with :ok <- Validate.atleast_one_player(t) do
-      {:ok, t} # TODO don't just return t
+      t
+      |> set_phase(:started)
+      |> ok
     end
   end
   def start!(t), do: ({:ok, t} = start(t); t)
 
   def add_player!(t, player_id), do: update_in(t.players, &[player_id | &1])
   def remove_player!(t, player_id), do: update_in(t.players, &List.delete(&1, player_id))
+  def set_phase(t, phase), do: put_in(t.phase, phase)
 
   def summary_info(t), do: t |> Map.from_struct
 
@@ -52,4 +55,7 @@ defmodule InkFlier.Game do
   def players(t), do: t.players |> Enum.reverse
   def track_id(t), do: t.track_id
   def name(t), do: t.name
+
+
+  defp ok(t), do: {:ok, t}
 end
