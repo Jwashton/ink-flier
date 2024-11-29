@@ -1,4 +1,14 @@
 # 2024-11-28
+- Next, it's probably time for a Board. With player positions etc
+- I have this, and Round. there's a lot of code in both of those
+- Decide if I want to start from scratch or try to meet in the middle or where I want the rules and interface to be (moves allowed now, this is a crash, this wins game, etc)
+
+- I think salveging Round (1) is a good idea. Maybe look through it and try to rework the tests or the output or be happier with it
+  - And it might slip in to Game easily. Game can check if it's in :started phase, and if so start asking for what Round we're in? And Round ends up being the context for player list and everything? Think about it some
+  - But maybe try not to obsess too much. Just pick one (Round works fine enough) and try to go with that after refactoring it some
+  1) (And I think he's the one that made Board)
+
+
 - Add Phase engine stuff similar to islands book for all functions channels can call
   - the with statements in Game can have an extra Rules/Phase line?
     - Or maybe it should go into Lobby...?
