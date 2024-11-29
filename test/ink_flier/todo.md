@@ -1,3 +1,10 @@
+# 2024-11-28
+- Add Phase engine stuff similar to islands book for all functions channels can call
+  - the with statements in Game can have an extra Rules/Phase line?
+    - Or maybe it should go into Lobby...?
+    - Or GameServer? Maybe think about contexts and which one or two modules people should be going through...?
+    - Game.ex is prob fine for now tho. Might even make sense
+
 # 2024-11-26
 - Use [schemaless changeset]("controllers"
  https://medium.com/very-big-things/towards-maintainable-elixir-the-core-and-the-interface-c267f0da43#:~:text=In-,controllers,-we%20usually%20normalize)
