@@ -1,3 +1,6 @@
+# 2024-11-29
+- Finish gameChannelTest and gameControllerTest for start->broadcastStarted and start->correctRender
+
 # 2024-11-28
 - Next, it's probably time for a Board. With player positions etc
 - I have this, and Round. there's a lot of code in both of those
