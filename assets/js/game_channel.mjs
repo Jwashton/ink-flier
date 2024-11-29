@@ -23,6 +23,7 @@ channel.on("game_deleted", _resp => {
 
 document.getElementById("join-button").addEventListener("click", (resp) => { channel.push("join") })
 document.getElementById("leave-button").addEventListener("click", (resp) => { channel.push("leave") })
+document.getElementById("start").addEventListener("click", (resp) => { channel.push("start") })
 
 
 function drawPlayers(players) {

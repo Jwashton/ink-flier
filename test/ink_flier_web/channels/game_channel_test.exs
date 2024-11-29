@@ -52,6 +52,13 @@ defmodule InkFlierWeb.GameChannelTest do
       assert game_socket.assigns.user in GameServer.players(game_id)
       refute "Betsy" in GameServer.players(game_id)
     end
+
+    @tag :skip
+    test "Start game", ~M{game_socket, game_id} do
+      push!(game_socket, "start")
+      assert GameServer.summary_info(game_id).phase == :started
+      assert_broadcast("game_started", _)
+    end
   end
 
 
