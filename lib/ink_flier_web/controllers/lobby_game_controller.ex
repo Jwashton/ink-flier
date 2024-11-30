@@ -20,17 +20,26 @@ defmodule InkFlierWeb.LobbyGameController do
   # end
 
   def home(conn, ~m{game_id}) do
-    if GameServer.whereis(game_id) do
-      ~M{creator, players, track_id} = GameServer.summary_info(game_id)
-      conn
-      |> assign(~M{creator, players, game_id, track_id})
-      |> assign(scripts: [~p"/assets/js/game_channel.js"])
-      |> render
-    else
-      conn
-      |> assign(~M{game_id})
-      |> put_status(404)
-      |> render(:bad_game_id)
+    cond do
+      !GameServer.whereis(game_id) ->
+        conn
+        |> assign(~M{game_id})
+        |> put_status(404)
+        |> render(:bad_game_id)
+
+      GameServer.summary_info(game_id).phase == :started ->
+        conn
+        |> assign(GameServer.summary_info(game_id))
+        |> assign(~M{game_id})
+        |> assign(scripts: [~p"/assets/js/game_channel.js"])
+        |> render(:started)
+
+      true ->
+        conn
+        |> assign(GameServer.summary_info(game_id))
+        |> assign(~M{game_id})
+        |> assign(scripts: [~p"/assets/js/game_channel.js"])
+        |> render
     end
   end
 end

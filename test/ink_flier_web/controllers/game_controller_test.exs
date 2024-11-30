@@ -23,11 +23,11 @@ defmodule InkFlierWeb.GameControllerTest do
       assert html_response(conn, 404) =~ "does not exist"
     end
 
-    @tag :skip
     test "If game started, go to correct phase page", ~M{conn} do
       {:ok, game_id} = Lobby.start_game(creator: "BillyBob", join: true)
       :ok = GameServer.start(game_id)
 
+      conn = get(conn, ~p"/lobby/game/#{game_id}")
       assert html_response(conn, 200) =~ "Positions"
     end
   end

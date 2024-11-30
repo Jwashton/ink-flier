@@ -36,7 +36,7 @@ defmodule InkFlier.GameServer do
   def handle_call(:summary_info, _, t), do: {:reply, Game.summary_info(t), t}
 
   @impl GenServer
-  def handle_call(:start, _, t), do: {:reply, Game.start(t), t}
+  def handle_call(:start, _, t), do: reply_with_ok_or_error(t, Game.start(t))
 
 
   defp reply_with_ok_or_error(t, reply) do
