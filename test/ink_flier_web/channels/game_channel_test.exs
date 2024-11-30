@@ -53,11 +53,11 @@ defmodule InkFlierWeb.GameChannelTest do
       refute "Betsy" in GameServer.players(game_id)
     end
 
-    @tag :skip
     test "Start game", ~M{game_socket, game_id} do
       push!(game_socket, "start")
       assert GameServer.summary_info(game_id).phase == :started
       assert_broadcast("game_started", _)
+      # TODO then actually set javascript to refresh the page channel.on game_started
     end
   end
 
