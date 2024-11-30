@@ -1,5 +1,10 @@
 # 2024-11-29
 - Finish gameChannelTest and gameControllerTest for start->broadcastStarted and start->correctRender
+- DRY LobbyGameController
+- Yes, shrink the GameServer api, make the "helper getters" go through GameServer.summary_info.phase (or whatever)
+  - Also prob rename it to GameServer.info
+- Prob settle on Lobby and GameServer as the main api. Maybe put that in doc somewhere.
+  - Skim the channels and confirm that those are the only two engine modules getting called? (Check the aliases basically :) )
 
 # 2024-11-28
 - Next, it's probably time for a Board. With player positions etc
