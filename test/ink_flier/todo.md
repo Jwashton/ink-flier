@@ -1,3 +1,12 @@
+# 2024-11-30
+- Next, yes add a Phase/RulesEngine
+  - It'll fit nicely in the Lobby and/or GameServer with statements
+  - It'll nicely solve the problem of should I make other modules for Game etc.
+    - Maybe later can extract pieces but don't need to obsesses over it
+    - And either way all api is going through gameserver (or lobby). Which can delegate to other stuff and keep itself thin
+    - And yeah, it'll make me feel better about when each thing is allowed to haopen, we'll just use the Islands rules engine. I specifically whitelist when things are allowed to happen. Even if it's only in 2 phases that's still useful
+- Anyways, yes, next, add a adding_players / :started Phase engine for the api so far
+
 # 2024-11-29
 - Finish gameChannelTest and gameControllerTest for start->broadcastStarted and start->correctRender
 - DRY LobbyGameController
