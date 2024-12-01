@@ -21,6 +21,8 @@ channel.on("game_deleted", _resp => {
   messageContainer.value += `\n[${formattedDateTime()}] This game has been deleted. Please refresh page or return to lobby.`
 })
 
+channel.on("game_started", _resp => { location.reload() })
+
 document.getElementById("join-button").addEventListener("click", (resp) => { channel.push("join") })
 document.getElementById("leave-button").addEventListener("click", (resp) => { channel.push("leave") })
 document.getElementById("start").addEventListener("click", (resp) => { channel.push("start") })

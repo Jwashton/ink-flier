@@ -26,6 +26,16 @@ defmodule InkFlierWeb.GameChannelTest do
 
       refute_broadcast("players_updated", _)
     end
+
+    @tag :skip
+    test "Invalid start game replies (not broadcasts) error messages", ~M{game_socket, game_id} do
+      ref = push(game_socket, "start")
+
+      assert GameServer.summary_info(game_id).phase == :adding_players
+      refute_broadcast("game_started", _)
+
+      assert_reply(ref, :error, {:todoErrorMsgShape, :requires_atleast_one_player})
+    end
   end
 
 
@@ -57,7 +67,6 @@ defmodule InkFlierWeb.GameChannelTest do
       push!(game_socket, "start")
       assert GameServer.summary_info(game_id).phase == :started
       assert_broadcast("game_started", _)
-      # TODO then actually set javascript to refresh the page channel.on game_started
     end
   end
 

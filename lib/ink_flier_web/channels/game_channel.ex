@@ -37,9 +37,12 @@ defmodule InkFlierWeb.GameChannel do
     {:reply, :ok, socket}
   end
 
-  # @impl Channel
-  # def handle_in("start"), _, socket) do
-  # end
+  @impl Channel
+  def handle_in("start", _, socket) do
+    :ok = GameServer.start(socket.assigns.game_id)
+    broadcast!(socket, "game_started", %{})
+    {:reply, :ok, socket}
+  end
 
 
   defp broadcast_on_success(add_or_remove_player, game_id, player) do
