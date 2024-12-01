@@ -1,4 +1,6 @@
 # 2024-11-30
+- Put the 2 gameChannelTest startGames into their own describe block
+
 - Next, yes add a Phase/RulesEngine
   - It'll fit nicely in the Lobby and/or GameServer with statements
   - It'll nicely solve the problem of should I make other modules for Game etc.
@@ -9,6 +11,8 @@
 
 - Later, Lobby page will want to Start game too prob. In which case make it work similar to gameChannel.broadcast_on_sucess except actually do something with returned error messages
   - For now, just require them to go to game page to start it. Don't need to allow EVERYTHING to be done from lobby AND game
+
+- @spec with return values for Lobby and GameServer. The :ok or {:ok, ... tuple shapes in clear spec reminders will be helpful
 
 # 2024-11-29
 - Finish gameChannelTest and gameControllerTest for start->broadcastStarted and start->correctRender
