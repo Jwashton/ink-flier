@@ -7,6 +7,9 @@
     - And yeah, it'll make me feel better about when each thing is allowed to haopen, we'll just use the Islands rules engine. I specifically whitelist when things are allowed to happen. Even if it's only in 2 phases that's still useful
 - Anyways, yes, next, add a adding_players / :started Phase engine for the api so far
 
+- Later, Lobby page will want to Start game too prob. In which case make it work similar to gameChannel.broadcast_on_sucess except actually do something with returned error messages
+  - For now, just require them to go to game page to start it. Don't need to allow EVERYTHING to be done from lobby AND game
+
 # 2024-11-29
 - Finish gameChannelTest and gameControllerTest for start->broadcastStarted and start->correctRender
 - DRY LobbyGameController
