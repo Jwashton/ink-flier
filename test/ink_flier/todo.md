@@ -1,4 +1,6 @@
 # 2024-11-30
+- other skipped gameChannelTest
+
 - Put the 2 gameChannelTest startGames into their own describe block
 
 - Next, yes add a Phase/RulesEngine
