@@ -1,3 +1,30 @@
+# 2024-12-03
+- with william:
+  - Lobby start options prob require creator as an extra param
+    - And then don't need as much validation/withStatement for autoJoin
+    - Just go ahead and DO the autoJoin if it's set to true, b/c creator will always have been set
+  - LobbyTest can have game_id1 and 2 put into setup's probably
+    - And then I can easily change them to both always give creator
+
+  - Save Board.ex (even tho it was born from Round (and I'm about to throw away / restart a better version of Round)
+    - But Board.ex looks really good and useable and answers the sorts of questions I'll want to ask from Board
+    - Should be able to just drop it in an use it nicely with the new version of Game small-piece-at-a-time creating a new Round concept
+    - And I can just copy the list of test NAMES from round, or even just use that planning-comment at the bottom of RoundTest that sketches out all the validation planning for different Moves and their results
+
+  - For the new Round
+    - OPTIONALLY it's still an option to have Round JUST return a new round, and have a *side effect* of doing a GenServer or PubSub broadcast sending out some flavor of Instructions
+    - But, and I think do this one, it's fine to have {:reply, msg, new_state} -style returns! We see that all the time
+    - And in thise case, it's fine to do a {reply, new_round} sort of thing as our reply
+    - ESPECIALLY if I simplify AND do a better "abstraction" / make-a-normal-struct module for Reply
+      - It's going to be :noreply or :whisper or :broadcast or :both, or something close to that
+        - Maybe a list of mutliple broadcasts but for now I think just 1 whisper and 1 broadcast needed
+      - Anyways, a Reply struct that people can check and say Oh I need to do this broadcast and this reply etc
+    - plus the updated Round *state* comes back and I can test on that for who-all-is-locked-in etc and we're good to go
+
+  - UPDATE: Play with it, but also might not need an entire Reply struct, instead that above {:reply, msg, new_state} thing could be, for us, more in the shape of {:reply, (whisper_msg || nil), (broadcast_msg || nil), new_state}
+
+  - (like said above) But do go ahead and probably restart Round from scratch tho, but I think try to use the existing Board
+
 # 2024-11-30
 - other skipped gameChannelTest
 
