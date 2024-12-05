@@ -18,7 +18,7 @@ defmodule InkFlierTest.Lobby do
 
   test "Can retrieve data from games by using their game_id" do
     {:ok, game_id} = Lobby.start_game(creator: "Bob")
-    assert GameServer.creator(game_id) == "Bob"
+    assert GameServer.summary_info(game_id).creator == "Bob"
   end
 
   test "games_info" do

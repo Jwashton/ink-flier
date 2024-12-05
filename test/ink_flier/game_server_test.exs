@@ -5,7 +5,7 @@ defmodule InkFlierTest.GameServer do
 
   test "Games can be started & retrieved with a lobby-generated id" do
     {:ok, _pid} = GameServer.start_link(name: 123, creator: "Robin")
-    assert GameServer.creator(123) == "Robin"
+    assert GameServer.summary_info(123).creator == "Robin"
   end
 
   test "A player can join" do

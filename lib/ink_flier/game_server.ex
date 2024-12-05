@@ -8,7 +8,6 @@ defmodule InkFlier.GameServer do
   def join(id, player), do: GenServer.call(via(id), {:join, player})
   def remove(id, player), do: GenServer.call(via(id), {:remove, player})
 
-  def creator(id), do: GenServer.call(via(id), :creator)
   def players(id), do: GenServer.call(via(id), :players)
   def summary_info(id), do: GenServer.call(via(id), :summary_info)
   def begin(id), do: GenServer.call(via(id), :begin)

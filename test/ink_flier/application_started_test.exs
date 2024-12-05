@@ -11,6 +11,6 @@ defmodule InkFlierTest.ApplicationStarted do
   test "Application correctly starts Lobby (and his required GameSupervisor)" do
     assert Lobby.games == []
     {:ok, game_id} = Lobby.start_game(creator: "Robin")
-    assert GameServer.creator(game_id) == "Robin"
+    assert GameServer.summary_info(game_id).creator == "Robin"
   end
 end
