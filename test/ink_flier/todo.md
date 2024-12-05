@@ -1,3 +1,7 @@
+# 2024-12-04
+- DRY lobbyGame/home.html and lobbyGame/started.html
+  - Make a header or wrapper that renders inside them
+
 # 2024-12-03
 - with william:
   - Lobby start options prob require creator as an extra param
