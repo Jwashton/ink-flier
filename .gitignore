@@ -33,3 +33,4 @@ node_modules
 
 /scripts/aliases.sh
 /test/ink_flier/todo.md
+/.gitpersonal/
