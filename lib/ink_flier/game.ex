@@ -49,7 +49,11 @@ defmodule InkFlier.Game do
   def remove_player!(t, player_id), do: update_in(t.players, &List.delete(&1, player_id))
   def set_phase(t, phase), do: put_in(t.phase, phase)
 
-  def summary_info(t), do: t |> Map.from_struct
+  def summary_info(t) do
+    t
+    |> Map.from_struct
+    |> Map.put(:players, players(t))
+  end
 
   def creator(t), do: t.creator
   def players(t), do: t.players |> Enum.reverse

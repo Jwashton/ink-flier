@@ -43,4 +43,12 @@ defmodule InkFlierTest.Game do
       assert Game.summary_info(game).phase == :begun
     end
   end
+
+  test "summary_info/1 returns players in correct order" do
+    game =
+      Game.new
+      |> Game.add_player!("James")
+      |> Game.add_player!("Batman")
+    assert Game.summary_info(game).players == ["James", "Batman"]
+  end
 end
