@@ -16,7 +16,7 @@ defmodule InkFlierWeb.GameChannel do
   @impl Channel
   def join("game:" <> game_id, _payload, socket) do
     socket = assign(socket, game_id: game_id)
-    {:ok, %{players: GameServer.players(game_id)}, socket}
+    {:ok, %{players: GameServer.summary_info(game_id).players}, socket}
   end
 
   @impl Channel
@@ -54,7 +54,7 @@ defmodule InkFlierWeb.GameChannel do
   end
 
   defp broadcast_players_updated(game_id) do
-    :ok = Endpoint.broadcast(topic(game_id), "players_updated", %{players: GameServer.players(game_id)})
+    :ok = Endpoint.broadcast(topic(game_id), "players_updated", %{players: GameServer.summary_info(game_id).players})
     :ok = LobbyChannel.notify_game_updated(game_id)
   end
 

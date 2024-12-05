@@ -49,7 +49,7 @@ defmodule InkFlierTest.Lobby do
 
     test "Works if given correct opts" do
       {:ok, game_id} = Lobby.start_game([creator: "Batman", join: true])
-      assert GameServer.players(game_id) == ["Batman"]
+      assert GameServer.summary_info(game_id).players == ["Batman"]
     end
   end
 end

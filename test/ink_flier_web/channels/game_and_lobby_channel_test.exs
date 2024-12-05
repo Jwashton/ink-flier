@@ -31,7 +31,7 @@ defmodule InkFlierWebTest.GameAndLobbyChannel do
 
       assert %{name: ^game_id} = game_reply
       assert %{players: ["Bran"]} = players_reply
-      assert GameServer.players(game_id) == ["Bran"]
+      assert GameServer.summary_info(game_id).players == ["Bran"]
     end
   end
 end

@@ -42,14 +42,14 @@ defmodule InkFlierWeb.GameChannelTest do
     setup [:start_game, :join_game_channel, :add_self_to_game]
 
     test "Player can add themselves to game", ~M{game_socket, game_id} do
-      assert game_socket.assigns.user in GameServer.players(game_id)
+      assert game_socket.assigns.user in GameServer.summary_info(game_id).players
     end
 
     test "Player can remove themselves from game", ~M{game_socket, game_id} do
       push!(game_socket, "leave")
       assert_broadcast("players_updated", _)
 
-      refute game_socket.assigns.user in GameServer.players(game_id)
+      refute game_socket.assigns.user in GameServer.summary_info(game_id).players
     end
 
     test "Player can remove *other* target from game", ~M{game_socket, game_id} do
@@ -58,8 +58,8 @@ defmodule InkFlierWeb.GameChannelTest do
       push!(game_socket, "leave", %{target: "Betsy"})
       assert_broadcast("players_updated", _)
 
-      assert game_socket.assigns.user in GameServer.players(game_id)
-      refute "Betsy" in GameServer.players(game_id)
+      assert game_socket.assigns.user in GameServer.summary_info(game_id).players
+      refute "Betsy" in GameServer.summary_info(game_id).players
     end
 
     test "Start game", ~M{game_socket, game_id} do

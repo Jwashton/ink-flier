@@ -13,7 +13,7 @@ defmodule InkFlierTest.GameServer do
     :ok = GameServer.join(123, "Robin")
     :ok = GameServer.join(123, "Bruce")
 
-    assert GameServer.players(123) == ["Robin", "Bruce"]
+    assert GameServer.summary_info(123).players == ["Robin", "Bruce"]
   end
 
   test "remove player" do
@@ -21,7 +21,7 @@ defmodule InkFlierTest.GameServer do
     :ok = GameServer.join(123, "Bruce")
 
     :ok = GameServer.remove(123, "Bruce")
-    assert GameServer.players(123) == []
+    assert GameServer.summary_info(123).players == []
 
     assert {:error, _no_such_player} = GameServer.remove(123, "Badplayer")
   end

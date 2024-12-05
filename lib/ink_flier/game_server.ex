@@ -8,9 +8,9 @@ defmodule InkFlier.GameServer do
   def join(id, player), do: GenServer.call(via(id), {:join, player})
   def remove(id, player), do: GenServer.call(via(id), {:remove, player})
 
-  def players(id), do: GenServer.call(via(id), :players)
-  def summary_info(id), do: GenServer.call(via(id), :summary_info)
   def begin(id), do: GenServer.call(via(id), :begin)
+
+  def summary_info(id), do: GenServer.call(via(id), :summary_info)
 
   def via(id), do: {:via, Registry, {Registry.Game, id}}
   def whereis(id), do: via(id) |> GenServer.whereis
@@ -26,16 +26,10 @@ defmodule InkFlier.GameServer do
   def handle_call({:remove, player}, _, t), do: reply_with_ok_or_error(t, Game.remove_player(t, player))
 
   @impl GenServer
-  def handle_call(:creator, _, t), do: {:reply, Game.creator(t), t}
-
-  @impl GenServer
-  def handle_call(:players, _, t), do: {:reply, Game.players(t), t}
+  def handle_call(:begin, _, t), do: reply_with_ok_or_error(t, Game.begin(t))
 
   @impl GenServer
   def handle_call(:summary_info, _, t), do: {:reply, Game.summary_info(t), t}
-
-  @impl GenServer
-  def handle_call(:begin, _, t), do: reply_with_ok_or_error(t, Game.begin(t))
 
 
   defp reply_with_ok_or_error(t, reply) do

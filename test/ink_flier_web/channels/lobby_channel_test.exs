@@ -34,7 +34,7 @@ defmodule InkFlierWeb.LobbyChannelTest do
       push!(lobby_socket, "create_and_join_game")
 
       assert_broadcast "game_created", ~M{name}
-      assert GameServer.players(name) == ["Robin"]
+      assert GameServer.summary_info(name).players == ["Robin"]
     end
   end
 
@@ -57,14 +57,14 @@ defmodule InkFlierWeb.LobbyChannelTest do
 
     test "Join game can be done from lobby (don't need to be on game's channel/page)", ~M{lobby_socket, game_id} do
       push!(lobby_socket, "join_game", game_id)
-      assert GameServer.players(game_id) == ["Spiderman"]
+      assert GameServer.summary_info(game_id).players == ["Spiderman"]
     end
 
     test "Leave game can also be done from lobby", ~M{lobby_socket, game_id} do
       :ok = GameServer.join(game_id, "Spiderman")
       push!(lobby_socket, "leave_game", game_id)
 
-      assert GameServer.players(game_id) == []
+      assert GameServer.summary_info(game_id).players == []
     end
   end
 end
