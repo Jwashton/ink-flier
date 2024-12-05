@@ -30,3 +30,6 @@ node_modules
 
 # Ignore compiled assets
 /priv/static/
+
+/scripts/aliases.sh
+/test/ink_flier/todo.md
