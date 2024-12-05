@@ -1,0 +1,27 @@
+<template id="app"
+    data-game-id = {@game_id}
+    data-user = {@user}
+></template>
+
+<div class="game">
+  <p>
+  Game id: <%= @game_id %>
+  </p>
+  <p>
+  Track id: <%= @track_id %>
+  </p>
+  <p>
+  Creator: <%= @creator %>
+  </p>
+  <hr />
+  Started
+
+  <p>
+  Positions:
+  <table class="positions">
+    ...Loading
+  </table>
+  </p>
+
+  <textarea id="messages" class="game__messages" readonly>Messages</textarea>
+</div>

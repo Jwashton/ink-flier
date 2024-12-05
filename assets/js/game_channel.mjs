@@ -17,12 +17,16 @@ channel.join()
 
 channel.on("players_updated", resp => { drawPlayers(resp.players) })
 
-channel.on("game_deleted", _resp => {
-  messageContainer.value += `\n[${formattedDateTime()}] This game has been deleted. Please refresh page or return to lobby.`
-})
+channel.on("game_deleted", _resp => { displayMessage("This game has been deleted. Please refresh page or return to lobby.") })
 
-document.getElementById("join-button").addEventListener("click", (resp) => { channel.push("join") })
-document.getElementById("leave-button").addEventListener("click", (resp) => { channel.push("leave") })
+channel.on("game_started", _resp => { location.reload() })
+
+document.getElementById("join-button").addEventListener("click", (_event) => { channel.push("join") })
+document.getElementById("leave-button").addEventListener("click", (_event) => { channel.push("leave") })
+document.getElementById("start").addEventListener("click", (_event) => {
+  channel.push("start")
+    .receive("error", msg => { displayMessage(`Error: ${msg}`) })
+})
 
 
 function drawPlayers(players) {
@@ -35,10 +39,10 @@ function drawPlayers(players) {
 
     if (player == user) {
       playerRow.querySelector("#remove_button")
-      .remove()
+        .remove()
     } else {
       playerRow.querySelector("#remove_button")
-      .addEventListener("click", (_resp) => { channel.push("leave", {target: player}) })
+        .addEventListener("click", (_resp) => { channel.push("leave", {target: player}) })
     }
 
     playerListElement.appendChild(playerRow)
@@ -47,6 +51,11 @@ function drawPlayers(players) {
 
 function sanitize(string) {
   return string.replace(/</g,"&lt;")
+}
+
+function displayMessage(msg) {
+  messageContainer.value += `\n[${formattedDateTime()}] ${msg}`
+  messageContainer.scrollTop = messageContainer.scrollHeight
 }
 
 function formattedDateTime() {

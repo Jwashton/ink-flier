@@ -11,3 +11,18 @@
   width: 11rem;
   background-color: gray;
 }
+
+.game__buttons {
+  display: grid;
+  /* grid-template-areas: */
+  /* "a start" */
+  /* ; */
+  grid-template-columns: auto 25em;
+
+  /* border: 1px solid var(--1); */
+}
+
+.game__buttons-start {
+  /* grid-area: start; */
+  /* margin-right: 20em; */
+}
