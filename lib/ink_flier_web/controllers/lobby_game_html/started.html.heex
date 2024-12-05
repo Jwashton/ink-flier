@@ -1,5 +1,27 @@
-Positions:
+<template id="app"
+    data-game-id = {@game_id}
+    data-user = {@user}
+></template>
 
-TODO, extract wrapper from Game to render these 2 inside
+<div class="game">
+  <p>
+  Game id: <%= @game_id %>
+  </p>
+  <p>
+  Track id: <%= @track_id %>
+  </p>
+  <p>
+  Creator: <%= @creator %>
+  </p>
+  <hr />
+  Started
 
-Just cut and paste them for now then move this above todo (extract wrapper) to todo.md
+  <p>
+  Positions:
+  <table class="positions">
+    ...Loading
+  </table>
+  </p>
+
+  <textarea id="messages" class="game__messages" readonly>Messages</textarea>
+</div>
