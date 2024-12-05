@@ -30,7 +30,7 @@ defmodule InkFlierWeb.GameChannelTest do
     test "Invalid start game replies (not broadcasts) error messages", ~M{game_socket, game_id} do
       ref = push(game_socket, "start")
 
-      assert GameServer.summary_info(game_id).phase == :adding_players
+      assert GameServer.summary_info(game_id).phase == :setup
       refute_broadcast("game_started", _)
 
       assert_reply(ref, :error, :requires_atleast_one_player)
@@ -64,7 +64,7 @@ defmodule InkFlierWeb.GameChannelTest do
 
     test "Start game", ~M{game_socket, game_id} do
       push!(game_socket, "start")
-      assert GameServer.summary_info(game_id).phase == :started
+      assert GameServer.summary_info(game_id).phase == :begun
       assert_broadcast("game_started", _)
     end
   end

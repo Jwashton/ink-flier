@@ -19,7 +19,7 @@ defmodule InkFlierTest.GameValidations do
     assert reply == {:error, :no_such_player}
   end
 
-  test "start/1" do
-    assert Game.new |> Game.start == {:error, :requires_atleast_one_player}
+  test "begin/1" do
+    assert Game.new |> Game.begin == {:error, :requires_atleast_one_player}
   end
 end

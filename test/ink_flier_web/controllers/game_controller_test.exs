@@ -25,7 +25,7 @@ defmodule InkFlierWeb.GameControllerTest do
 
     test "If game started, go to correct phase page", ~M{conn} do
       {:ok, game_id} = Lobby.start_game(creator: "BillyBob", join: true)
-      :ok = GameServer.start(game_id)
+      :ok = GameServer.begin(game_id)
 
       conn = get(conn, ~p"/lobby/game/#{game_id}")
       assert html_response(conn, 200) =~ "Positions"

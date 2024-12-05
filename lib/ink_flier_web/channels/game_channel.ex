@@ -39,7 +39,7 @@ defmodule InkFlierWeb.GameChannel do
 
   @impl Channel
   def handle_in("start", _, socket) do
-    case GameServer.start(socket.assigns.game_id) do
+    case GameServer.begin(socket.assigns.game_id) do
       :ok ->
         broadcast!(socket, "game_started", %{})
         {:reply, :ok, socket}

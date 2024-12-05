@@ -31,16 +31,16 @@ defmodule InkFlierTest.Game do
 
   describe "Phases" do
     test "Starting phase" do
-      assert Game.summary_info(Game.new).phase == :adding_players
+      assert Game.summary_info(Game.new).phase == :setup
     end
 
     test "start/1" do
       game =
         Game.new
         |> Game.add_player!("James")
-        |> Game.start!
+        |> Game.begin!
 
-      assert Game.summary_info(game).phase == :started
+      assert Game.summary_info(game).phase == :begun
     end
   end
 end

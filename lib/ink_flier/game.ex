@@ -8,7 +8,7 @@ defmodule InkFlier.Game do
     field :creator, player_id
     field :track_id, InkFlier.RaceTrack.id
     field :players, players, default: []
-    field :phase, phases, default: :adding_players
+    field :phase, phases, default: :setup
   end
 
   @type observer_id :: any
@@ -16,7 +16,7 @@ defmodule InkFlier.Game do
 
   @type player_id :: any
   @type players :: [player_id]
-  @type phases :: :adding_players | :started
+  @type phases :: :setup | :begun
 
   def new(opts \\ []) do
     __MODULE__
@@ -36,14 +36,14 @@ defmodule InkFlier.Game do
     end
   end
 
-  def start(t) do
+  def begin(t) do
     with :ok <- Validate.atleast_one_player(t) do
       t
-      |> set_phase(:started)
+      |> set_phase(:begun)
       |> ok
     end
   end
-  def start!(t), do: ({:ok, t} = start(t); t)
+  def begin!(t), do: ({:ok, t} = begin(t); t)
 
   def add_player!(t, player_id), do: update_in(t.players, &[player_id | &1])
   def remove_player!(t, player_id), do: update_in(t.players, &List.delete(&1, player_id))

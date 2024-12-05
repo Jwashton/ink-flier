@@ -27,7 +27,7 @@ defmodule InkFlierWeb.LobbyGameController do
         |> put_status(404)
         |> render(:bad_game_id)
 
-      GameServer.summary_info(game_id).phase == :started ->
+      GameServer.summary_info(game_id).phase == :begun ->
         conn
         |> assign(GameServer.summary_info(game_id))
         |> assign(~M{game_id})
