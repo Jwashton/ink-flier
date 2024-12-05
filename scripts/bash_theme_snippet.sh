@@ -28,3 +28,9 @@ __bash_prompt() {
 }
 __bash_prompt
 export PROMPT_DIRTRIM=4
+
+echo "before if"
+if [ -f "./aliases.sh" ]; then
+  echo "hi, inside if"
+  . "./aliases.sh"
+fi
